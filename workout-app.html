@@ -2150,7 +2150,7 @@ const PLANS = [
     days: {
       0: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','plank','hip_hinge'] },
       1: { name: 'Rest', exercises: [] },
-      2: { name: 'Full Body B', exercises: ['hip_hinge','incline_dumbbell','lat_pulldown','lunge','dead_bug'] },
+      2: { name: 'Full Body B', exercises: ['romanian_deadlift','incline_dumbbell','lat_pulldown','lunge','dead_bug'] },
       3: { name: 'Rest', exercises: [] },
       4: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','plank','hip_hinge'] },
       5: { name: 'Active Recovery', exercises: [] },
@@ -2219,19 +2219,19 @@ const PLANS = [
     schedule: [
       { day: 'MON', label: 'HIIT Circuit', rest: false },
       { day: 'TUE', label: 'Resistance A', rest: false },
-      { day: 'WED', label: 'Steady-State Cardio', rest: false },
+      { day: 'WED', label: 'Rest / Walk', rest: true },
       { day: 'THU', label: 'Resistance B', rest: false },
       { day: 'FRI', label: 'HIIT Circuit', rest: false },
-      { day: 'SAT', label: 'Long Walk / Run', rest: false },
+      { day: 'SAT', label: 'Steady-State Cardio', rest: false },
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
       0: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','mountain_climber','high_knees','box_jump'] },
       1: { name: 'Resistance A', exercises: ['goblet_squat','bench_press','row','dead_bug','plank'] },
-      2: { name: 'Steady-State', exercises: ['treadmill_run','bike','jump_rope'] },
+      2: { name: 'Rest / Walk', exercises: [] },
       3: { name: 'Resistance B', exercises: ['romanian_deadlift','ohp','lat_pulldown','lunge','plank_rotation'] },
       4: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','mountain_climber','high_knees','box_jump'] },
-      5: { name: 'Long Walk / Run', exercises: ['treadmill_run','bike'] },
+      5: { name: 'Steady-State', exercises: ['treadmill_run','bike','jump_rope'] },
       6: { name: 'Rest', exercises: [] },
     }
   },
@@ -2260,7 +2260,7 @@ const PLANS = [
       5: { name: 'Long Run / Bike', exercises: ['treadmill_run','bike'] },
       6: { name: 'Rest', exercises: [] },
     }
-  }  ,
+  },
   {
     id: 'drive_phase',
     name: 'Drive Phase',
@@ -2278,11 +2278,11 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Lateral Power', exercises: ['lateral_bound','skater_squat','glute_med_raise','lateral_hip_thrust','skating_hold'] },
+      0: { name: 'Lateral Power', exercises: ['lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
       1: { name: 'Strength', exercises: ['split_squat','hip_thrust','single_leg_rdl','romanian_deadlift','pallof_press'] },
       2: { name: 'Rest / Mobility', exercises: [] },
       3: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','broad_jump','box_jump','jump_squat'] },
-      4: { name: 'Posterior Chain', exercises: ['nordic_curl','hip_thrust','glute_med_raise','skating_hold','dead_bug'] },
+      4: { name: 'Posterior Chain', exercises: ['nordic_curl','lateral_hip_thrust','glute_med_raise','skating_hold','dead_bug'] },
       5: { name: 'Rest', exercises: [] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -4748,7 +4748,7 @@ function autoSaveSession() {
       state.history[state.history.findIndex(h => h.date === dateKey)] = sessionData;
     } else {
       state.history.unshift(sessionData);
-      if (state.history.length > 60) state.history = state.history.slice(0, 60);
+      if (state.history.length > 120) state.history = state.history.slice(0, 120);
     }
     writeExerciseLog(completedExs, dateKey);
     saveState();
@@ -4792,7 +4792,7 @@ function autoSaveSession() {
     state.history[state.history.findIndex(h => h.date === dateKey)] = sessionData;
   } else {
     state.history.unshift(sessionData);
-    if (state.history.length > 60) state.history = state.history.slice(0, 60);
+    if (state.history.length > 120) state.history = state.history.slice(0, 120);
   }
   writeExerciseLog(completedExs, dateKey);
   saveState();
@@ -4851,8 +4851,8 @@ function writeExerciseLog(completedExercises, dateKey) {
         sets: sets.map(s => ({ w: s.w, r: s.r, rpe: s.rpe || null, note: s.note || null }))
       });
       // Keep only last 10 sessions per exercise
-      if (state.exerciseLog[id].length > 10) {
-        state.exerciseLog[id] = state.exerciseLog[id].slice(0, 10);
+      if (state.exerciseLog[id].length > 20) {
+        state.exerciseLog[id] = state.exerciseLog[id].slice(0, 20);
       }
     }
   });
