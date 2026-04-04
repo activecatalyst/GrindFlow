@@ -26,20 +26,20 @@ App is live at:
    'https://activecatalyst.github.io/Grind.exe/workout-app.html'
 
 
-### Step 4 — Install to iPhone
+### Install to iPhone
 
 1. Open that URL in **Safari** on your iPhone
 2. Tap the **Share** button (box with arrow pointing up)
 3. Tap **Add to Home Screen**
 4. Tap **Add**
 
-FORGE now has its own icon on your home screen and launches full-screen
+Grind.exe now has its own icon on your home screen and launches full-screen
 with no browser UI, exactly like a native app.
 
-### Step 4 (Android) — Install via Chrome
+### (Android) — Install via Chrome
 
 1. Open that URL in **Chrome** on your Android phone
-2. Chrome will show an **"Add FORGE to Home Screen"** banner automatically
+2. Chrome will show an **"Add Grind.exe to Home Screen"** banner automatically
 3. Or tap the three-dot menu → **Add to Home screen**
 
 ---
@@ -205,4 +205,4 @@ appear correctly offline too.
 
 ---
 
-*FORGE — built as a single HTML file with no frameworks, no servers, no accounts.*
+*Grind.exe — built as a single HTML file with no frameworks, no servers, no accounts.*
