@@ -1,4 +1,4 @@
-# FORGE — How to Use the App
+# Grind.exe — How to Use the App
 
 A quick guide to every feature, tab by tab.
 
