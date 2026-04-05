@@ -396,6 +396,12 @@
     white-space: normal; word-break: break-word;
     color: var(--text);
   }
+  .plan-watch-tip {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 10px; color: #6b7280;
+    margin-top: 2px;
+  }
+  .plan-watch-tip span { color: #374151; font-weight: 500; }
   .plan-desc {
     font-size: 10.5px; color: #6b7280;
     line-height: 1.5;
@@ -1382,6 +1388,13 @@
     <div class="logo">Grind.exe</div>
     <div class="topbar-actions">
       <button class="icon-btn" onclick="openBackupModal()" title="Backup & Restore">💾</button>
+      <a href="https://open.spotify.com" target="_blank" rel="noopener"
+        class="icon-btn" title="Open Spotify"
+        style="display:flex;align-items:center;justify-content:center;text-decoration:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.622.622 0 11-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.623.623 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.519.781.781 0 01.52-.973c3.633-1.102 8.147-.568 11.233 1.329a.78.78 0 01.257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.795c3.53-1.07 9.404-.863 13.115 1.333a.938.938 0 01-.954 1.619z"/>
+        </svg>
+      </a>
       <button class="icon-btn" onclick="openIosGuide()" title="Ship to Mobile">📱</button>
       <button class="icon-btn" onclick="clearDayConfirm()" title="Reset Today">🔄</button>
     </div>
@@ -2156,7 +2169,7 @@ android {
 // ═══════════════════════════════════════════════════════════════════════════
 const PLANS = [
   {
-    id: 'beginner_fullbody',
+    id: 'beginner_fullbody', watchType: 'Traditional Strength Training',
     name: 'Beginner Full Body',
     desc: '3 days/week hitting every major muscle group. Perfect for building a strength foundation.',
     badge: '🌱',
@@ -2172,17 +2185,17 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','plank','hip_hinge'] },
+      0: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','plank','dead_bug'] },
       1: { name: 'Rest', exercises: [] },
-      2: { name: 'Full Body B', exercises: ['romanian_deadlift','incline_dumbbell','lat_pulldown','lunge','dead_bug'] },
+      2: { name: 'Full Body B', exercises: ['romanian_deadlift','incline_dumbbell','lat_pulldown','lunge','hip_hinge'] },
       3: { name: 'Rest', exercises: [] },
-      4: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','plank','hip_hinge'] },
+      4: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','plank','dead_bug'] },
       5: { name: 'Active Recovery', exercises: [] },
       6: { name: 'Rest', exercises: [] },
     }
   },
   {
-    id: 'intermediate_ppl',
+    id: 'intermediate_ppl', watchType: 'Traditional Strength Training',
     name: 'Intermediate PPL',
     desc: 'Push/Pull/Legs split run twice per week. Ideal for intermediate lifters seeking hypertrophy.',
     badge: '🔥',
@@ -2192,32 +2205,32 @@ const PLANS = [
       { day: 'MON', label: 'Push (Chest/Shoulders/Tris)', rest: false },
       { day: 'TUE', label: 'Pull (Back/Biceps)', rest: false },
       { day: 'WED', label: 'Legs', rest: false },
-      { day: 'THU', label: 'Rest', rest: true },
+      { day: 'THU', label: 'Legs B', rest: false },
       { day: 'FRI', label: 'Push (Chest/Shoulders/Tris)', rest: false },
       { day: 'SAT', label: 'Pull (Back/Biceps)', rest: false },
-      { day: 'SUN', label: 'Legs', rest: false },
+      { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
       0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','plank'] },
       1: { name: 'Pull Day', exercises: ['deadlift','pullup','cable_row','face_pull','hammer_curl','dead_bug'] },
       2: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
-      3: { name: 'Rest', exercises: [] },
-      4: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','pallof_press'] },
+      3: { name: 'Leg Day B', exercises: ['goblet_squat','lunge','leg_press','leg_curl','calf_raise'] },
+      4: { name: 'Push Day B', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','pallof_press'] },
       5: { name: 'Pull Day B', exercises: ['romanian_deadlift','lat_pulldown','cable_row','rear_delt_fly','bicep_curl','ab_wheel'] },
-      6: { name: 'Leg Day B', exercises: ['goblet_squat','lunge','leg_press','leg_curl','calf_raise'] },
+      6: { name: 'Rest', exercises: [] },
     }
   },
   {
-    id: 'advanced_split',
+    id: 'advanced_split', watchType: 'Traditional Strength Training',
     name: 'Advanced 5-Day Split',
-    desc: 'Chest · Back · Legs · Shoulders · Arms. Max volume for experienced lifters.',
+    desc: 'Chest · Shoulders · Back · Legs · Arms. Max volume for experienced lifters.',
     badge: '⚡',
     color: '#ffcc00',
     tags: ['5x/week', 'Strength+Size', 'Advanced'],
     schedule: [
       { day: 'MON', label: 'Chest', rest: false },
-      { day: 'TUE', label: 'Back', rest: false },
-      { day: 'WED', label: 'Shoulders', rest: false },
+      { day: 'TUE', label: 'Shoulders', rest: false },
+      { day: 'WED', label: 'Back', rest: false },
       { day: 'THU', label: 'Legs', rest: false },
       { day: 'FRI', label: 'Arms', rest: false },
       { day: 'SAT', label: 'Rest', rest: true },
@@ -2225,8 +2238,8 @@ const PLANS = [
     ],
     days: {
       0: { name: 'Chest Day', exercises: ['bench_press','incline_dumbbell','cable_fly','dips','pushup'] },
-      1: { name: 'Back Day', exercises: ['deadlift','pullup','cable_row','lat_pulldown','face_pull'] },
-      2: { name: 'Shoulder Day', exercises: ['ohp','lateral_raise','rear_delt_fly','upright_row','shrug'] },
+      1: { name: 'Shoulder Day', exercises: ['ohp','lateral_raise','rear_delt_fly','face_pull','shrug'] },
+      2: { name: 'Back Day', exercises: ['deadlift','pullup','cable_row','lat_pulldown','face_pull'] },
       3: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
       4: { name: 'Arms Day', exercises: ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','dips'] },
       5: { name: 'Rest', exercises: [] },
@@ -2234,7 +2247,7 @@ const PLANS = [
     }
   },
   {
-    id: 'weight_loss_cardio',
+    id: 'weight_loss_cardio', watchType: 'Functional Strength Training', watchTypeAlt: 'High Intensity Interval Training (HIIT days)',
     name: 'Weight Loss Cardio Mix',
     desc: 'Combines HIIT, metabolic circuits, and steady-state cardio for maximum calorie burn.',
     badge: '🏃',
@@ -2260,12 +2273,12 @@ const PLANS = [
     }
   },
   {
-    id: 'cardio_only',
+    id: 'cardio_only', watchType: 'High Intensity Interval Training',
     name: 'Pure Cardio',
     desc: 'Daily cardio sessions cycling through HIIT, steady-state, and active recovery. Zero weights.',
     badge: '❤️',
     color: '#ff00c8',
-    tags: ['6x/week', 'Cardio', 'All Levels'],
+    tags: ['6x/week', 'Cardio', 'Intermediate'],
     schedule: [
       { day: 'MON', label: 'HIIT Blast', rest: false },
       { day: 'TUE', label: 'Steady-State Run', rest: false },
@@ -2286,7 +2299,7 @@ const PLANS = [
     }
   },
   {
-    id: 'drive_phase',
+    id: 'drive_phase', watchType: 'Functional Strength Training',
     name: 'Drive Phase',
     desc: 'Lateral power, glute strength, and explosive leg development. 4 days/week built around single-leg force production.',
     badge: '🚀',
@@ -2321,7 +2334,7 @@ const EXERCISES = {
   squat: {
     name: 'Back Squat', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
     sets: 3, reps: 8, weight: 135,
-    cue: 'Stand with feet shoulder-width apart, bar resting on upper traps. Descend until thighs are parallel or below, keeping knees tracking over toes. Drive through heels to stand, maintaining a neutral spine throughout.'
+    cue: 'Warm-up sets recommended: work up in 2–3 ramp sets (e.g. 50%×5, 70%×3) before your working sets. Stand with feet shoulder-width apart, bar resting on upper traps. Descend until thighs are parallel or below, keeping knees tracking over toes. Drive through heels to stand, maintaining a neutral spine throughout.'
   },
   goblet_squat: {
     name: 'Goblet Squat', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
@@ -2341,7 +2354,7 @@ const EXERCISES = {
   bench_press: {
     name: 'Barbell Bench Press', muscle: 'Chest', icon: '💪', muscleClass: 'muscle-chest',
     sets: 4, reps: 8, weight: 135,
-    cue: 'Grip the bar slightly wider than shoulder-width with a full grip. Arch your upper back and keep your feet flat. Lower the bar to mid-chest under control, then press in a slight arc toward your forehead.'
+    cue: 'Warm-up sets recommended: 2–3 ramp sets before working weight (e.g. bar×10, 60%×5, 80%×3). Grip the bar slightly wider than shoulder-width with a full grip. Arch your upper back and keep your feet flat. Lower the bar to mid-chest under control, then press in a slight arc toward your forehead.'
   },
   incline_dumbbell: {
     name: 'Incline Dumbbell Press', muscle: 'Chest', icon: '💪', muscleClass: 'muscle-chest',
@@ -2366,7 +2379,7 @@ const EXERCISES = {
   deadlift: {
     name: 'Conventional Deadlift', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
     sets: 4, reps: 5, weight: 225,
-    cue: 'Set up with the bar over mid-foot, grip just outside hips. Push the floor away while keeping the bar close to your legs. Lock out by squeezing glutes at the top — never hyperextend the lower back.'
+    cue: 'Warm-up sets recommended: work up in 3–4 ramp sets before your working weight — deadlifts are high CNS demand. Set up with the bar over mid-foot, grip just outside hips. Push the floor away while keeping the bar close to your legs. Lock out by squeezing glutes at the top — never hyperextend the lower back.'
   },
   pullup: {
     name: 'Pull-Up / Lat Pulldown', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
@@ -2391,7 +2404,7 @@ const EXERCISES = {
   ohp: {
     name: 'Overhead Press', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
     sets: 4, reps: 8, weight: 95,
-    cue: 'Grip the bar just outside shoulder width, elbows slightly forward. Press the bar directly overhead, moving your head back slightly to allow clearance. Fully lock out at the top, then lower to clavicle level.'
+    cue: 'Warm-up sets recommended: 2 ramp sets before working weight. Grip the bar just outside shoulder width, elbows slightly forward. Press the bar directly overhead, moving your head back slightly to allow clearance. Fully lock out at the top, then lower to clavicle level.'
   },
   lateral_raise: {
     name: 'Lateral Raise', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
@@ -2406,7 +2419,7 @@ const EXERCISES = {
   upright_row: {
     name: 'Upright Row', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
     sets: 3, reps: 12, weight: 60,
-    cue: 'Use a wide grip on a barbell or cables. Pull the bar up your torso to chin height, keeping elbows flared higher than your wrists. Lower with control. Use moderate weight — impingement risk rises with heavy loading.'
+    cue: '⚠️ High shoulder impingement risk — consider substituting Face Pulls or Cable Lateral Raises which hit the same muscles safely. If performing: use a wide grip on a barbell or cables, pull to chin height with elbows flared higher than wrists. Use light-to-moderate weight only — stop immediately if you feel pinching in the shoulder joint.'
   },
   shrug: {
     name: 'Dumbbell Shrug', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
@@ -2415,8 +2428,8 @@ const EXERCISES = {
   },
   hip_hinge: {
     name: 'Hip Hinge / RDL', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
-    sets: 3, reps: 12, weight: 45,
-    cue: 'Push your hips back while maintaining a flat back and soft knees. Lower the bar down your legs until you feel a hamstring stretch, then drive hips forward to return. Keep the bar as close to your body as possible throughout.'
+    sets: 3, reps: 12, weight: 30,
+    cue: 'Beginners: use two dumbbells held in front of the thighs — easier to control than a barbell. Push your hips back while maintaining a flat back and soft knees. Lower the weight down your legs until you feel a hamstring stretch, then drive hips forward to return. Master the movement pattern before progressing to a barbell. Warm-up sets recommended: 2 light sets before working weight.'
   },
   romanian_deadlift: {
     name: 'Romanian Deadlift', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
@@ -2647,7 +2660,11 @@ function formatDate(dateStr) {
   return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
-function getDayOfWeek() { return new Date().getDay(); } // 0=Sun
+function getDayOfWeek() {
+  // Plans are keyed Mon=0…Sun=6. JS getDay() returns Sun=0…Sat=6.
+  // Shift so Monday aligns: (getDay() + 6) % 7
+  return (new Date().getDay() + 6) % 7;
+}
 
 function getPlan(id) {
   // Check static plans first
@@ -3539,7 +3556,7 @@ function generateRandomPlan() {
       6: [1,2,3,4,5,6],
     }[days] || [1,2,4,5];
 
-    const weekDays = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    const weekDays = ['MON','TUE','WED','THU','FRI','SAT','SUN']; // Mon=0 to match getDayOfWeek()
     const schedule = [];
     const dayMap = {}; // dow index → {name, exercises}
     let trainingIdx = 0;
@@ -3587,7 +3604,7 @@ function renderGeneratedPreview() {
       <div class="sched-day">${s.day}</div>
       <div class="sched-dot ${s.rest ? 'rest' : ''}"></div>
       <div class="sched-label" style="flex:1;">${s.label}</div>
-      ${!s.rest ? `<div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${(generatedPlan.days[['SUN','MON','TUE','WED','THU','FRI','SAT'].indexOf(s.day)]?.exercises?.length || 0)} ex</div>` : ''}
+      ${!s.rest ? `<div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${(generatedPlan.days[['MON','TUE','WED','THU','FRI','SAT','SUN'].indexOf(s.day)]?.exercises?.length || 0)} ex</div>` : ''}
     </div>
   `).join('');
 
@@ -3638,7 +3655,7 @@ function renderPlans() {
   const dow = getDayOfWeek();
 
   // ── Helper: build a plan card element ─────────────────────────────────
-  function makePlanCard({ id, badge, badgeBg, name, desc, tags, color, todayLabel, isTodayRest, isPrimary, isSupplemental, isExpanded, isGenerated, volumeNote }) {
+  function makePlanCard({ id, badge, badgeBg, name, desc, watchType, watchTypeAlt, tags, color, todayLabel, isTodayRest, isPrimary, isSupplemental, isExpanded, isGenerated, volumeNote }) {
     const isAnyActive = isPrimary || isSupplemental;
     const card = document.createElement('div');
     card.className = 'plan-card' + (isAnyActive ? ' selected' : '') + (isExpanded ? ' expanded' : '');
@@ -3656,6 +3673,7 @@ function renderPlans() {
           </div>
         </div>
         ${desc ? `<div class="plan-desc">${desc}</div>` : ''}
+        ${watchType ? `<div class="plan-watch-tip">⌚ ${watchTypeAlt ? 'Strength days' : 'Apple Watch'}: <span>${watchType}</span></div>${watchTypeAlt ? `<div class="plan-watch-tip">⌚ <span>${watchTypeAlt}</span></div>` : ''}` : ''}
         <div class="plan-tags">${tags.map(t => `<div class="plan-tag">${t}</div>`).join('')}</div>
         <div class="plan-today-row">
           <div class="plan-today-dot" style="background:${isTodayRest ? 'var(--muted)' : color};"></div>
@@ -3727,6 +3745,7 @@ function renderPlans() {
       badgeBg: 'rgba(255,204,0,0.12)',
       name: gp.name,
       desc: null,
+      watchType: 'Functional Strength Training',
       tags: gp.tags,
       color: 'var(--yellow)',
       todayLabel: gpTodayLabel,
@@ -3765,6 +3784,8 @@ function renderPlans() {
       badgeBg: plan.color + '22',
       name: plan.name,
       desc: plan.desc,
+      watchType: plan.watchType || null,
+      watchTypeAlt: plan.watchTypeAlt || null,
       tags: plan.tags,
       color: plan.color,
       todayLabel,
