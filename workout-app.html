@@ -118,6 +118,11 @@
     transition: all .2s;
   }
   .icon-btn:active { transform: scale(0.93); background: rgba(255,255,255,0.15); }
+  .icon-btn.travel-active {
+    background: rgba(16,185,129,0.15);
+    border-color: rgba(16,185,129,0.4);
+    box-shadow: 0 0 8px rgba(16,185,129,0.3);
+  }
 
   /* ─── BOTTOM NAV ─────────────────────────────────────────────────────── */
   .bottomnav {
@@ -264,6 +269,28 @@
     border: 1px solid rgba(59,130,246,0.25);
     color: var(--accent2);
   }
+  .variant-row {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+  .variant-label {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px;
+    flex-shrink: 0;
+  }
+  .variant-chip {
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 4px 9px; border-radius: 6px; cursor: pointer;
+    background: #F3F4F6; border: 1px solid #e5e7eb;
+    color: #6b7280; transition: all .15s; flex-shrink: 0;
+  }
+  .variant-chip.active {
+    background: rgba(0,194,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .variant-chip:active { transform: scale(0.93); }
   .ex-cue {
     font-size: 13px; line-height: 1.6; color: #374151;
     border-left: 2px solid var(--accent2);
@@ -363,7 +390,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     padding: 0 20px;
-    align-items: start;
+    align-items: stretch;
   }
   .plan-card {
     grid-column: span 1;
@@ -460,6 +487,17 @@
   .sched-row { display: flex; align-items: center; gap: 10px; }
   .sched-day { font-family: var(--font-mono); font-size: 10px; color: #6b7280; width: 26px; text-transform: uppercase; flex-shrink: 0; }
   .sched-label { font-size: 12px; flex: 1; color: var(--text); }
+  .sched-ex-list {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    padding: 5px 0 6px 36px;
+  }
+  .sched-ex-chip {
+    font-size: 10px; font-family: var(--font-mono);
+    padding: 2px 7px; border-radius: 5px;
+    background: rgba(59,130,246,0.07);
+    border: 1px solid rgba(59,130,246,0.18);
+    color: #4b5563;
+  }
   .sched-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); flex-shrink: 0; }
   .sched-dot.rest { background: var(--muted); }
   .plan-dropdown-actions { display: flex; gap: 8px; padding: 0 16px 14px; }
@@ -1388,6 +1426,7 @@
     <div class="logo">Grind.exe</div>
     <div class="topbar-actions">
       <button class="icon-btn" onclick="openBackupModal()" title="Backup & Restore">💾</button>
+      <button class="icon-btn" id="travel-btn" onclick="openTravelModal()" title="Travel Mode">🧳</button>
       <a href="https://open.spotify.com" target="_blank" rel="noopener"
         class="icon-btn" title="Open Spotify"
         style="display:flex;align-items:center;justify-content:center;text-decoration:none;">
@@ -1490,6 +1529,25 @@
             Export
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Travel Mode banner -->
+    <div id="travel-banner" style="display:none; margin:0 20px 4px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;
+        background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.3);
+        border-radius:12px;animation:fadeUp .3s ease;">
+        <span style="font-size:18px;flex-shrink:0;">🧳</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:1px;">Travel Mode active</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);" id="travel-banner-sub">Home Workout plan loaded</div>
+        </div>
+        <button onclick="deactivateTravelMode()"
+          style="font-family:var(--font-mono);font-size:10px;padding:5px 10px;
+            border-radius:7px;background:rgba(16,185,129,0.12);
+            border:1px solid rgba(16,185,129,0.3);color:#10b981;font-weight:600;flex-shrink:0;">
+          End
+        </button>
       </div>
     </div>
 
@@ -1801,6 +1859,89 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
+</div>
+
+<!-- ─── TRAVEL MODE MODAL ─────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="travel-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">🧳 Travel Mode</div>
+      <button class="modal-close" onclick="closeTravelModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding-bottom:24px;">
+      <div id="travel-inactive-view">
+        <p style="font-size:13px;color:rgba(229,231,235,0.65);line-height:1.6;margin-bottom:18px;">
+          Activating Travel Mode swaps your current plan with the <strong style="color:var(--text-inv);">Home Workout</strong> plan — bodyweight only, no equipment needed. Your regular plan is saved and restored automatically when you return.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+            border-radius:12px;padding:14px 16px;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);
+              text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Return Date (optional)</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <input type="date" id="travel-return-date"
+                style="flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+                  border-radius:8px;padding:8px 12px;font-size:13px;color:var(--text-inv);
+                  font-family:var(--font-mono);outline:none;color-scheme:dark;">
+              <button onclick="document.getElementById('travel-return-date').value=''"
+                style="font-family:var(--font-mono);font-size:10px;padding:7px 10px;
+                  border-radius:7px;background:rgba(255,255,255,0.07);
+                  border:1px solid rgba(255,255,255,0.12);color:var(--muted);">Clear</button>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;">
+              If set, Travel Mode deactivates automatically on your return date and restores your original plan.
+            </div>
+          </div>
+
+          <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);
+            border-radius:12px;padding:12px 14px;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:#10b981;
+              text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Home Workout covers</div>
+            <div style="font-size:12px;color:rgba(229,231,235,0.65);line-height:1.7;">
+              Mon: Upper Push · Tue: Lower Body · Wed: Rest<br>
+              Thu: Upper Pull + Core · Fri: Full Body Conditioning<br>
+              Sat: Active Recovery · Sun: Rest
+            </div>
+          </div>
+        </div>
+
+        <button onclick="activateTravelMode()"
+          style="width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;
+            background:linear-gradient(135deg,#10b981,#059669);color:#fff;
+            letter-spacing:0.3px;transition:opacity .2s,transform .15s;">
+          🧳 Activate Travel Mode
+        </button>
+      </div>
+
+      <div id="travel-active-view" style="display:none;">
+        <div style="text-align:center;padding:20px 0 24px;">
+          <div style="font-size:48px;margin-bottom:12px;">🧳</div>
+          <div style="font-family:var(--font-head);font-size:24px;letter-spacing:1px;
+            color:var(--text-inv);margin-bottom:6px;">Travel Mode On</div>
+          <div style="font-size:13px;color:rgba(229,231,235,0.55);" id="travel-active-sub">
+            Home Workout plan active
+          </div>
+        </div>
+
+        <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);
+          border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+          <div style="font-family:var(--font-mono);font-size:9px;color:#10b981;
+            text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Saved plan</div>
+          <div style="font-size:13px;color:var(--text-inv);" id="travel-saved-plan-name">—</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">Will be restored when you end Travel Mode</div>
+        </div>
+
+        <button onclick="deactivateTravelMode()"
+          style="width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;
+            background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);
+            color:var(--red);letter-spacing:0.3px;transition:opacity .2s,transform .15s;">
+          ✕ End Travel Mode &amp; Restore Plan
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ─── BACKUP MODAL ──────────────────────────────────────────────────────── -->
@@ -2334,6 +2475,58 @@ const PLANS = [
       5: { name: 'Rest', exercises: [] },
       6: { name: 'Rest', exercises: [] },
     }
+  },
+  {
+    id: 'ppl_athletic', watchType: 'Functional Strength Training',
+    name: 'PPL + Drive Phase',
+    desc: 'Push/Pull/Legs hypertrophy merged with lateral power, plyometrics, and Drive Phase posterior chain work. 6 days/week.',
+    badge: '⚡',
+    color: '#00C2FF',
+    tags: ['6x/week', 'Hypertrophy+Power', 'Intermediate'],
+    schedule: [
+      { day: 'MON', label: 'Push (Chest/Shoulders/Tris)', rest: false },
+      { day: 'TUE', label: 'Lateral Power', rest: false },
+      { day: 'WED', label: 'Plyometric', rest: false },
+      { day: 'THU', label: 'Pull (Back/Biceps)', rest: false },
+      { day: 'FRI', label: 'Legs', rest: false },
+      { day: 'SAT', label: 'Posterior Chain + Drive', rest: false },
+      { day: 'SUN', label: 'Rest', rest: true },
+    ],
+    days: {
+      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','cable_fly'] },
+      1: { name: 'Lateral Power', exercises: ['lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
+      2: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','broad_jump','box_jump','jump_squat'] },
+      3: { name: 'Pull Day', exercises: ['deadlift','pullup','cable_row','face_pull','hammer_curl','dead_bug'] },
+      4: { name: 'Legs', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
+      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','glute_med_raise','pallof_press','dead_bug'] },
+      6: { name: 'Rest', exercises: [] },
+    }
+  },
+  {
+    id: 'home_workout', watchType: 'Functional Strength Training',
+    name: 'Home Workout',
+    desc: 'Full body strength and conditioning using bodyweight only. Zero equipment needed — do it anywhere.',
+    badge: '🏠',
+    color: '#10b981',
+    tags: ['4x/week', 'Bodyweight', 'All Levels'],
+    schedule: [
+      { day: 'MON', label: 'Upper Body Push', rest: false },
+      { day: 'TUE', label: 'Lower Body', rest: false },
+      { day: 'WED', label: 'Rest / Stretch', rest: true },
+      { day: 'THU', label: 'Upper Body Pull + Core', rest: false },
+      { day: 'FRI', label: 'Full Body Conditioning', rest: false },
+      { day: 'SAT', label: 'Active Recovery', rest: true },
+      { day: 'SUN', label: 'Rest', rest: true },
+    ],
+    days: {
+      0: { name: 'Upper Push', exercises: ['pushup','pike_pushup','tricep_dip_chair','plank','dead_bug'] },
+      1: { name: 'Lower Body', exercises: ['squat_bw','lunge_bw','glute_bridge','single_leg_rdl_bw','calf_raise_bw'] },
+      2: { name: 'Rest / Stretch', exercises: [] },
+      3: { name: 'Upper Pull + Core', exercises: ['inverted_row','pullup_bw','plank_rotation','ab_wheel_bw','dead_bug'] },
+      4: { name: 'Full Body Conditioning', exercises: ['burpee','jump_squat','mountain_climber','high_knees','broad_jump','plank'] },
+      5: { name: 'Active Recovery', exercises: [] },
+      6: { name: 'Rest', exercises: [] },
+    }
   }
 ];
 
@@ -2618,6 +2811,58 @@ const EXERCISES = {
     sets: 5, reps: 30, weight: 0,
     cue: 'Log seconds per round as your rep count — start with 30s per set, target 60s. Land on the balls of your feet, keep jumps small and elbows close. Rotate with your wrists. Add 5 seconds per session once you can complete all rounds at target duration.'
   },
+
+  // ── Home / Bodyweight exercises ───────────────────────────────────────
+  pike_pushup: {
+    name: 'Pike Push-Up', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
+    sets: 3, reps: 10, weight: 0,
+    cue: 'Start in a downward-dog position with hips high and hands slightly wider than shoulder-width. Bend your elbows to lower your head toward the floor between your hands, then press back up. This trains the overhead pressing pattern with zero equipment. Progress by elevating your feet on a chair to increase the angle.'
+  },
+  tricep_dip_chair: {
+    name: 'Chair Tricep Dip', muscle: 'Arms', icon: '💪', muscleClass: 'muscle-arms',
+    sets: 3, reps: 12, weight: 0,
+    cue: 'Place hands on the edge of a sturdy chair or bench, fingers forward. Extend legs in front of you. Lower your body by bending the elbows to 90°, then press back up by straightening the arms. Keep elbows pointing behind you — not flaring out. Progress by elevating your feet on another chair.'
+  },
+  squat_bw: {
+    name: 'Bodyweight Squat', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 3, reps: 20, weight: 0,
+    cue: 'Stand feet shoulder-width apart, toes slightly out. Descend until thighs are parallel or below, keeping chest up and knees tracking over toes. Drive through your heels to stand. Once 20 reps feels easy, progress to jump squats or slow 3-second descents to keep the stimulus high.'
+  },
+  lunge_bw: {
+    name: 'Bodyweight Lunge', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 3, reps: 12, weight: 0,
+    cue: 'Step forward and lower your back knee to near the floor, keeping your front shin vertical. Push off the front foot to return. Alternate legs each rep. Progress by adding a pulse at the bottom, or by turning it into a reverse lunge for more glute emphasis.'
+  },
+  glute_bridge: {
+    name: 'Glute Bridge', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 3, reps: 15, weight: 0,
+    cue: 'Lie on your back with knees bent and feet flat on the floor. Drive through your heels to lift your hips until your body forms a straight line from knees to shoulders. Squeeze your glutes hard at the top for one second. Progress to single-leg glute bridge by extending one leg straight while pressing through the other.'
+  },
+  single_leg_rdl_bw: {
+    name: 'Single-Leg RDL (BW)', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 3, reps: 10, weight: 0,
+    cue: 'Stand on one leg, hinge forward at the hip while the rear leg lifts behind you for balance. Lower your torso until it is parallel to the floor, then return by driving the hip forward. Keep hips square — do not rotate. Arms reach toward the floor for balance. This is surprisingly difficult — nail the balance before adding weight.'
+  },
+  calf_raise_bw: {
+    name: 'Calf Raise (BW)', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 4, reps: 25, weight: 0,
+    cue: 'Stand on the edge of a step or a thick book with heels hanging off. Lower heels as far as possible for a deep stretch, then rise onto the balls of your feet. Hold the peak for one second. Use high reps since bodyweight is relatively light — 20–30 reps per set. Single-leg version dramatically increases the challenge.'
+  },
+  inverted_row: {
+    name: 'Inverted Row (Table)', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
+    sets: 3, reps: 10, weight: 0,
+    cue: 'Lie under a sturdy table and grip the edge with hands slightly wider than shoulder-width. Keep your body straight from head to heels and pull your chest up to the table. This is the best bodyweight back exercise available without a pull-up bar. Make it harder by elevating your feet. Make it easier by bending your knees.'
+  },
+  pullup_bw: {
+    name: 'Pull-Up / Inverted Row', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
+    sets: 3, reps: 6, weight: 0,
+    cue: 'If you have a pull-up bar: hang with hands slightly wider than shoulder-width, depress shoulder blades, then pull elbows toward hips until chin clears the bar. No bar: perform inverted rows under a table instead. Log as many reps as possible per set — do not cut range of motion to chase numbers.'
+  },
+  ab_wheel_bw: {
+    name: 'Ab Wheel / Plank Walkout', muscle: 'Core', icon: '🔲', muscleClass: 'muscle-core',
+    sets: 3, reps: 8, weight: 0,
+    cue: 'No ab wheel? Do a plank walkout instead: from standing, hinge forward and walk hands out to a full plank, then walk hands back and stand. This trains the same anti-extension core pattern. With an ab wheel: kneel and roll forward slowly, keeping hips in line. Pull back using your abs, not your lower back.'
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -2630,6 +2875,8 @@ let state = {
   todayLog: {},
   history: [],
   restDayOverride: null,   // date string — user chose to rest instead of train today
+  equipmentVariants: {},   // exId → variant key ('barbell','dumbbell','machine', etc.)
+  travelMode: null,        // null | { returnDate: 'YYYY-MM-DD' | null }
 };
 
 function loadState() {
@@ -3031,19 +3278,27 @@ function renderToday() {
   const suppPlan = state.supplementalPlan ? getPlan(state.supplementalPlan) : null;
   const suppWorkout = suppPlan ? getTodayWorkout(state.supplementalPlan) : null;
   const suppExercises = suppWorkout && suppWorkout.exercises && suppWorkout.exercises.length > 0 ? suppWorkout.exercises : [];
-  const totalCount = (workout.exercises.length) + suppExercises.filter(id => !workout.exercises.includes(id)).length;
+  const uniqueSuppCount = suppExercises.filter(id => !workout.exercises.includes(id)).length;
+  const wuCount = (state.activeWarmup && state.activeWarmup.date === dateKey) ? state.activeWarmup.exercises.length : 0;
+  const totalCount = workout.exercises.length + uniqueSuppCount + wuCount;
 
-  document.getElementById('hero-meta').innerHTML =
-    `<div class="hero-chip">📋 ${plan.name}</div>` +
-    (workout.exercises.length
-      ? `<div class="hero-chip">🏋️ ${totalCount} exercises${suppExercises.length ? ' (combined)' : ''}</div>`
-      : `<div class="hero-chip">😴 Rest Day</div>`) +
-    `<button onclick="confirmResetPlan()" style="
-      background:transparent;border:none;padding:0;
-      font-size:11px;color:rgba(229,231,235,0.45);
-      text-decoration:underline;cursor:pointer;
-      font-family:var(--font-mono);letter-spacing:0.3px;
-      margin-left:2px;align-self:center;">change plan</button>`;
+  // Build hero chips — show breakdown when multiple sources active
+  let metaChips = `<div class="hero-chip">📋 ${plan.name}</div>`;
+  if (workout.exercises.length) {
+    metaChips += `<div class="hero-chip">🏋️ ${totalCount} exercise${totalCount !== 1 ? 's' : ''}${(uniqueSuppCount || wuCount) ? ' total' : ''}</div>`;
+    if (wuCount)        metaChips += `<div class="hero-chip">🔥 ${wuCount} warm-up</div>`;
+    if (uniqueSuppCount) metaChips += `<div class="hero-chip">➕ ${uniqueSuppCount} supp</div>`;
+  } else {
+    metaChips += `<div class="hero-chip">😴 Rest Day</div>`;
+  }
+  metaChips += `<button onclick="confirmResetPlan()" style="
+    background:transparent;border:none;padding:0;
+    font-size:11px;color:rgba(229,231,235,0.45);
+    text-decoration:underline;cursor:pointer;
+    font-family:var(--font-mono);letter-spacing:0.3px;
+    margin-left:2px;align-self:center;">change plan</button>`;
+
+  document.getElementById('hero-meta').innerHTML = metaChips;
 
   if (!workout.exercises.length) {
     document.getElementById('exercises-list').innerHTML = buildRestDayHTML(false);
@@ -3128,6 +3383,15 @@ function renderToday() {
         </div>
         <div class="ex-body" id="exbody-${wuId}">
           <div class="ex-cue">${wuEx.cue}</div>
+          <a href="https://www.google.com/search?q=${encodeURIComponent(wuEx.name + ' exercise how to')}"
+            target="_blank" rel="noopener"
+            style="display:inline-flex;align-items:center;gap:5px;
+              font-family:var(--font-mono);font-size:10px;color:var(--muted);
+              text-decoration:none;letter-spacing:0.3px;margin-top:-4px;"
+            onclick="event.stopPropagation()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Search "${wuEx.name}"
+          </a>
           <button class="mark-btn ${wuEntry.complete ? 'done-btn' : ''}" id="markbtn-${wuId}"
             onclick="toggleWarmupComplete('${wuId}')">
             ${wuEntry.complete ? '✅ Done — Tap to Undo' : '✓ Mark Complete'}
@@ -3210,21 +3474,26 @@ function renderToday() {
   updateProgressFromLog();
   checkBackupNudge();
   checkDeloadNudge();
+  checkTravelModeAutoReturn();
+  updateTravelUI();
 }
 
 function buildExCard(exId, ex, logEntry, volumeOverride) {
+  // Apply equipment variant if one is active — overrides name, weight, cue
+  const effectiveEx = getEffectiveExercise(exId) || ex;
+
   // volumeOverride = { sets, repsLow, repsHigh } from generated plan, or null
-  const displaySets = volumeOverride ? volumeOverride.sets : ex.sets;
+  const displaySets = volumeOverride ? volumeOverride.sets : effectiveEx.sets;
   const displayRepsLabel = volumeOverride
     ? `${volumeOverride.repsLow}–${volumeOverride.repsHigh}`
-    : String(ex.reps);
+    : String(effectiveEx.reps);
 
   // Get progression status for this exercise
   const progStatus = getProgressionStatus(exId);
 
   // Pre-fill weight: use suggested weight from progression if available
   // and the log entry hasn't been touched yet (all weights null or at default)
-  const defaultW = ex.weight;
+  const defaultW = effectiveEx.weight;
   const suggestedW = (progStatus && progStatus.suggestedWeight > 0)
     ? progStatus.suggestedWeight : defaultW;
   const allAtDefault = logEntry.sets.every(s => s.weight == null || s.weight === defaultW || s.weight === 0);
@@ -3239,21 +3508,31 @@ function buildExCard(exId, ex, logEntry, volumeOverride) {
 
   card.innerHTML = `
     <div class="ex-card-header" onclick="toggleExCard('${exId}')">
-      <div class="ex-icon ${ex.muscleClass}">${ex.icon}</div>
+      <div class="ex-icon ${effectiveEx.muscleClass}">${effectiveEx.icon}</div>
       <div class="ex-card-info">
-        <div class="ex-name">${ex.name}</div>
-        <div class="ex-muscle">${ex.muscle}</div>
+        <div class="ex-name">${effectiveEx.name}</div>
+        <div class="ex-muscle">${effectiveEx.muscle}</div>
       </div>
       <div class="ex-status">${logEntry.complete ? '✅' : '○'}</div>
     </div>
     <div class="ex-body" id="exbody-${exId}">
+      ${buildVariantRow(exId)}
       <div class="ex-rec">
         <div class="rec-chip">📦 ${displaySets} sets</div>
         <div class="rec-chip">🔁 ${displayRepsLabel} reps</div>
-        ${ex.weight > 0 ? `<div class="rec-chip">⚖️ ${suggestedW} lbs</div>` : ''}
+        ${effectiveEx.weight > 0 ? `<div class="rec-chip">⚖️ ${suggestedW} lbs</div>` : ''}
       </div>
       ${buildProgPanel(exId)}
-      <div class="ex-cue">${ex.cue}</div>
+      <div class="ex-cue">${effectiveEx.cue}</div>
+      <a href="https://www.google.com/search?q=${encodeURIComponent(effectiveEx.name + ' exercise how to')}"
+        target="_blank" rel="noopener"
+        style="display:inline-flex;align-items:center;gap:5px;
+          font-family:var(--font-mono);font-size:10px;color:var(--muted);
+          text-decoration:none;letter-spacing:0.3px;margin-top:-4px;"
+        onclick="event.stopPropagation()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search "${effectiveEx.name}"
+      </a>
       <div class="set-labels">
         <span></span>
         <span class="set-label">Weight (lbs)</span>
@@ -3264,10 +3543,10 @@ function buildExCard(exId, ex, logEntry, volumeOverride) {
         ${logEntry.sets.map((s, i) => `
           <div class="set-row" id="setrow-${exId}-${i}">
             <div class="set-num">${i+1}</div>
-            <input class="set-input" type="number" inputmode="decimal" placeholder="${ex.weight || 'BW'}"
+            <input class="set-input" type="number" inputmode="decimal" placeholder="${effectiveEx.weight || 'BW'}"
               value="${s.weight || ''}"
               onchange="updateSet('${exId}', ${i}, 'weight', this.value)">
-            <input class="set-input" type="number" inputmode="decimal" placeholder="${volumeOverride ? volumeOverride.repsHigh : ex.reps}"
+            <input class="set-input" type="number" inputmode="decimal" placeholder="${volumeOverride ? volumeOverride.repsHigh : effectiveEx.reps}"
               value="${s.reps || ''}"
               onchange="updateSet('${exId}', ${i}, 'reps', this.value)">
             <div class="set-check ${s.done ? 'checked' : ''}" id="setcheck-${exId}-${i}"
@@ -3411,23 +3690,64 @@ function updateProgressFromLog() {
 
   const workout = getTodayWorkout(state.primaryPlan);
   if (!workout || !workout.exercises.length) { updateRing(0, 0); return; }
-  const total = workout.exercises.length;
-  const done = workout.exercises.filter(id => log[id] && log[id].complete).length;
-  updateRing(done, total);
+
+  // Primary exercises
+  const primaryIds = workout.exercises;
+  const primaryDone = primaryIds.filter(id => log[id] && log[id].complete).length;
+
+  // Supplemental exercises (unique ones not in primary)
+  const suppPlan = state.supplementalPlan ? getPlan(state.supplementalPlan) : null;
+  const suppWorkout = suppPlan ? getTodayWorkout(state.supplementalPlan) : null;
+  const suppIds = (suppWorkout && suppWorkout.exercises && suppWorkout.exercises.length)
+    ? suppWorkout.exercises.filter(id => !primaryIds.includes(id))
+    : [];
+  const suppDone = suppIds.filter(id => log[id] && log[id].complete).length;
+
+  // Warm-up exercises
+  const wuIds = [];
+  if (state.activeWarmup && state.activeWarmup.date === dateKey) {
+    state.activeWarmup.exercises.forEach((_, idx) => {
+      wuIds.push(`warmup_${state.activeWarmup.id}_${idx}`);
+    });
+  }
+  const wuDone = wuIds.filter(id => log[id] && log[id].complete).length;
+
+  const total = primaryIds.length + suppIds.length + wuIds.length;
+  const done = primaryDone + suppDone + wuDone;
+
+  updateRing(done, total, primaryDone, primaryIds.length, suppDone, suppIds.length, wuDone, wuIds.length);
 }
 
-function updateRing(done, total) {
-  const pct = total > 0 ? Math.round((done/total)*100) : 0;
+function updateRing(done, total, primaryDone, primaryTotal, suppDone, suppTotal, wuDone, wuTotal) {
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   const circumference = 175.9;
   const offset = circumference - (circumference * pct / 100);
   document.getElementById('ring-fill').style.strokeDashoffset = offset;
   document.getElementById('ring-pct').textContent = pct + '%';
-  document.getElementById('ring-title').textContent = total > 0
-    ? `${done} / ${total} exercises`
-    : 'Rest Day';
+
+  if (total === 0) {
+    document.getElementById('ring-title').textContent = 'Rest Day';
+    document.getElementById('ring-sub').textContent = 'Recovery is growth';
+    return;
+  }
+
+  // Build breakdown label
+  const parts = [];
+  if (primaryTotal != null) {
+    parts.push(`${primaryDone}/${primaryTotal} primary`);
+    if (wuTotal > 0)   parts.push(`${wuDone}/${wuTotal} warm-up`);
+    if (suppTotal > 0) parts.push(`${suppDone}/${suppTotal} supp`);
+  }
+
+  document.getElementById('ring-title').textContent = parts.length > 1
+    ? `${done} / ${total} total`
+    : `${done} / ${total} exercises`;
+
   document.getElementById('ring-sub').textContent = pct === 100
-    ? '🔥 Workout complete!' : total > 0
-    ? 'Keep going, you got this' : 'Recovery is growth';
+    ? '🔥 Workout complete!'
+    : parts.length > 1
+      ? parts.join(' · ')
+      : 'Keep going, you got this';
 }
 
 function clearDayConfirm() {
@@ -3475,12 +3795,12 @@ function toggleRngMuscle(el) {
 
 // ── Exercise pools by muscle group ──────────────────────────────────────
 const MUSCLE_POOLS = {
-  Chest:     ['bench_press','incline_dumbbell','cable_fly','dips','pushup'],
-  Back:      ['deadlift','pullup','row','lat_pulldown','cable_row','face_pull','hip_hinge'],
-  Legs:      ['squat','goblet_squat','lunge','romanian_deadlift','leg_press','leg_curl','calf_raise','split_squat','single_leg_rdl','hip_thrust','lateral_bound','skater_squat','glute_med_raise'],
-  Shoulders: ['ohp','lateral_raise','rear_delt_fly','upright_row','shrug','face_pull'],
-  Arms:      ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher'],
-  Core:      ['plank','dead_bug','plank_rotation','pallof_press','ab_wheel'],
+  Chest:     ['bench_press','incline_dumbbell','cable_fly','dips','pushup','pike_pushup'],
+  Back:      ['deadlift','pullup','row','lat_pulldown','cable_row','face_pull','hip_hinge','inverted_row','pullup_bw'],
+  Legs:      ['squat','goblet_squat','lunge','romanian_deadlift','leg_press','leg_curl','calf_raise','split_squat','single_leg_rdl','hip_thrust','lateral_bound','skater_squat','glute_med_raise','squat_bw','lunge_bw','glute_bridge','single_leg_rdl_bw','calf_raise_bw'],
+  Shoulders: ['ohp','lateral_raise','rear_delt_fly','upright_row','shrug','face_pull','pike_pushup'],
+  Arms:      ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','tricep_dip_chair'],
+  Core:      ['plank','dead_bug','plank_rotation','pallof_press','ab_wheel','ab_wheel_bw'],
   Cardio:    ['burpee','jump_squat','mountain_climber','high_knees','box_jump','treadmill_run','bike','jump_rope'],
 };
 
@@ -3757,15 +4077,32 @@ function renderPlans() {
   }
 
   // ── Helper: build the dropdown element (always spans full width) ────────
-  function makeDropdown({ id, schedule, isPrimary, isSupplemental, isGenerated, volumeNote }) {
+  function makeDropdown({ id, schedule, days, isPrimary, isSupplemental, isGenerated, volumeNote }) {
     const dropdown = document.createElement('div');
     dropdown.className = 'plan-dropdown open';
-    const schedRows = schedule.map(s => `
-      <div class="sched-row">
-        <div class="sched-day">${s.day}</div>
-        <div class="sched-dot ${s.rest ? 'rest' : ''}"></div>
-        <div class="sched-label">${s.label}</div>
-      </div>`).join('');
+
+    const schedRows = schedule.map((s, i) => {
+      // Look up exercises for this day using Mon=0 index
+      const dayKeys = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+      const dayIdx = dayKeys.indexOf(s.day);
+      const dayData = days && dayIdx >= 0 ? (days[dayIdx] || days[String(dayIdx)]) : null;
+      const exercises = (!s.rest && dayData && dayData.exercises && dayData.exercises.length)
+        ? dayData.exercises : [];
+
+      const exChips = exercises.length
+        ? `<div class="sched-ex-list">${exercises.map(exId => {
+            const ex = EXERCISES[exId];
+            return ex ? `<div class="sched-ex-chip">${ex.name}</div>` : '';
+          }).join('')}</div>`
+        : '';
+
+      return `
+        <div class="sched-row">
+          <div class="sched-day">${s.day}</div>
+          <div class="sched-dot ${s.rest ? 'rest' : ''}"></div>
+          <div class="sched-label">${s.label}</div>
+        </div>${exChips}`;
+    }).join('');
 
     const volumeRow = volumeNote
       ? `<div style="padding-top:8px;border-top:1px solid var(--border);
@@ -3830,6 +4167,7 @@ function renderPlans() {
       container.appendChild(makeDropdown({
         id: 'generated',
         schedule: gp.schedule,
+        days: gp.days,
         isPrimary: true,
         isSupplemental: false,
         isGenerated: true,
@@ -3870,6 +4208,7 @@ function renderPlans() {
       container.appendChild(makeDropdown({
         id: plan.id,
         schedule: plan.schedule,
+        days: plan.days,
         isPrimary,
         isSupplemental: isSupp,
         isGenerated: false,
@@ -4471,6 +4810,54 @@ let restTimerInterval = null;
 let restTimerTotal = 90;
 let restTimerRemaining = 90;
 const DEFAULT_REST = 90;
+let wakeLockSentinel = null; // Screen Wake Lock — keeps screen on during rest
+
+// ── Wake Lock ─────────────────────────────────────────────────────────────
+async function acquireWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+  try {
+    wakeLockSentinel = await navigator.wakeLock.request('screen');
+    // Re-acquire if released by the system (e.g. tab switch)
+    wakeLockSentinel.addEventListener('release', () => {
+      wakeLockSentinel = null;
+    });
+  } catch (e) {
+    // Silently fail — not supported or denied
+  }
+}
+
+function releaseWakeLock() {
+  if (wakeLockSentinel) {
+    wakeLockSentinel.release().catch(() => {});
+    wakeLockSentinel = null;
+  }
+}
+
+// ── Notifications ─────────────────────────────────────────────────────────
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    await Notification.requestPermission();
+  }
+}
+
+function fireRestCompleteNotification(seconds) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  // Schedule notification to fire when timer ends
+  // We use setTimeout since ServiceWorker push isn't available without a server
+  setTimeout(() => {
+    try {
+      new Notification('Grind.exe — Rest Complete ✅', {
+        body: 'Time for your next set. Let\'s go! 💪',
+        icon: './icons/icon-192.png',
+        badge: './icons/icon-72.png',
+        tag: 'rest-complete',       // replaces any previous notification
+        renotify: true,
+        silent: false,              // uses system notification sound
+      });
+    } catch(e) {}
+  }, seconds * 1000);
+}
 
 function startRestTimer(seconds) {
   if (restTimerInterval) clearInterval(restTimerInterval);
@@ -4478,6 +4865,12 @@ function startRestTimer(seconds) {
   restTimerRemaining = restTimerTotal;
   state.lastRestDuration = restTimerTotal;
   saveState();
+
+  // Keep screen on during rest + request notification permission
+  acquireWakeLock();
+  requestNotificationPermission();
+  // Schedule lock screen notification as fallback if screen does lock
+  fireRestCompleteNotification(restTimerTotal);
 
   // Show bar and trigger icon pulse by re-inserting the class
   const bar = document.getElementById('rest-timer-bar');
@@ -4513,6 +4906,7 @@ function startRestTimer(seconds) {
     if (restTimerRemaining <= 0) {
       clearInterval(restTimerInterval);
       restTimerInterval = null;
+      releaseWakeLock();
       Haptics.success();
       playRestEndSound();
       showToast('✅ Rest complete — next set!');
@@ -4530,6 +4924,7 @@ function setRestTimer(seconds) {
 function skipRestTimer() {
   if (restTimerInterval) clearInterval(restTimerInterval);
   restTimerInterval = null;
+  releaseWakeLock();
   document.getElementById('rest-timer-bar').classList.remove('visible');
 }
 
@@ -4941,6 +5336,78 @@ function switchPlatform(platform, el) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 // Weight increment per exercise category
+// ═══════════════════════════════════════════════════════════════════════════
+//  EXERCISE VARIANTS — equipment substitutions
+//  Each entry maps equipment type → { name, weight, cue }
+//  'default' is always the base entry from EXERCISES
+// ═══════════════════════════════════════════════════════════════════════════
+const EXERCISE_VARIANTS = {
+  bench_press: {
+    barbell:  { label: 'Barbell', name: 'Barbell Bench Press', weight: 135, cue: 'Warm-up sets recommended: 2–3 ramp sets before working weight (e.g. bar×10, 60%×5, 80%×3). Grip the bar slightly wider than shoulder-width with a full grip. Arch your upper back and keep your feet flat. Lower the bar to mid-chest under control, then press in a slight arc toward your forehead.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Bench Press', weight: 60, cue: 'Warm-up sets recommended before working weight. Lie on a flat bench with dumbbells at chest level, palms facing forward. Press to full extension, bringing the dumbbells slightly together at the top. Lower under control over 2–3 seconds. Greater range of motion than barbell — take advantage of the stretch at the bottom.' },
+    machine:  { label: 'Machine', name: 'Chest Press Machine', weight: 100, cue: 'Adjust the seat so handles are at chest height. Grip handles with a neutral or pronated grip. Press to full extension without locking out, then return slowly. Machines are great for learning the push pattern safely and for high-rep sets at the end of a session when shoulders are fatigued.' },
+  },
+  incline_dumbbell: {
+    dumbbell: { label: 'Dumbbell', name: 'Incline Dumbbell Press', weight: 50, cue: 'Set the bench to 30–45°. Press dumbbells from chest height to full extension, rotating palms slightly inward at the top. Control the descent over 2–3 seconds to maximize chest stretch.' },
+    barbell:  { label: 'Barbell', name: 'Incline Barbell Press', weight: 95, cue: 'Set bench to 30–45°. Use a grip slightly narrower than flat bench. Lower bar to upper chest — not the neck. The incline shifts emphasis to the upper pec and front delt. Warm up thoroughly as the shoulder is in a more vulnerable position at the bottom.' },
+    machine:  { label: 'Machine', name: 'Incline Machine Press', weight: 80, cue: 'Adjust the seat so the handles press at an upward angle. Press to full extension and return slowly. A solid option if shoulder discomfort limits free weight incline work.' },
+  },
+  squat: {
+    barbell:  { label: 'Barbell', name: 'Back Squat', weight: 135, cue: 'Warm-up sets recommended: work up in 2–3 ramp sets (e.g. 50%×5, 70%×3) before your working sets. Stand with feet shoulder-width apart, bar resting on upper traps. Descend until thighs are parallel or below, keeping knees tracking over toes. Drive through heels to stand, maintaining a neutral spine throughout.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Goblet Squat', weight: 40, cue: 'Hold a dumbbell vertically at chest height with both hands. Squat deep, using your elbows to push your knees apart at the bottom. Excellent technique builder and a strong loading option — you can go heavier than you think with a goblet squat.' },
+    machine:  { label: 'Machine', name: 'Hack Squat Machine', weight: 180, cue: 'Set up on the hack squat with feet shoulder-width on the platform. Lower until knees reach 90° or deeper, then press through the entire foot. The machine removes the stability demand of a barbell squat — useful for loading quads heavily without axial load on the spine.' },
+    bodyweight: { label: 'Bodyweight', name: 'Bodyweight Squat', weight: 0, cue: 'Stand feet shoulder-width apart, toes slightly out. Descend until thighs are parallel or below, keeping chest up and knees tracking over toes. Drive through your heels to stand. Progress by slowing the descent to 3–4 seconds or adding a pause at the bottom.' },
+  },
+  romanian_deadlift: {
+    barbell:  { label: 'Barbell', name: 'Romanian Deadlift', weight: 135, cue: 'Start standing with the bar at hip height. Hinge at the hips with a slight knee bend, lowering the bar along your legs until you feel a deep hamstring stretch. Drive hips forward and squeeze glutes at the top.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell RDL', weight: 50, cue: 'Hold dumbbells in front of your thighs with a neutral grip. Hinge at the hips, lowering the dumbbells along your legs. Dumbbells allow a slightly wider range of motion than a barbell and are easier to learn the hip hinge pattern with. Keep the weights close to your legs throughout.' },
+    machine:  { label: 'Machine', name: 'Cable Pull-Through', weight: 60, cue: 'Set a cable to the lowest position with a rope attachment. Stand facing away from the machine, straddle the cable, and hinge forward at the hips while the cable pulls your arms back between your legs. Drive hips forward to return. This is a fantastic hip hinge teaching tool — the cable provides constant tension.' },
+  },
+  row: {
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Row', weight: 40, cue: 'Brace one hand and knee on a bench. Pull the dumbbell straight up to your hip, leading with your elbow. At the top, squeeze your shoulder blade hard toward your spine before lowering slowly.' },
+    barbell:  { label: 'Barbell', name: 'Bent-Over Barbell Row', weight: 95, cue: 'Hinge to 45° and grip the bar just outside hip width. Pull the bar to your lower sternum, squeezing both shoulder blades together at the top. Lower under control. Keep your lower back flat — this is a hip hinge pattern, not a rounding motion. Warm up your lower back before heavy loads.' },
+    machine:  { label: 'Machine', name: 'Chest-Supported Row', weight: 80, cue: 'Lie chest-down on the pad to eliminate lower back involvement. Pull handles to your sides, driving elbows back and squeezing shoulder blades together. The chest support means you can go heavier or push to failure safely — great for high-rep work.' },
+    cable:    { label: 'Cable', name: 'Cable Row', weight: 70, cue: 'Sit with a slight bend in the knees. Pull the handle to your lower sternum while squeezing your shoulder blades together. Avoid rocking — initiate with your back. The cable provides constant tension through the full range, which a dumbbell row does not.' },
+  },
+  ohp: {
+    barbell:  { label: 'Barbell', name: 'Overhead Press', weight: 95, cue: 'Warm-up sets recommended: 2 ramp sets before working weight. Grip the bar just outside shoulder width, elbows slightly forward. Press the bar directly overhead, moving your head back slightly to allow clearance. Fully lock out at the top, then lower to clavicle level.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Shoulder Press', weight: 40, cue: 'Sit or stand with dumbbells at shoulder height, palms facing forward. Press overhead to full extension without allowing the weights to drift inward or forward. Dumbbells require more stabiliser activation than a barbell and allow each arm to work independently — a good option if one shoulder is weaker.' },
+    machine:  { label: 'Machine', name: 'Shoulder Press Machine', weight: 70, cue: 'Adjust the seat so handles start at shoulder height. Press to full extension and return slowly. Machines are ideal for learning the overhead pattern or for high-rep finisher sets when shoulders are already fatigued from compound work.' },
+  },
+  lat_pulldown: {
+    machine:  { label: 'Machine', name: 'Lat Pulldown', weight: 100, cue: 'Sit with thighs locked under the pad. Lean slightly back and pull the bar to your upper chest, driving elbows down and back. Pause at the bottom to feel the lats contract, then extend arms fully on the way up.' },
+    cable:    { label: 'Cable', name: 'Cable Lat Pulldown', weight: 90, cue: 'Same as machine pulldown but using a cable stack with a long bar attachment. Set up so there is resistance at the top of the movement. Pull with the same technique — elbows down and back, pause at chest, full extension at the top.' },
+    bodyweight: { label: 'Pull-Up', name: 'Pull-Up', weight: 0, cue: 'Hang from a bar with hands slightly wider than shoulder-width. Initiate by depressing your shoulder blades, then pull your elbows toward your hips until your chin clears the bar. Lower fully under control. The most effective lat exercise available — if you cannot do full pull-ups, use a resistance band for assistance.' },
+  },
+  bicep_curl: {
+    barbell:  { label: 'Barbell', name: 'Barbell Curl', weight: 65, cue: 'Hold the bar with a supinated grip, elbows pinned to your sides. Curl toward your chin, rotating the wrists slightly at the top. Lower slowly through the full range — avoid swinging at the bottom.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Curl', weight: 30, cue: 'Hold dumbbells at your sides with palms facing forward. Curl both arms simultaneously or alternate. Supinate the wrist slightly as you curl to maximize bicep peak contraction. Lower slowly — the eccentric phase builds as much size as the curl itself.' },
+    cable:    { label: 'Cable', name: 'Cable Curl', weight: 50, cue: 'Set cable to the lowest position with a straight or EZ bar attachment. Curl with elbows pinned to your sides. Cables provide constant tension throughout the range of motion, including at the bottom where dumbbells and barbells are easiest — this makes cables more effective for overall bicep development.' },
+    machine:  { label: 'Machine', name: 'Machine Curl', weight: 60, cue: 'Adjust the seat so your upper arms rest on the pad at shoulder height. Curl to full flexion and lower slowly. The machine fully supports the arms — good for isolating the bicep without any body English.' },
+  },
+  tricep_pushdown: {
+    cable:    { label: 'Cable', name: 'Tricep Pushdown', weight: 50, cue: 'Stand close to the cable machine and grip the bar with elbows tucked at your sides. Push the bar down until your arms are fully extended, squeezing your triceps hard at the bottom. Return to 90° — no higher.' },
+    dumbbell: { label: 'Dumbbell', name: 'DB Overhead Tricep Extension', weight: 35, cue: 'Hold one dumbbell with both hands overhead, elbows pointing up. Lower the weight behind your head by bending the elbows, then press back to full extension. The overhead position fully stretches the long head of the tricep — this is the largest portion of the muscle and responds strongly to the stretched position.' },
+    machine:  { label: 'Machine', name: 'Tricep Machine', weight: 60, cue: 'Adjust handles to elbow height. Press down to full extension and return slowly. Good for high-rep finisher work.' },
+    bodyweight: { label: 'Bodyweight', name: 'Diamond Push-Up', weight: 0, cue: 'Place hands close together under your chest forming a diamond shape with thumbs and forefingers. Lower your chest toward your hands, keeping elbows tucked. Press back up. This intensely targets the triceps — even strong pushers find these challenging.' },
+  },
+  calf_raise: {
+    machine:  { label: 'Machine', name: 'Standing Calf Raise', weight: 135, cue: 'Stand on an elevated surface with heels hanging off. Lower your heels as far as possible for a deep stretch, then rise up onto the balls of your feet. Hold the peak contraction for one second before lowering slowly.' },
+    dumbbell: { label: 'Dumbbell', name: 'Single-Leg DB Calf Raise', weight: 40, cue: 'Hold a dumbbell in one hand and stand on the edge of a step on the same-side foot. Lower heel fully for a stretch, then rise to a peak contraction. Single-leg calf raises with a dumbbell are surprisingly effective — the unilateral loading exposes side-to-side weaknesses.' },
+    bodyweight: { label: 'Bodyweight', name: 'Calf Raise (BW)', weight: 0, cue: 'Stand on the edge of a step with heels hanging. Lower fully then rise onto balls of feet. Use high reps (20–30) since bodyweight is relatively light. Single-leg version is significantly harder.' },
+  },
+  leg_press: {
+    machine:  { label: 'Machine', name: 'Leg Press', weight: 270, cue: 'Place feet shoulder-width apart on the platform. Lower the sled until knees reach 90° or deeper, keeping your lower back pressed into the seat. Press through the entire foot — avoid letting heels rise.' },
+    barbell:  { label: 'Barbell', name: 'Front Squat', weight: 95, cue: 'A solid substitute if no leg press is available. Cross arms to hold the bar on your front delts, or use a clean grip. Keep torso upright and descend to parallel. The front squat shifts load to the quads similarly to the leg press.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Squat', weight: 50, cue: 'Hold dumbbells at your sides and squat to parallel or below. A simple substitute when no leg press or barbell is available. Go as heavy as possible — you will likely need to progress to a barbell once you can handle 50lb+ dumbbells in each hand.' },
+  },
+  deadlift: {
+    barbell:  { label: 'Barbell', name: 'Conventional Deadlift', weight: 225, cue: 'Warm-up sets recommended: work up in 3–4 ramp sets before your working weight — deadlifts are high CNS demand. Set up with the bar over mid-foot, grip just outside hips. Push the floor away while keeping the bar close to your legs. Lock out by squeezing glutes at the top — never hyperextend the lower back.' },
+    dumbbell: { label: 'Dumbbell', name: 'Dumbbell Deadlift', weight: 70, cue: 'Hold dumbbells in front of your thighs. Set up the same hip hinge as a barbell deadlift — flat back, hips back, chest tall. Push the floor away as you stand. A good option when no barbell is available, though you will quickly outgrow dumbbell loads on this pattern.' },
+    machine:  { label: 'Machine', name: 'Trap Bar Deadlift', weight: 185, cue: 'Step inside the trap bar with handles at your sides. This is one of the best deadlift variations — the neutral grip and centred load reduce lower back stress while allowing heavy loading of the hips and legs. Set up the same way: flat back, hips back, drive the floor away.' },
+  },
+};
+
 const WEIGHT_INCREMENTS = {
   // Lower body compounds
   squat: 15, deadlift: 15, romanian_deadlift: 10, leg_press: 20,
@@ -4964,6 +5431,10 @@ const WEIGHT_INCREMENTS = {
   // Bodyweight / cardio — no weight increment
   pushup: 0, plank: 0, burpee: 0, jump_squat: 0, mountain_climber: 0,
   high_knees: 0, box_jump: 0, treadmill_run: 0, bike: 0, jump_rope: 0,
+  // Home / bodyweight
+  pike_pushup: 0, tricep_dip_chair: 0, squat_bw: 0, lunge_bw: 0,
+  glute_bridge: 0, single_leg_rdl_bw: 0, calf_raise_bw: 0,
+  inverted_row: 0, pullup_bw: 0, ab_wheel_bw: 0,
 };
 
 // Write per-exercise history whenever a session is saved
@@ -5012,6 +5483,64 @@ function getRestRecommendation(exId) {
 }
 
 // Core progression calculator
+// ── Equipment variant helpers ──────────────────────────────────────────────
+function getActiveVariantKey(exId) {
+  return (state.equipmentVariants && state.equipmentVariants[exId]) || null;
+}
+
+function getActiveVariant(exId) {
+  const key = getActiveVariantKey(exId);
+  const variants = EXERCISE_VARIANTS[exId];
+  if (!key || !variants || !variants[key]) return null;
+  return { key, ...variants[key] };
+}
+
+function setVariant(exId, variantKey) {
+  if (!state.equipmentVariants) state.equipmentVariants = {};
+  state.equipmentVariants[exId] = variantKey;
+  saveState();
+  // Re-render the exercise card in place
+  const dateKey = today();
+  const log = state.todayLog[dateKey] || {};
+  const ex = EXERCISES[exId];
+  if (!ex) return;
+  const oldCard = document.getElementById('excard-' + exId);
+  if (!oldCard) return;
+  const isOpen = document.getElementById('exbody-' + exId)?.classList.contains('open');
+  const newCard = buildExCard(exId, ex, log[exId] || { sets: [], complete: false });
+  oldCard.replaceWith(newCard);
+  if (isOpen) {
+    const body = document.getElementById('exbody-' + exId);
+    if (body) body.classList.add('open');
+  }
+  showToast(`Switched to ${EXERCISE_VARIANTS[exId][variantKey].label}`);
+}
+
+function buildVariantRow(exId) {
+  const variants = EXERCISE_VARIANTS[exId];
+  if (!variants) return '';
+  const activeKey = getActiveVariantKey(exId);
+  const chips = Object.entries(variants).map(([key, v]) =>
+    `<div class="variant-chip ${activeKey === key ? 'active' : ''}"
+      onclick="setVariant('${exId}','${key}')">${v.label}</div>`
+  ).join('');
+  return `<div class="variant-row"><span class="variant-label">Equipment:</span>${chips}</div>`;
+}
+
+function getEffectiveExercise(exId) {
+  // Returns merged exercise object — base EXERCISES entry overridden by active variant
+  const base = EXERCISES[exId];
+  if (!base) return null;
+  const variant = getActiveVariant(exId);
+  if (!variant) return base;
+  return { ...base, name: variant.name, weight: variant.weight, cue: variant.cue };
+}
+
+function getEffectiveDefaultWeight(exId) {
+  const variant = getActiveVariant(exId);
+  return variant ? variant.weight : (EXERCISES[exId]?.weight ?? 0);
+}
+
 function getProgressionStatus(exId) {
   const log = state.exerciseLog && state.exerciseLog[exId];
   const ex = EXERCISES[exId];
@@ -5341,6 +5870,95 @@ function importBackup(file) {
   reader.readAsText(file);
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+//  TRAVEL MODE
+// ═══════════════════════════════════════════════════════════════════════════
+function openTravelModal() {
+  const isActive = !!state.travelMode;
+  document.getElementById('travel-inactive-view').style.display = isActive ? 'none' : 'block';
+  document.getElementById('travel-active-view').style.display  = isActive ? 'block' : 'none';
+  if (isActive) {
+    // Show saved plan name
+    const savedId = state.travelMode.savedPrimaryPlan;
+    const savedPlan = savedId ? getPlan(savedId) : null;
+    document.getElementById('travel-saved-plan-name').textContent =
+      savedPlan ? savedPlan.name : 'None';
+    // Show return date if set
+    const ret = state.travelMode.returnDate;
+    document.getElementById('travel-active-sub').textContent = ret
+      ? `Home Workout active · Returns ${formatDate(ret)}`
+      : 'Home Workout plan active';
+  } else {
+    // Pre-fill return date to empty
+    document.getElementById('travel-return-date').value = '';
+  }
+  document.getElementById('travel-modal').classList.add('open');
+}
+
+function closeTravelModal() {
+  document.getElementById('travel-modal').classList.remove('open');
+}
+
+function activateTravelMode() {
+  const returnDateVal = document.getElementById('travel-return-date').value || null;
+  // Save current plan before switching
+  state.travelMode = {
+    savedPrimaryPlan:      state.primaryPlan,
+    savedSupplementalPlan: state.supplementalPlan,
+    returnDate: returnDateVal,
+  };
+  // Switch to home workout plan
+  state.primaryPlan      = 'home_workout';
+  state.supplementalPlan = null;
+  state.todayLog         = {};
+  saveState();
+  closeTravelModal();
+  updateTravelUI();
+  navTo('today', document.querySelector('[data-page=today]'));
+  showToast('🧳 Travel Mode activated — Home Workout loaded');
+}
+
+function deactivateTravelMode() {
+  if (!state.travelMode) return;
+  // Restore saved plan
+  state.primaryPlan      = state.travelMode.savedPrimaryPlan      || null;
+  state.supplementalPlan = state.travelMode.savedSupplementalPlan || null;
+  state.travelMode       = null;
+  state.todayLog         = {};
+  saveState();
+  closeTravelModal();
+  updateTravelUI();
+  navTo('today', document.querySelector('[data-page=today]'));
+  showToast('✅ Travel Mode ended — original plan restored');
+}
+
+function updateTravelUI() {
+  const isActive = !!state.travelMode;
+  const btn = document.getElementById('travel-btn');
+  const banner = document.getElementById('travel-banner');
+  const sub = document.getElementById('travel-banner-sub');
+
+  if (btn) btn.classList.toggle('travel-active', isActive);
+
+  if (banner) {
+    banner.style.display = isActive ? 'block' : 'none';
+    if (isActive && sub) {
+      const ret = state.travelMode.returnDate;
+      sub.textContent = ret
+        ? `Home Workout active · Auto-restores ${formatDate(ret)}`
+        : 'Home Workout plan loaded · tap End to restore your plan';
+    }
+  }
+}
+
+function checkTravelModeAutoReturn() {
+  if (!state.travelMode || !state.travelMode.returnDate) return;
+  if (today() >= state.travelMode.returnDate) {
+    deactivateTravelMode();
+    showToast('🏠 Welcome back — original plan restored');
+  }
+}
+
 function openBackupModal() {
   const sessions = state.history ? state.history.length : 0;
   const exercises = state.history
@@ -5380,10 +5998,17 @@ if (state.lastRestDuration) {
   restTimerTotal = state.lastRestDuration;
   restTimerRemaining = state.lastRestDuration;
 }
+// Travel mode — check auto-return date and update UI
+checkTravelModeAutoReturn();
+updateTravelUI();
 renderToday();
 // Bind backup overlay click-outside
 document.getElementById('backup-modal').addEventListener('click', function(e) {
   if (e.target === this) closeBackupModal();
+});
+// Bind travel modal click-outside
+document.getElementById('travel-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeTravelModal();
 });
 </script>
 </body>
