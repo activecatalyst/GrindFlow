@@ -2477,7 +2477,7 @@ const PLANS = [
     }
   },
   {
-    id: 'ppl_athletic', watchType: 'Functional Strength Training',
+    id: 'ppl_athletic', watchType: 'Traditional Strength Training', watchTypeAlt: 'Functional Strength Training (Tue/Wed/Sat)',
     name: 'PPL + Drive Phase',
     desc: 'Push/Pull/Legs hypertrophy merged with lateral power, plyometrics, and Drive Phase posterior chain work. 6 days/week.',
     badge: '⚡',
@@ -2493,12 +2493,12 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','cable_fly'] },
+      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','dips','tricep_pushdown','cable_fly'] },
       1: { name: 'Lateral Power', exercises: ['lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
       2: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','broad_jump','box_jump','jump_squat'] },
       3: { name: 'Pull Day', exercises: ['deadlift','pullup','cable_row','face_pull','hammer_curl','dead_bug'] },
       4: { name: 'Legs', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
-      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','glute_med_raise','pallof_press','dead_bug'] },
+      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','romanian_deadlift','pallof_press','dead_bug'] },
       6: { name: 'Rest', exercises: [] },
     }
   },
@@ -3286,8 +3286,22 @@ function renderToday() {
   let metaChips = `<div class="hero-chip">📋 ${plan.name}</div>`;
   if (workout.exercises.length) {
     metaChips += `<div class="hero-chip">🏋️ ${totalCount} exercise${totalCount !== 1 ? 's' : ''}${(uniqueSuppCount || wuCount) ? ' total' : ''}</div>`;
-    if (wuCount)        metaChips += `<div class="hero-chip">🔥 ${wuCount} warm-up</div>`;
+    if (wuCount)         metaChips += `<div class="hero-chip">🔥 ${wuCount} warm-up</div>`;
     if (uniqueSuppCount) metaChips += `<div class="hero-chip">➕ ${uniqueSuppCount} supp</div>`;
+    // Recommended warm-up button — only when no warmup is loaded yet
+    if (!wuCount) {
+      const rec = getRecommendedWarmup(workout.name);
+      if (rec) {
+        metaChips += `<button onclick="quickLoadWarmup('${rec.id}')"
+          style="display:inline-flex;align-items:center;gap:4px;
+            background:rgba(255,140,0,0.1);border:1px solid rgba(255,140,0,0.3);
+            border-radius:20px;padding:5px 10px;font-size:11px;font-weight:500;
+            color:#ff8c00;cursor:pointer;white-space:nowrap;font-family:var(--font-body);"
+          title="Tap to load recommended warm-up">
+          ${rec.icon} ${rec.name}
+        </button>`;
+      }
+    }
   } else {
     metaChips += `<div class="hero-chip">😴 Rest Day</div>`;
   }
@@ -4418,6 +4432,34 @@ const WARMUP_ROUTINES = [
     ]
   },
   {
+    id: 'foam_rolling',
+    name: 'Foam Roll & Release',
+    icon: '🪵',
+    duration: '7–10 min',
+    target: 'Before any session — especially legs & back days',
+    exercises: [
+      { name: 'IT Band / Outer Quad Roll', sets: 1, reps: '60 sec each side', cue: 'Lie on your side with the foam roller under your outer thigh. Support yourself on your forearm and opposite foot. Slowly roll from just above the knee up to the hip. Pause on any tight spots for 3–5 seconds rather than rolling quickly through them. This is often uncomfortable — that\'s normal and expected.' },
+      { name: 'Thoracic Spine Roll', sets: 1, reps: '90 seconds', cue: 'Sit on the floor with the roller behind you at mid-back. Cross your arms over your chest or behind your head. Lean back over the roller and extend gently, then shift it up one vertebra at a time from mid-back to upper back. Never roll the lower back — the lumbar spine needs stability, not mobility work.' },
+      { name: 'Glute & Piriformis Roll', sets: 1, reps: '60 sec each side', cue: 'Sit on the roller, cross one ankle over the opposite knee. Lean into the crossed-leg side — this targets the piriformis and glute med, the muscles under the glute max. Roll slowly across the whole area and pause on tender spots. Critical before squat, lunge, or any lateral movement day.' },
+      { name: 'Lat Roll', sets: 1, reps: '45 sec each side', cue: 'Lie on your side with the roller under your armpit, arm extended overhead. Roll slowly from the armpit down to the bottom of the ribcage. This targets the latissimus dorsi — essential before any pull day or overhead pressing.' },
+      { name: 'Calf & Achilles Roll', sets: 1, reps: '45 sec each leg', cue: 'Sit on the floor with the roller under one calf. Cross the other leg on top for extra pressure. Roll slowly from just above the heel to just below the knee. Rotate the leg inward and outward to hit different portions of the calf. Non-negotiable before any plyometric or running session.' },
+    ]
+  },
+  {
+    id: 'athletic_prep',
+    name: 'Athletic Pre-Activation',
+    icon: '🏃',
+    duration: '8–10 min',
+    target: 'Drive Phase days — Lateral Power / Plyometric / Posterior Chain',
+    exercises: [
+      { name: 'Foam Roll Glutes & IT Band', sets: 1, reps: '60 sec each side', cue: 'Quick targeted roll of the glutes, IT band, and outer quad. Focus on releasing any stiffness from previous sessions. 60 seconds per side is enough at this stage — the goal is tissue quality, not deep release. Save the deep rolling for post-session.' },
+      { name: 'Hip 90/90 Mobility', sets: 2, reps: '30 sec each side', cue: 'Sit with both legs bent to 90° — one in front, one to the side. Sit tall and lean gently over the front shin. This opens hip external rotation before lateral bounds and skating movements. Without this mobility, the lateral force production pattern is compromised.' },
+      { name: 'Glute Bridge with Hold', sets: 2, reps: '12 reps + 5 sec hold', cue: 'Lie on your back, perform a glute bridge and hold the top position for 5 seconds on the last rep. Focus on squeezing the glute max — not the lower back. This pre-activates the glutes before hip thrust and posterior chain work. If your hamstrings cramp instead of your glutes firing, your glutes are under-activated.' },
+      { name: 'Lateral Band Walk', sets: 2, reps: '15 each direction', cue: 'Mini-band above the knees, slight squat position, step sideways maintaining tension throughout. Keep toes pointing forward and don\'t let the knees cave inward. This directly activates the glute med — the primary hip stabiliser in every lateral bound and skating stride. Non-negotiable on lateral power days.' },
+      { name: 'Ankle Bounces & Calf Prep', sets: 2, reps: '20 reps', cue: 'Stand and bounce lightly on the balls of both feet with minimal knee bend — think of ankles as springs. Then rise onto tiptoes, hold 1 second, lower. 10 calf raises slow, 10 fast bounces. This warms the Achilles tendon and calf complex before depth jumps and lateral hops where the ankle absorbs enormous force. Cold Achilles tendons and explosive work are a dangerous combination.' },
+    ]
+  },
+  {
     id: 'cooldown',
     name: 'Post-Workout Cooldown',
     icon: '❄️',
@@ -4456,6 +4498,42 @@ function renderWarmupRoutines() {
     };
     container.appendChild(btn);
   });
+}
+
+function getRecommendedWarmup(workoutName) {
+  if (!workoutName) return null;
+  const name = workoutName.toLowerCase();
+  // Athletic / Drive Phase days
+  if (name.includes('lateral') || name.includes('plyometric') ||
+      name.includes('posterior') || name.includes('athletic') ||
+      name.includes('drive') || name.includes('power')) {
+    return WARMUP_ROUTINES.find(r => r.id === 'athletic_prep');
+  }
+  // Push / chest / shoulder days
+  if (name.includes('push') || name.includes('chest') || name.includes('shoulder')) {
+    return WARMUP_ROUTINES.find(r => r.id === 'upper');
+  }
+  // Pull / back / bicep days
+  if (name.includes('pull') || name.includes('back') || name.includes('bicep')) {
+    return WARMUP_ROUTINES.find(r => r.id === 'foam_rolling');
+  }
+  // Leg / lower body days
+  if (name.includes('leg') || name.includes('lower') || name.includes('squat') ||
+      name.includes('posterior') || name.includes('deadlift')) {
+    return WARMUP_ROUTINES.find(r => r.id === 'lower');
+  }
+  // HIIT / cardio / conditioning
+  if (name.includes('hiit') || name.includes('cardio') || name.includes('condition') ||
+      name.includes('circuit') || name.includes('steady')) {
+    return WARMUP_ROUTINES.find(r => r.id === 'hiit');
+  }
+  // Full body default
+  return WARMUP_ROUTINES.find(r => r.id === 'general');
+}
+
+function quickLoadWarmup(routineId) {
+  selectedWarmupId = routineId;
+  launchWarmup();
 }
 
 function launchWarmup() {
