@@ -3600,7 +3600,7 @@ function buildExCard(exId, ex, logEntry, volumeOverride, isSwapped) {
       <div class="ex-status">${logEntry.complete ? '✅' : '○'}</div>
     </div>
     <div class="ex-body" id="exbody-${exId}">
-      ${buildVariantRow(exId)}
+      ${isSwapped ? buildVariantRow(getSwappedExId(exId)) : buildVariantRow(exId)}
       <div class="ex-rec">
         <div class="rec-chip">📦 ${displaySets} sets</div>
         <div class="rec-chip">🔁 ${displayRepsLabel} reps</div>
