@@ -44,24 +44,23 @@
     <line x1="500" y1="0" x2="500" y2="300"/>
   </g>
 
-  <!-- WORDMARK — centered as one unit using text-anchor middle -->
+  <!-- WORDMARK — "GrindFlow" centered, Grind white + Flow cyan -->
   <!-- Glow halo behind full wordmark -->
   <text x="300" y="122" text-anchor="middle"
-    font-family="Arial Black, Impact, sans-serif" font-size="72" font-weight="900" letter-spacing="-1"
-    fill="#00C2FF" opacity="0.18" filter="url(#glow-cyan)">Grind.exe</text>
+    font-family="Arial Black, Impact, sans-serif" font-size="68" font-weight="900" letter-spacing="-1"
+    fill="#00C2FF" opacity="0.18" filter="url(#glow-cyan)">GrindFlow</text>
 
-  <!-- "Grind" white — positioned so the split lands correctly -->
-  <!-- Use a single text with tspan to guarantee alignment -->
+  <!-- Main wordmark — single text, tspan for colour split -->
   <text x="300" y="122" text-anchor="middle"
-    font-family="Arial Black, Impact, sans-serif" font-size="72" font-weight="900" letter-spacing="-1"
+    font-family="Arial Black, Impact, sans-serif" font-size="68" font-weight="900" letter-spacing="-1"
     filter="url(#text-glow)">
-    <tspan fill="#E5E7EB">Grind</tspan><tspan fill="#00C2FF" filter="url(#glow-soft)">.exe</tspan>
+    <tspan fill="#E5E7EB">Grind</tspan><tspan fill="#00C2FF" filter="url(#glow-soft)">Flow</tspan>
   </text>
 
   <!-- Thin rule below text -->
   <line x1="80" y1="138" x2="520" y2="138" stroke="url(#bar-grad)" stroke-width="1" opacity="0.45"/>
 
-  <!-- DUMBBELL — bar runs edge to edge, centered in lower half -->
+  <!-- DUMBBELL — bar runs edge to edge, lower half -->
   <!-- Bar glow halo -->
   <rect x="55" y="196" width="490" height="10" rx="5" fill="url(#bar-grad)" filter="url(#glow-cyan)" opacity="0.55"/>
   <!-- Bar solid -->

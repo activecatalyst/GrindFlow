@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Grind.exe">
+<meta name="apple-mobile-web-app-title" content="GrindFlow">
 <meta name="theme-color" content="#0A0F1C">
-<meta name="application-name" content="Grind.exe">
-<title>Grind.exe — Personal Workout App</title>
+<meta name="application-name" content="GrindFlow">
+<title>GrindFlow — Personal Workout App</title>
 <link rel="manifest" href="./manifest.json">
 
 <!-- Favicon — browser tabs -->
@@ -1459,7 +1459,7 @@
 
   <!-- TOP BAR -->
   <header class="topbar">
-    <div class="logo">Grind.exe</div>
+    <div class="logo">GrindFlow</div>
     <div class="topbar-actions">
       <button class="icon-btn" onclick="openBackupModal()" title="Backup & Restore">💾</button>
       <button class="icon-btn" id="travel-btn" onclick="openTravelModal()" title="Travel Mode">🧳</button>
@@ -1897,6 +1897,53 @@
 
 </div>
 
+<!-- ─── RPE GUIDE MODAL ───────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="rpe-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">RPE Guide</div>
+      <button class="modal-close" onclick="closeRpeGuide()">✕</button>
+    </div>
+    <div class="modal-body" style="padding-bottom:28px;">
+      <p style="font-size:13px;color:rgba(229,231,235,0.6);line-height:1.6;margin-bottom:16px;">
+        <strong style="color:var(--text-inv);">Rate of Perceived Exertion</strong> — how hard a set felt on a scale of 1–10. Use it after each set to track fatigue and guide progression.
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
+        ${[
+          { range:'1–3', label:'Very Easy', color:'#16a34a', desc:'Warm-up weight. Could do 7+ more reps. Not a training stimulus.' },
+          { range:'4–5', label:'Easy–Moderate', color:'#d97706', desc:'Working but comfortable. 4–6 reps left in the tank. Good for technique work.' },
+          { range:'6', label:'Moderate', color:'#d97706', desc:'3 reps left. You feel the work but fully in control. Ideal for volume sets.' },
+          { range:'7', label:'Hard', color:'#ea580c', desc:'2 reps left. This is your hypertrophy sweet spot — challenge without breakdown.' },
+          { range:'8', label:'Very Hard', color:'#ea580c', desc:'1 rep left. Strong stimulus. Used for top sets in double progression.' },
+          { range:'9', label:'Near Max', color:'#dc2626', desc:'Could maybe do 1 more with poor form. Use sparingly — high fatigue cost.' },
+          { range:'10', label:'Max Effort', color:'#dc2626', desc:'True failure. Avoid this in most training — recovery cost is very high.' },
+        ].map(r => `
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 12px;
+            background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+            border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:13px;font-weight:600;
+              color:${r.color};width:28px;flex-shrink:0;padding-top:1px;">${r.range}</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-inv);margin-bottom:2px;">${r.label}</div>
+              <div style="font-size:12px;color:rgba(229,231,235,0.55);line-height:1.5;">${r.desc}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <div style="background:rgba(0,194,255,0.06);border:1px solid rgba(0,194,255,0.2);
+        border-radius:12px;padding:12px 14px;">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);
+          text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Trainer tip</div>
+        <div style="font-size:12px;color:rgba(229,231,235,0.65);line-height:1.6;">
+          Target <strong style="color:var(--text-inv);">RPE 7–8</strong> for most working sets. If you hit RPE ≤6 across two sessions at the same weight, the progression panel will signal it's time to increase. RPE 9–10 on multiple sets means the weight is too heavy — drop 5–10% and rebuild.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ─── SWAP EXERCISE MODAL ───────────────────────────────────────────────── -->
 <div class="modal-overlay" id="swap-modal">
   <div class="modal">
@@ -2086,7 +2133,7 @@
       <!-- ══ iOS CONTENT ══════════════════════════════════════════════════ -->
       <div class="platform-content active" id="platform-ios">
         <p style="font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.6;">
-          Four battle-tested methods to ship Grind.exe on iPhone — from zero-code PWA to full App Store distribution.
+          Four battle-tested methods to ship GrindFlow on iPhone — from zero-code PWA to full App Store distribution.
         </p>
 
         <div class="ios-step">
@@ -2100,8 +2147,8 @@
             <p class="ios-p"><strong>Step 1:</strong> Create a <code style="color:var(--accent);font-family:var(--font-mono)">manifest.json</code> file next to your HTML:</p>
             <div class="code-block"><pre><span class="cmt">// manifest.json</span>
 {
-  <span class="str">"name"</span>: <span class="str">"Grind.exe"</span>,
-  <span class="str">"short_name"</span>: <span class="str">"FORGE"</span>,
+  <span class="str">"name"</span>: <span class="str">"GrindFlow"</span>,
+  <span class="str">"short_name"</span>: <span class="str">"GrindFlow"</span>,
   <span class="str">"start_url"</span>: <span class="str">"./workout-app.html"</span>,
   <span class="str">"display"</span>: <span class="str">"standalone"</span>,
   <span class="str">"background_color"</span>: <span class="str">"#0a0a0f"</span>,
@@ -2117,10 +2164,10 @@
 <span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-capable"</span> content=<span class="str">"yes"</span><span class="kw">&gt;</span>
 <span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-status-bar-style"</span>
       content=<span class="str">"black-translucent"</span><span class="kw">&gt;</span>
-<span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-title"</span> content=<span class="str">"Grind.exe"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-title"</span> content=<span class="str">"GrindFlow"</span><span class="kw">&gt;</span>
 <span class="kw">&lt;link</span> rel=<span class="str">"apple-touch-icon"</span> href=<span class="str">"icon-192.png"</span><span class="kw">&gt;</span></pre></div>
             <p class="ios-p"><strong>Step 3:</strong> Create <code style="color:var(--accent);font-family:var(--font-mono)">sw.js</code> for offline support:</p>
-            <div class="code-block"><pre><span class="kw">const</span> CACHE = <span class="str">'forge-v1'</span>;
+            <div class="code-block"><pre><span class="kw">const</span> CACHE = <span class="str">'grindflow-v1'</span>;
 <span class="kw">const</span> FILES = [<span class="str">'./workout-app.html'</span>];
 self.addEventListener(<span class="str">'install'</span>, e =&gt;
   e.waitUntil(caches.open(CACHE).then(c =&gt; c.addAll(FILES)))
@@ -2176,7 +2223,7 @@ self.addEventListener(<span class="str">'fetch'</span>, e =&gt;
           <div class="ios-step-body">
             <p class="ios-p">Capacitor bridges native iOS APIs (haptics, push notifications, HealthKit) to your web app. Also supports Android in one codebase.</p>
             <div class="code-block"><pre>npm install @capacitor/core @capacitor/cli
-npx cap init <span class="str">"FORGE"</span> <span class="str">"com.yourname.forge"</span> --web-dir ./www
+npx cap init <span class="str">"GrindFlow"</span> <span class="str">"com.yourname.grindflow"</span> --web-dir ./www
 <span class="cmt"># Copy workout-app.html → www/index.html</span>
 npm install @capacitor/ios
 npx cap add ios && npx cap copy ios
@@ -2193,12 +2240,12 @@ npx cap open ios</pre></div>
           </div>
           <div class="ios-step-body">
             <div class="code-block"><pre>npm install -g cordova
-cordova create forge-app com.yourname.forge FORGE
-cd forge-app
+cordova create grindflow-app com.yourname.grindflow GrindFlow
+cd grindflow-app
 cp /path/to/workout-app.html www/index.html
 cordova platform add ios
 cordova build ios
-open platforms/ios/FORGE.xcworkspace</pre></div>
+open platforms/ios/GrindFlow.xcworkspace</pre></div>
             <div class="ios-tip"><span class="ios-tip-icon">📝</span><span class="ios-tip-text">Requires <strong>ios-deploy</strong> npm package and Xcode CLI tools (<code>xcode-select --install</code>).</span></div>
           </div>
         </div>
@@ -2220,7 +2267,7 @@ open platforms/ios/FORGE.xcworkspace</pre></div>
           <div class="ios-step-body">
             <p class="ios-p">Android Chrome has first-class PWA support — far better than iOS Safari. The install prompt appears automatically once the app meets PWA criteria, no "Add to Home Screen" hunting required.</p>
             <p class="ios-p"><strong>Step 1:</strong> Add the same <code style="color:var(--accent);font-family:var(--font-mono)">manifest.json</code> and service worker as the iOS PWA method (same files work on both platforms).</p>
-            <p class="ios-p"><strong>Step 2:</strong> Host on any HTTPS server. Open in Chrome on Android — Chrome will show an <em>"Add Grind.exe to Home Screen"</em> banner automatically, or it appears under the Chrome menu.</p>
+            <p class="ios-p"><strong>Step 2:</strong> Host on any HTTPS server. Open in Chrome on Android — Chrome will show an <em>"Add GrindFlow to Home Screen"</em> banner automatically, or it appears under the Chrome menu.</p>
             <p class="ios-p"><strong>Step 3:</strong> Once installed, the app launches full-screen with no browser UI, appears in the app drawer, and works offline via the service worker.</p>
             <div class="ios-tip"><span class="ios-tip-icon">🟢</span><span class="ios-tip-text">Android PWAs support <strong>push notifications, background sync, and the Web Share API</strong> — features that iOS PWAs still lag on. This is the best quick-ship option for Android.</span></div>
           </div>
@@ -2237,7 +2284,7 @@ open platforms/ios/FORGE.xcworkspace</pre></div>
             <p class="ios-p"><strong>Requirements:</strong> Node.js, Android Studio, Java 17+, Android SDK.</p>
             <div class="code-block"><pre><span class="cmt"># Install Capacitor</span>
 npm install @capacitor/core @capacitor/cli
-npx cap init <span class="str">"FORGE"</span> <span class="str">"com.yourname.forge"</span> --web-dir ./www
+npx cap init <span class="str">"GrindFlow"</span> <span class="str">"com.yourname.grindflow"</span> --web-dir ./www
 
 <span class="cmt"># Copy your HTML file</span>
 mkdir www
@@ -2328,7 +2375,7 @@ npx cap build android
             <div class="code-block"><pre><span class="cmt"># In build.gradle (app level):</span>
 android {
   defaultConfig {
-    applicationId <span class="str">"com.yourname.forge"</span>
+    applicationId <span class="str">"com.yourname.grindflow"</span>
     minSdk 24          <span class="cmt">// Android 7.0+</span>
     targetSdk 34       <span class="cmt">// latest stable</span>
     versionCode 1
@@ -3619,7 +3666,7 @@ function buildExCard(exId, ex, logEntry, volumeOverride, isSwapped) {
             </div>
           </div>
           <div class="set-rpe-row">
-            <div class="rpe-label">RPE</div>
+            <div class="rpe-label" onclick="openRpeGuide()" title="What is RPE?" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px;">RPE</div>
             <div class="rpe-pills" id="rpe-${exId}-${i}">
               ${[1,2,3,4,5,6,7,8,9,10].map(n => `
                 <div class="rpe-pill rpe-${n} ${s.rpe === n ? 'selected-rpe' : ''}"
@@ -3977,7 +4024,7 @@ function getSessionExercises(sessionLabel, focusMuscles, level, goal) {
 function generatePlanName(goal, days, level) {
   const adjectives = {
     strength:    ['IRON','POWER','FORCE','RAW','BRUTE'],
-    hypertrophy: ['MASS','FORGE','BUILD','SCULPT','PRIME'],
+    hypertrophy: ['MASS','GrindFlow','BUILD','SCULPT','PRIME'],
     fatloss:     ['BURN','SHRED','CUT','TORCH','LEAN'],
   };
   const suffixes = {
@@ -5002,7 +5049,7 @@ function fireRestCompleteNotification(seconds) {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   setTimeout(() => {
     try {
-      new Notification('Grind.exe \u2014 Rest Complete \u2705', {
+      new Notification('GrindFlow \u2014 Rest Complete \u2705', {
         body: "Time for your next set. Let\'s go! \ud83d\udcaa",
         icon: './icons/icon-192.png',
         badge: './icons/icon-72.png',
@@ -6049,7 +6096,7 @@ function exportBackup() {
   const a = document.createElement('a');
   const dateStr = today().replace(/-/g, '');
   a.href = url;
-  a.download = `forge-backup-${dateStr}.json`;
+  a.download = `grindflow-backup-${dateStr}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -6188,6 +6235,16 @@ function getSwappedExId(originalId) {
   const dateKey = today();
   const swapped = state.todaySwaps[dateKey] && state.todaySwaps[dateKey][originalId];
   return (swapped && swapped !== originalId) ? swapped : originalId;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  RPE GUIDE MODAL
+// ═══════════════════════════════════════════════════════════════════════════
+function openRpeGuide() {
+  document.getElementById('rpe-modal').classList.add('open');
+}
+function closeRpeGuide() {
+  document.getElementById('rpe-modal').classList.remove('open');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -6332,6 +6389,10 @@ document.getElementById('travel-modal').addEventListener('click', function(e) {
 // Bind swap modal click-outside
 document.getElementById('swap-modal').addEventListener('click', function(e) {
   if (e.target === this) closeSwapModal();
+});
+// Bind RPE guide click-outside
+document.getElementById('rpe-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeRpeGuide();
 });
 </script>
 </body>

@@ -1,4 +1,4 @@
-# Grind.exe — How to Use the App
+# GrindFlow — How to Use the App
 
 A quick guide to every feature, tab by tab.
 
@@ -129,7 +129,7 @@ Shows all completed sessions in reverse chronological order.
 
 Tap the **💾** button in the top bar.
 
-**Export** — downloads a `forge-backup-YYYYMMDD.json` file to your device.
+**Export** — downloads a `grindflow-backup-YYYYMMDD.json` file to your device.
 Store it in iCloud Drive, Google Drive, or any safe location.
 
 **Import** — tap to pick a backup file. Your current data is merged with the

@@ -1,4 +1,4 @@
-# Grind.exe — Personal Workout App
+# GrindFlow — Personal Workout App
 ### Setup & Deployment Guide
 
 ---
@@ -6,7 +6,7 @@
 ## What's in this package
 
 ```
-forge-package/
+grindflow-package/
 ├── workout-app.html      ← The entire app (single file, ~4000 lines)
 ├── manifest.json         ← PWA manifest (enables home screen install)
 ├── sw.js                 ← Service worker (enables offline use)
@@ -21,25 +21,60 @@ All five files must stay together in the same folder. The app references
 `manifest.json`, `sw.js`, and `icons/` using relative paths.
 
 ---
-### Link to App
 
-App is live at:`https://activecatalyst.github.io/Grind.exe/workout-app.html`
+## Option 1 — Open locally (no server, no install)
 
+Just double-click `workout-app.html`. It opens in your browser and works
+immediately. Your data persists via localStorage.
 
-### Install to iPhone
+**Limitation:** The service worker won't activate on `file://` URLs, so
+offline-first caching won't work. Everything else (plans, logging, history,
+progression) works perfectly.
+
+---
+
+## Option 2 — Install as a PWA via GitHub Pages (Free, Recommended)
+
+This gives you a real HTTPS URL, offline support, and the ability to install
+GrindFlow to your phone's home screen like a native app.
+
+### Step 1 — Create a GitHub repository
+
+1. Go to [github.com](https://github.com) and sign in (or create a free account)
+2. Click **+** → **New repository**
+3. Name it `grindflow` (or anything you like)
+4. Set it to **Public** (required for free GitHub Pages)
+5. Click **Create repository**
+
+### Step 2 — Upload the files
+
+1. Click **Add file** → **Upload files**
+2. Drag in all five files: `workout-app.html`, `manifest.json`, `sw.js`,
+   and the `icons/` folder with all three PNGs
+3. Click **Commit changes**
+
+### Step 3 — Enable GitHub Pages
+
+1. Go to your repository **Settings** → **Pages** (left sidebar)
+2. Under **Source**, select **Deploy from a branch**
+3. Choose **main** branch → **/ (root)** → click **Save**
+4. Wait 1–2 minutes, then your app is live at:
+   `https://YOUR-USERNAME.github.io/grindflow/workout-app.html`
+
+### Step 4 — Install to iPhone
 
 1. Open that URL in **Safari** on your iPhone
 2. Tap the **Share** button (box with arrow pointing up)
 3. Tap **Add to Home Screen**
 4. Tap **Add**
 
-Grind.exe now has its own icon on your home screen and launches full-screen
+GrindFlow now has its own icon on your home screen and launches full-screen
 with no browser UI, exactly like a native app.
 
-### (Android) — Install via Chrome
+### Step 4 (Android) — Install via Chrome
 
 1. Open that URL in **Chrome** on your Android phone
-2. Chrome will show an **"Add Grind.exe to Home Screen"** banner automatically
+2. Chrome will show an **"Add GrindFlow to Home Screen"** banner automatically
 3. Or tap the three-dot menu → **Add to Home screen**
 
 ---
@@ -50,7 +85,7 @@ If you have Node.js installed:
 
 ```bash
 # Navigate to the package folder
-cd /path/to/forge-package
+cd /path/to/grindflow-package
 
 # Start a local server (npx works without installing anything)
 npx serve .
@@ -68,7 +103,7 @@ The service worker will activate and offline support will work.
 
 1. Go to [netlify.com](https://netlify.com) and sign up free
 2. On the dashboard, find the **"drag & drop"** deploy zone
-3. Drag your entire `forge-package/` folder onto it
+3. Drag your entire `grindflow-package/` folder onto it
 4. Netlify gives you a URL like `https://random-name.netlify.app`
 5. Your app is live instantly with HTTPS and offline support
 
@@ -124,16 +159,16 @@ Requires Node.js and Android Studio. Works on Windows, Mac, or Linux.
 
 ```bash
 # Create project folder
-mkdir forge-android && cd forge-android
+mkdir grindflow-android && cd grindflow-android
 npm init -y
 
 # Install Capacitor
 npm install @capacitor/core @capacitor/cli
-npx cap init "FORGE" "com.yourname.forge" --web-dir ./www
+npx cap init "GrindFlow" "com.yourname.forge" --web-dir ./www
 
 # Copy app into www/
 mkdir www
-cp /path/to/forge-package/workout-app.html www/index.html
+cp /path/to/grindflow-package/workout-app.html www/index.html
 
 # Add Android platform
 npm install @capacitor/android
@@ -153,7 +188,7 @@ Copy the APK to your phone and install it. You may need to enable
 
 ## Keeping your data safe
 
-FORGE stores everything in your browser's `localStorage`. This means:
+GrindFlow stores everything in your browser's `localStorage`. This means:
 
 - ✅ Data persists between visits on the same browser
 - ✅ No account or server required
@@ -205,4 +240,4 @@ appear correctly offline too.
 
 ---
 
-*Grind.exe — built as a single HTML file with no frameworks, no servers, no accounts.*
+*GrindFlow — built as a single HTML file with no frameworks, no servers, no accounts.*

@@ -1,7 +1,7 @@
-// FORGE Service Worker — v1
+// GrindFlow Service Worker — v1
 // Caches the app shell on install so it works fully offline.
 
-const CACHE_NAME = 'forge-v1';
+const CACHE_NAME = 'grindflow-v1';
 const ASSETS = [
   './workout-app.html',
   './manifest.json',
