@@ -2430,18 +2430,26 @@ android {
         <div style="margin-top:14px; padding:14px; background:var(--bg3); border:1px solid var(--border); border-radius:12px;">
           <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">📊 Quick Comparison</div>
           <div style="display:flex;flex-direction:column;gap:6px;">
-            ${[
-              ['PWA (Chrome)','Free','5 min','No store needed','⭐⭐⭐⭐⭐'],
-              ['Capacitor APK','Free','~1 hr','Sideload only','⭐⭐⭐⭐'],
-              ['WebView (Studio)','Free','~2 hr','Sideload only','⭐⭐⭐'],
-              ['Play Store','$25 once','~1 day','Full distribution','⭐⭐⭐⭐⭐'],
-            ].map(([method,cost,time,reach,stars]) => `
-              <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
-                <div style="font-size:12px;font-weight:600;">${method}</div>
-                <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${cost} · ${time}</div>
-                <div style="font-size:11px;">${stars}</div>
-              </div>
-            `).join('')}
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+              <div style="font-size:12px;font-weight:600;">PWA (Chrome)</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Free · 5 min</div>
+              <div style="font-size:11px;">⭐⭐⭐⭐⭐</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+              <div style="font-size:12px;font-weight:600;">Capacitor APK</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Free · ~1 hr</div>
+              <div style="font-size:11px;">⭐⭐⭐⭐</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+              <div style="font-size:12px;font-weight:600;">WebView (Studio)</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Free · ~2 hr</div>
+              <div style="font-size:11px;">⭐⭐⭐</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0;">
+              <div style="font-size:12px;font-weight:600;">Play Store</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">$25 once · ~1 day</div>
+              <div style="font-size:11px;">⭐⭐⭐⭐⭐</div>
+            </div>
           </div>
         </div>
         <div style="height:8px"></div>
