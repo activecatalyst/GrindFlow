@@ -1583,14 +1583,21 @@
     <div class="exercises-list" id="exercises-list"></div>
 
     <!-- Manual rest day override — shown when a workout is active -->
-    <div id="rest-override-btn-wrap" style="display:none; padding: 4px 20px 0;">
-      <button onclick="toggleRestOverride()"
-        id="rest-override-btn"
-        style="width:100%;padding:10px;border-radius:10px;font-size:12px;font-weight:500;
-          background:transparent;border:1px solid var(--border);color:var(--muted);
-          letter-spacing:0.3px;transition:all .2s;">
-        😴 Take a Rest Day Instead
-      </button>
+    <div id="rest-override-btn-wrap" style="display:none; padding: 4px 20px 16px;">
+      <div style="display:flex;gap:8px;">
+        <button onclick="toggleRestOverride()"
+          style="flex:1;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
+            background:transparent;border:1px solid var(--border);color:var(--muted);
+            letter-spacing:0.3px;transition:all .2s;">
+          😴 Rest Today
+        </button>
+        <button onclick="pushForwardRest()"
+          style="flex:1;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
+            background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);
+            color:#818cf8;letter-spacing:0.3px;transition:all .2s;">
+          📅 Push to Tomorrow
+        </button>
+      </div>
     </div>
 
     <!-- Deload nudge banner — shown after 6 consecutive weeks -->
@@ -2229,7 +2236,7 @@ self.addEventListener(<span class="str">'fetch'</span>, e =&gt;
   <span class="kw">func</span> makeUIView(context: Context) -&gt; WKWebView {
     <span class="kw">let</span> wv = WKWebView()
     <span class="kw">if let</span> url = Bundle.main.url(
-      forResource: <span class="str">"workout-app"</span>,
+      forResource: <span class="str">"index"</span>,
       withExtension: <span class="str">"html"</span>) {
       wv.loadFileURL(url,
         allowingReadAccessTo: url.deletingLastPathComponent())
@@ -2493,11 +2500,11 @@ const PLANS = [
     ],
     days: {
       0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','plank'] },
-      1: { name: 'Pull Day', exercises: ['deadlift','pullup','cable_row','face_pull','hammer_curl','dead_bug'] },
-      2: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
-      3: { name: 'Leg Day B', exercises: ['goblet_squat','lunge','leg_press','leg_curl','calf_raise'] },
+      1: { name: 'Pull Day', exercises: ['pullup','cable_row','face_pull','hammer_curl','bicep_curl','dead_bug'] },
+      2: { name: 'Leg Day', exercises: ['squat','deadlift','romanian_deadlift','leg_press','calf_raise'] },
+      3: { name: 'Leg Day B', exercises: ['goblet_squat','romanian_deadlift','lunge','leg_press','leg_curl'] },
       4: { name: 'Push Day B', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','pallof_press'] },
-      5: { name: 'Pull Day B', exercises: ['romanian_deadlift','lat_pulldown','cable_row','rear_delt_fly','bicep_curl','ab_wheel'] },
+      5: { name: 'Pull Day B', exercises: ['pullup','lat_pulldown','cable_row','rear_delt_fly','bicep_curl','ab_wheel'] },
       6: { name: 'Rest', exercises: [] },
     }
   },
@@ -2520,7 +2527,7 @@ const PLANS = [
     days: {
       0: { name: 'Chest Day', exercises: ['bench_press','incline_dumbbell','cable_fly','dips','pushup'] },
       1: { name: 'Shoulder Day', exercises: ['ohp','lateral_raise','rear_delt_fly','face_pull','shrug'] },
-      2: { name: 'Back Day', exercises: ['deadlift','pullup','cable_row','lat_pulldown','face_pull'] },
+      2: { name: 'Back Day', exercises: ['deadlift','pullup','cable_row','face_pull','rear_delt_fly'] },
       3: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
       4: { name: 'Arms Day', exercises: ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','dips'] },
       5: { name: 'Rest', exercises: [] },
@@ -2544,11 +2551,11 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','mountain_climber','high_knees','box_jump'] },
+      0: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','mountain_climber','high_knees','jump_rope'] },
       1: { name: 'Resistance A', exercises: ['goblet_squat','bench_press','row','dead_bug','plank'] },
       2: { name: 'Rest / Walk', exercises: [] },
       3: { name: 'Resistance B', exercises: ['romanian_deadlift','ohp','lat_pulldown','lunge','plank_rotation'] },
-      4: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','mountain_climber','high_knees','box_jump'] },
+      4: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','mountain_climber','high_knees','jump_rope'] },
       5: { name: 'Steady-State', exercises: ['treadmill_run','bike','jump_rope'] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2570,11 +2577,11 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'HIIT Blast', exercises: ['burpee','jump_squat','mountain_climber','high_knees','box_jump'] },
+      0: { name: 'HIIT Blast', exercises: ['burpee','jump_squat','mountain_climber','high_knees','jump_rope'] },
       1: { name: 'Steady-State Run', exercises: ['treadmill_run','bike','jump_rope'] },
       2: { name: 'Jump Rope Circuit', exercises: ['jump_rope','high_knees','mountain_climber','burpee'] },
       3: { name: 'Active Recovery', exercises: [] },
-      4: { name: 'HIIT Blast', exercises: ['burpee','jump_squat','mountain_climber','high_knees','box_jump'] },
+      4: { name: 'HIIT Blast', exercises: ['burpee','jump_squat','mountain_climber','high_knees','jump_rope'] },
       5: { name: 'Long Run / Bike', exercises: ['treadmill_run','bike'] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2608,7 +2615,7 @@ const PLANS = [
   {
     id: 'ppl_athletic', watchType: 'Traditional Strength Training', watchTypeAlt: 'Functional Strength Training (Tue/Wed/Sat)',
     name: 'PPL + Drive Phase',
-    desc: 'Push/Pull/Legs hypertrophy merged with lateral power, plyometrics, and Drive Phase posterior chain work. 6 days/week.',
+    desc: 'PPL hypertrophy + Drive Phase athletic development. Optimised for leg size and power with balanced upper body. 6 days/week.',
     badge: '⚡',
     color: '#00C2FF',
     tags: ['6x/week', 'Hypertrophy+Power', 'Intermediate'],
@@ -2622,11 +2629,11 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','dips','tricep_pushdown','cable_fly'] },
-      1: { name: 'Lateral Power', exercises: ['lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
-      2: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','broad_jump','box_jump','jump_squat'] },
-      3: { name: 'Pull Day', exercises: ['deadlift','pullup','cable_row','face_pull','hammer_curl','dead_bug'] },
-      4: { name: 'Legs', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
+      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','face_pull','cable_fly','dips'] },
+      1: { name: 'Lateral Power', exercises: ['squat','split_squat','lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
+      2: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','box_jump','jump_squat'] },
+      3: { name: 'Pull Day', exercises: ['deadlift','pullup','lat_pulldown','row','cable_row','face_pull'] },
+      4: { name: 'Legs', exercises: ['squat','leg_press','leg_curl','hip_thrust','calf_raise'] },
       5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','romanian_deadlift','pallof_press','dead_bug'] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2666,7 +2673,7 @@ const EXERCISES = {
   // Strength / Compound
   squat: {
     name: 'Back Squat', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
-    sets: 3, reps: 8, weight: 135,
+    sets: 3, reps: 8, weight: 65,
     cue: 'Warm-up sets recommended: work up in 2–3 ramp sets (e.g. 50%×5, 70%×3) before your working sets. Stand with feet shoulder-width apart, bar resting on upper traps. Descend until thighs are parallel or below, keeping knees tracking over toes. Drive through heels to stand, maintaining a neutral spine throughout.'
   },
   goblet_squat: {
@@ -2686,12 +2693,12 @@ const EXERCISES = {
   },
   bench_press: {
     name: 'Barbell Bench Press', muscle: 'Chest', icon: '💪', muscleClass: 'muscle-chest',
-    sets: 4, reps: 8, weight: 135,
+    sets: 4, reps: 8, weight: 95,
     cue: 'Warm-up sets recommended: 2–3 ramp sets before working weight (e.g. bar×10, 60%×5, 80%×3). Grip the bar slightly wider than shoulder-width with a full grip. Arch your upper back and keep your feet flat. Lower the bar to mid-chest under control, then press in a slight arc toward your forehead.'
   },
   incline_dumbbell: {
     name: 'Incline Dumbbell Press', muscle: 'Chest', icon: '💪', muscleClass: 'muscle-chest',
-    sets: 3, reps: 10, weight: 50,
+    sets: 3, reps: 10, weight: 30,
     cue: 'Set the bench to 30–45°. Press dumbbells from chest height to full extension, rotating palms slightly inward at the top. Control the descent over 2–3 seconds to maximize chest stretch.'
   },
   cable_fly: {
@@ -2700,9 +2707,9 @@ const EXERCISES = {
     cue: 'Set cables at chest height, step forward with a slight forward lean. Bring handles together in a hugging arc, keeping a slight bend in the elbows. Squeeze hard at the center and control the return.'
   },
   dips: {
-    name: 'Weighted Dips', muscle: 'Chest', icon: '💪', muscleClass: 'muscle-chest',
-    sets: 3, reps: 10, weight: 25,
-    cue: 'Lean slightly forward to emphasize the chest over triceps. Descend until upper arms are parallel to the floor, then press back up. Add weight via dip belt once bodyweight is manageable for 15+ reps.'
+    name: 'Dips', muscle: 'Chest', icon: '💪', muscleClass: 'muscle-chest',
+    sets: 3, reps: 10, weight: 0,
+    cue: 'Start with bodyweight dips — grip parallel bars, lower until elbows reach 90°, drive back up without flaring the elbows. Keep a slight forward lean for chest emphasis, upright for tricep focus. Begin bodyweight only and add a dip belt with weight plates only when you can complete 3×12 clean reps under control.'
   },
   row: {
     name: 'Dumbbell Row', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
@@ -2711,7 +2718,7 @@ const EXERCISES = {
   },
   deadlift: {
     name: 'Conventional Deadlift', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
-    sets: 4, reps: 5, weight: 225,
+    sets: 4, reps: 5, weight: 95,
     cue: 'Warm-up sets recommended: work up in 3–4 ramp sets before your working weight — deadlifts are high CNS demand. Set up with the bar over mid-foot, grip just outside hips. Push the floor away while keeping the bar close to your legs. Lock out by squeezing glutes at the top — never hyperextend the lower back.'
   },
   pullup: {
@@ -2736,7 +2743,7 @@ const EXERCISES = {
   },
   ohp: {
     name: 'Overhead Press', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
-    sets: 4, reps: 8, weight: 95,
+    sets: 4, reps: 8, weight: 45,
     cue: 'Warm-up sets recommended: 2 ramp sets before working weight. Grip the bar just outside shoulder width, elbows slightly forward. Press the bar directly overhead, moving your head back slightly to allow clearance. Fully lock out at the top, then lower to clavicle level.'
   },
   lateral_raise: {
@@ -2752,7 +2759,7 @@ const EXERCISES = {
   upright_row: {
     name: 'Upright Row', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
     sets: 3, reps: 12, weight: 60,
-    cue: '⚠️ High shoulder impingement risk — consider substituting Face Pulls or Cable Lateral Raises which hit the same muscles safely. If performing: use a wide grip on a barbell or cables, pull to chin height with elbows flared higher than wrists. Use light-to-moderate weight only — stop immediately if you feel pinching in the shoulder joint.'
+    cue: '⚠️ Shoulder health note: the upright row places the shoulder in internal rotation at the top of the movement, which can cause subacromial impingement in users with pre-existing shoulder issues. If you experience any pinching or pain at the top of the lift, stop immediately and substitute with face pulls or lateral raises. If performing: grip shoulder-width or wider, pull elbows to ear height maximum — do not pull past the shoulder. Narrower grip dramatically increases impingement risk.'
   },
   shrug: {
     name: 'Dumbbell Shrug', muscle: 'Shoulders', icon: '🎯', muscleClass: 'muscle-shoulders',
@@ -2762,16 +2769,16 @@ const EXERCISES = {
   hip_hinge: {
     name: 'Hip Hinge / RDL', muscle: 'Back', icon: '🔙', muscleClass: 'muscle-back',
     sets: 3, reps: 12, weight: 30,
-    cue: 'Beginners: use two dumbbells held in front of the thighs — easier to control than a barbell. Push your hips back while maintaining a flat back and soft knees. Lower the weight down your legs until you feel a hamstring stretch, then drive hips forward to return. Master the movement pattern before progressing to a barbell. Warm-up sets recommended: 2 light sets before working weight.'
+    cue: 'This is the foundational hinge pattern — the same movement as a Romanian Deadlift. Stand with feet hip-width, soft knees. Push your hips back behind you while lowering the weight along your legs — think 'hips back' not 'bend forward'. You should feel a deep stretch in your hamstrings. Drive the hips forward to stand, squeezing the glutes at the top. Master this pattern with light weight (20–30 lbs) before loading heavier.'
   },
   romanian_deadlift: {
     name: 'Romanian Deadlift', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
-    sets: 3, reps: 10, weight: 135,
+    sets: 3, reps: 10, weight: 65,
     cue: 'Start standing with the bar at hip height. Hinge at the hips with a slight knee bend, lowering the bar along your legs until you feel a deep hamstring stretch. Drive hips forward and squeeze glutes at the top.'
   },
   leg_press: {
     name: 'Leg Press', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
-    sets: 4, reps: 12, weight: 270,
+    sets: 4, reps: 12, weight: 180,
     cue: 'Place feet shoulder-width apart on the platform. Lower the sled until knees reach 90° or deeper, keeping your lower back pressed into the seat. Press through the entire foot — avoid letting heels rise.'
   },
   leg_curl: {
@@ -2786,7 +2793,7 @@ const EXERCISES = {
   },
   bicep_curl: {
     name: 'Barbell Curl', muscle: 'Arms', icon: '💪', muscleClass: 'muscle-arms',
-    sets: 3, reps: 12, weight: 65,
+    sets: 3, reps: 12, weight: 35,
     cue: 'Hold the bar with a supinated (underhand) grip, elbows pinned to your sides. Curl the bar toward your chin, rotating the wrists slightly at the top. Lower slowly through the full range — avoid swinging at the bottom.'
   },
   hammer_curl: {
@@ -2801,7 +2808,7 @@ const EXERCISES = {
   },
   skull_crusher: {
     name: 'Skull Crusher (EZ Bar)', muscle: 'Arms', icon: '💪', muscleClass: 'muscle-arms',
-    sets: 3, reps: 10, weight: 65,
+    sets: 3, reps: 10, weight: 45,
     cue: 'Lie on a bench and hold an EZ bar above your face with arms vertical. Hinge only at the elbows to lower the bar toward your forehead. Press back up by squeezing the triceps, keeping your upper arms stationary throughout.'
   },
   wrist_curl: {
@@ -2855,7 +2862,7 @@ const EXERCISES = {
   },
   hip_thrust: {
     name: 'Hip Thrust', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
-    sets: 4, reps: 10, weight: 135,
+    sets: 4, reps: 10, weight: 95,
     cue: 'Sit with your upper back against a bench, barbell across your hips. Plant feet flat, hip-width apart. Drive through both heels to thrust your hips toward the ceiling until your torso is parallel to the floor. Squeeze your glutes hard at the top — do not hyperextend your lower back. Control the descent. This directly trains the glute max through peak hip extension, which is the primary driver in both skating and sprinting.'
   },
   lateral_hip_thrust: {
@@ -2866,7 +2873,7 @@ const EXERCISES = {
   nordic_curl: {
     name: 'Nordic Hamstring Curl', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
     sets: 3, reps: 6, weight: 0,
-    cue: 'Kneel on a pad with ankles anchored under a loaded barbell, the base of a rack, or held by a partner. Keeping your hips and torso in a straight line, slowly lower your body toward the floor by extending at the knees — resist gravity with your hamstrings as long as possible. When you can no longer control the descent, catch yourself with your hands and push back to the start position. The eccentric phase is the training stimulus. This is the most effective hamstring injury prevention exercise known — and power athletes live or die by hamstring health.'
+    cue: 'Most people cannot complete a full Nordic curl on their first attempt — this is normal. Start with the eccentric only: kneel with feet anchored, cross arms over chest, and slowly lower your body toward the floor over 5 seconds. Catch yourself with your hands at the bottom, push back up to the start, and repeat. Only progress to full reps once you can control the lowering phase completely. Do not attempt from bodyweight if you have a previous hamstring strain.'
   },
   skating_hold: {
     name: 'Skating Position Isometric', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
@@ -3003,7 +3010,17 @@ let state = {
   supplementalPlan: null,  // supplemental program (fills gaps / adds finishers)
   todayLog: {},
   history: [],
+  exerciseLog: {},         // exId → [{ date, sets:[{w,r,rpe,note}] }] — progression history
+  customDay: [],           // exercise IDs for custom day builder
+  customDayActive: null,   // { date, exercises, cardioMeta? } — today's custom session
+  activeWarmup: null,      // { id, name, icon, exercises, date } — today's warmup
+  lastRestDuration: 90,    // seconds — persists last-used rest timer setting
+  nudgeSnoozedUntil: null, // ISO date string — backup nudge snooze
+  deloadSnoozedUntil: null,// ISO date string — deload nudge snooze
+  generatedPlanData: null, // generated plan object from plan generator
+  lastExported: null,      // ISO date string of last backup export
   restDayOverride: null,   // date string — user chose to rest instead of train today
+  planPushOffset: 0,       // days to shift plan forward (push-forward rest feature)
   equipmentVariants: {},   // exId → variant key ('barbell','dumbbell','machine', etc.)
   travelMode: null,        // null | { returnDate: 'YYYY-MM-DD' | null }
   todaySwaps: {},          // dateKey → { exId: swapExId } — today-only exercise swaps
@@ -3052,7 +3069,10 @@ function formatDate(dateStr) {
 function getDayOfWeek() {
   // Plans are keyed Mon=0…Sun=6. JS getDay() returns Sun=0…Sat=6.
   // Shift so Monday aligns: (getDay() + 6) % 7
-  return (new Date().getDay() + 6) % 7;
+  // planPushOffset shifts the plan forward when user pushes a rest day
+  const base = (new Date().getDay() + 6) % 7;
+  const offset = (state && state.planPushOffset) ? state.planPushOffset : 0;
+  return (base + offset) % 7;
 }
 
 function getPlan(id) {
@@ -3298,9 +3318,28 @@ function toggleRestOverride() {
 
 function cancelRestOverride() {
   state.restDayOverride = null;
+  state.planPushOffset = 0;  // clear push offset when resuming workout
   saveState();
   renderToday();
   showToast('💪 Back to the workout');
+}
+
+function pushForwardRest() {
+  // Increment offset — plan shifts forward one day
+  state.planPushOffset = Math.min((state.planPushOffset || 0) + 1, 6);
+  // Take today as a rest day too
+  const dateKey = today();
+  state.restDayOverride = dateKey;
+  saveState();
+  renderToday();
+  showToast('📅 Workout pushed — tomorrow picks up where today left off');
+}
+
+function clearPushOffset() {
+  state.planPushOffset = 0;
+  saveState();
+  renderToday();
+  showToast('📅 Plan reset to normal schedule');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3441,6 +3480,18 @@ function renderToday() {
     text-decoration:underline;cursor:pointer;
     font-family:var(--font-mono);letter-spacing:0.3px;
     margin-left:2px;align-self:center;">change plan</button>`;
+
+  // Push offset indicator — show when plan is shifted
+  if (state.planPushOffset && state.planPushOffset > 0) {
+    metaChips += `<button onclick="clearPushOffset()"
+      style="display:inline-flex;align-items:center;gap:4px;
+        background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);
+        border-radius:20px;padding:5px 10px;font-size:11px;font-weight:500;
+        color:#818cf8;cursor:pointer;font-family:var(--font-body);"
+      title="Plan pushed forward ${state.planPushOffset} day${state.planPushOffset > 1 ? 's' : ''} — tap to reset">
+      📅 +${state.planPushOffset}d shift · reset
+    </button>`;
+  }
 
   document.getElementById('hero-meta').innerHTML = metaChips;
 
@@ -5095,7 +5146,9 @@ function fireRestCompleteNotification(seconds) {
         renotify: true,
         silent: false,
       });
-    } catch(e) {}
+    } catch(e) {
+      console.error('GrindFlow: Failed to parse saved state, using defaults.', e);
+    }
   }, seconds * 1000);
 }
 
@@ -5552,6 +5605,8 @@ function autoSaveSession() {
     if (state.history.length > 120) state.history = state.history.slice(0, 120);
   }
   writeExerciseLog(completedExs, dateKey);
+  // Clear push offset on workout completion — plan resyncs to real schedule
+  if (state.planPushOffset) { state.planPushOffset = 0; }
   saveState();
 }
 
@@ -5652,7 +5707,7 @@ const EXERCISE_SWAPS = {
 
 const EXERCISE_VARIANTS = {
   bench_press: {
-    barbell:  { label: 'Barbell', name: 'Barbell Bench Press', weight: 135, cue: 'Warm-up sets recommended: 2–3 ramp sets before working weight (e.g. bar×10, 60%×5, 80%×3). Grip the bar slightly wider than shoulder-width with a full grip. Arch your upper back and keep your feet flat. Lower the bar to mid-chest under control, then press in a slight arc toward your forehead.' },
+    barbell:  { label: 'Barbell', name: 'Barbell Bench Press', weight: 95, cue: 'Warm-up sets recommended: 2–3 ramp sets before working weight (e.g. bar×10, 60%×5, 80%×3). Grip the bar slightly wider than shoulder-width with a full grip. Arch your upper back and keep your feet flat. Lower the bar to mid-chest under control, then press in a slight arc toward your forehead.' },
     dumbbell: { label: 'Dumbbell', name: 'Dumbbell Bench Press', weight: 60, cue: 'Warm-up sets recommended before working weight. Lie on a flat bench with dumbbells at chest level, palms facing forward. Press to full extension, bringing the dumbbells slightly together at the top. Lower under control over 2–3 seconds. Greater range of motion than barbell — take advantage of the stretch at the bottom.' },
     machine:  { label: 'Machine', name: 'Chest Press Machine', weight: 100, cue: 'Adjust the seat so handles are at chest height. Grip handles with a neutral or pronated grip. Press to full extension without locking out, then return slowly. Machines are great for learning the push pattern safely and for high-rep sets at the end of a session when shoulders are fatigued.' },
   },
@@ -5662,13 +5717,13 @@ const EXERCISE_VARIANTS = {
     machine:  { label: 'Machine', name: 'Incline Machine Press', weight: 80, cue: 'Adjust the seat so the handles press at an upward angle. Press to full extension and return slowly. A solid option if shoulder discomfort limits free weight incline work.' },
   },
   squat: {
-    barbell:  { label: 'Barbell', name: 'Back Squat', weight: 135, cue: 'Warm-up sets recommended: work up in 2–3 ramp sets (e.g. 50%×5, 70%×3) before your working sets. Stand with feet shoulder-width apart, bar resting on upper traps. Descend until thighs are parallel or below, keeping knees tracking over toes. Drive through heels to stand, maintaining a neutral spine throughout.' },
+    barbell:  { label: 'Barbell', name: 'Back Squat', weight: 65, cue: 'Warm-up sets recommended: work up in 2–3 ramp sets (e.g. 50%×5, 70%×3) before your working sets. Stand with feet shoulder-width apart, bar resting on upper traps. Descend until thighs are parallel or below, keeping knees tracking over toes. Drive through heels to stand, maintaining a neutral spine throughout.' },
     dumbbell: { label: 'Dumbbell', name: 'Dumbbell Goblet Squat', weight: 40, cue: 'Hold a dumbbell vertically at chest height with both hands. Squat deep, using your elbows to push your knees apart at the bottom. Excellent technique builder and a strong loading option — you can go heavier than you think with a goblet squat.' },
     machine:  { label: 'Machine', name: 'Hack Squat Machine', weight: 180, cue: 'Set up on the hack squat with feet shoulder-width on the platform. Lower until knees reach 90° or deeper, then press through the entire foot. The machine removes the stability demand of a barbell squat — useful for loading quads heavily without axial load on the spine.' },
     bodyweight: { label: 'Bodyweight', name: 'Bodyweight Squat', weight: 0, cue: 'Stand feet shoulder-width apart, toes slightly out. Descend until thighs are parallel or below, keeping chest up and knees tracking over toes. Drive through your heels to stand. Progress by slowing the descent to 3–4 seconds or adding a pause at the bottom.' },
   },
   romanian_deadlift: {
-    barbell:  { label: 'Barbell', name: 'Romanian Deadlift', weight: 135, cue: 'Start standing with the bar at hip height. Hinge at the hips with a slight knee bend, lowering the bar along your legs until you feel a deep hamstring stretch. Drive hips forward and squeeze glutes at the top.' },
+    barbell:  { label: 'Barbell', name: 'Romanian Deadlift', weight: 65, cue: 'Start standing with the bar at hip height. Hinge at the hips with a slight knee bend, lowering the bar along your legs until you feel a deep hamstring stretch. Drive hips forward and squeeze glutes at the top.' },
     dumbbell: { label: 'Dumbbell', name: 'Dumbbell RDL', weight: 50, cue: 'Hold dumbbells in front of your thighs with a neutral grip. Hinge at the hips, lowering the dumbbells along your legs. Dumbbells allow a slightly wider range of motion than a barbell and are easier to learn the hip hinge pattern with. Keep the weights close to your legs throughout.' },
     machine:  { label: 'Machine', name: 'Cable Pull-Through', weight: 60, cue: 'Set a cable to the lowest position with a rope attachment. Stand facing away from the machine, straddle the cable, and hinge forward at the hips while the cable pulls your arms back between your legs. Drive hips forward to return. This is a fantastic hip hinge teaching tool — the cable provides constant tension.' },
   },
@@ -5711,7 +5766,7 @@ const EXERCISE_VARIANTS = {
     dumbbell: { label: 'Dumbbell', name: 'Dumbbell Squat', weight: 50, cue: 'Hold dumbbells at your sides and squat to parallel or below. A simple substitute when no leg press or barbell is available. Go as heavy as possible — you will likely need to progress to a barbell once you can handle 50lb+ dumbbells in each hand.' },
   },
   deadlift: {
-    barbell:  { label: 'Barbell', name: 'Conventional Deadlift', weight: 225, cue: 'Warm-up sets recommended: work up in 3–4 ramp sets before your working weight — deadlifts are high CNS demand. Set up with the bar over mid-foot, grip just outside hips. Push the floor away while keeping the bar close to your legs. Lock out by squeezing glutes at the top — never hyperextend the lower back.' },
+    barbell:  { label: 'Barbell', name: 'Conventional Deadlift', weight: 95, cue: 'Warm-up sets recommended: work up in 3–4 ramp sets before your working weight — deadlifts are high CNS demand. Set up with the bar over mid-foot, grip just outside hips. Push the floor away while keeping the bar close to your legs. Lock out by squeezing glutes at the top — never hyperextend the lower back.' },
     dumbbell: { label: 'Dumbbell', name: 'Dumbbell Deadlift', weight: 70, cue: 'Hold dumbbells in front of your thighs. Set up the same hip hinge as a barbell deadlift — flat back, hips back, chest tall. Push the floor away as you stand. A good option when no barbell is available, though you will quickly outgrow dumbbell loads on this pattern.' },
     machine:  { label: 'Machine', name: 'Trap Bar Deadlift', weight: 185, cue: 'Step inside the trap bar with handles at your sides. This is one of the best deadlift variations — the neutral grip and centred load reduce lower back stress while allowing heavy loading of the hips and legs. Set up the same way: flat back, hips back, drive the floor away.' },
   },
@@ -6199,7 +6254,7 @@ function openSwapModal(exId) {
   if (!swaps || swaps.length === 0) {
     body.innerHTML = `<p style="font-size:13px;color:var(--muted);line-height:1.6;">
       No curated swaps available for this exercise. Use the equipment chips above the exercise card to switch variations, or build a custom day from the Plans tab.</p>`;
-    document.getElementById('swap-modal').classList.add('open');
+    const _el_swap_modal = document.getElementById('swap-modal'); if (_el_swap_modal) _el_swap_modal.classList.add('open');
     return;
   }
 
@@ -6244,7 +6299,7 @@ function openSwapModal(exId) {
   });
 
   body.innerHTML = html;
-  document.getElementById('swap-modal').classList.add('open');
+  const _el_swap_modal = document.getElementById('swap-modal'); if (_el_swap_modal) _el_swap_modal.classList.add('open');
 }
 
 function closeSwapModal() {
@@ -6318,7 +6373,7 @@ function openRpeGuide() {
       </div>
     </div>`;
 
-  document.getElementById('rpe-modal').classList.add('open');
+  const _el_rpe_modal = document.getElementById('rpe-modal'); if (_el_rpe_modal) _el_rpe_modal.classList.add('open');
 }
 
 function closeRpeGuide() {
@@ -6467,6 +6522,13 @@ function confirmClearExerciseLog() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// Register Service Worker (enables offline use + PWA install)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js')
+    .then(reg => console.log('SW registered:', reg.scope))
+    .catch(err => console.warn('SW registration failed:', err));
+}
+
 loadState();
 // Restore last used rest timer duration
 if (state.lastRestDuration) {
