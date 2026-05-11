@@ -2524,7 +2524,7 @@ const PLANS = [
     days: {
       0: { name: 'Pull Day', exercises: ['deadlift','pullup','row','cable_row','face_pull','hammer_curl'] },
       1: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
-      2: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','tricep_pushdown','skull_crusher'] },
+      2: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','cable_fly','skull_crusher'] },
       3: { name: 'Rest', exercises: [] },
       4: { name: 'Pull Day B', exercises: ['pullup','lat_pulldown','cable_row','rear_delt_fly','bicep_curl','ab_wheel'] },
       5: { name: 'Leg Day B', exercises: ['goblet_squat','split_squat','leg_curl','leg_press','hip_thrust'] },
@@ -2552,7 +2552,7 @@ const PLANS = [
       1: { name: 'Chest Day', exercises: ['bench_press','incline_dumbbell','cable_fly','dips','face_pull'] },
       2: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','hip_thrust','pallof_press'] },
       3: { name: 'Shoulder Day', exercises: ['ohp','lateral_raise','rear_delt_fly','face_pull','cable_row'] },
-      4: { name: 'Arms Day', exercises: ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','cable_row'] },
+      4: { name: 'Arms Day', exercises: ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','face_pull'] },
       5: { name: 'Rest', exercises: [] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2575,10 +2575,10 @@ const PLANS = [
     ],
     days: {
       0: { name: 'Resistance A', exercises: ['goblet_squat','bench_press','row','bicep_curl','dead_bug'] },
-      1: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','high_knees','jump_rope','plank'] },
+      1: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','high_knees','jump_rope','mountain_climber'] },
       2: { name: 'Rest / Walk', exercises: [] },
       3: { name: 'Resistance B', exercises: ['romanian_deadlift','ohp','lat_pulldown','cable_row','plank_rotation'] },
-      4: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','high_knees','jump_rope','plank'] },
+      4: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','high_knees','jump_rope','mountain_climber'] },
       5: { name: 'Steady-State', exercises: ['treadmill_run','bike'] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2586,7 +2586,7 @@ const PLANS = [
   {
     id: 'cardio_only', watchType: 'High Intensity Interval Training', watchTypeAlt: 'Indoor Run (treadmill) or Outdoor Run (outside) (Mon/Sat) · Indoor Cycling (Wed)',
     name: 'Pure Cardio',
-    desc: 'Daily cardio sessions cycling through HIIT, steady-state, and active recovery. Zero weights.',
+    desc: 'Daily cardio cycling through HIIT, steady-state, and interval sessions. Zero weights — pure cardiovascular development. 5 days/week. Progression: Steady-state — add 2 min/week to 45 min then increase pace by 0.2mph. HIIT — start 3 circuits, add 1/week to 5, then reduce rest periods. Jump Rope — add 10 sec/round per week (30s→60s→90s).',
     badge: '❤️',
     color: '#ff00c8',
     tags: ['6x/week', 'Cardio', 'Intermediate'],
@@ -2602,7 +2602,7 @@ const PLANS = [
     days: {
       0: { name: 'Steady-State Run', exercises: ['treadmill_run','bike'] },
       1: { name: 'HIIT Blast', exercises: ['burpee','jump_squat','mountain_climber','high_knees','jump_rope'] },
-      2: { name: 'Interval Bike', exercises: ['bike','treadmill_run'] },
+      2: { name: 'Interval Bike', exercises: ['bike'] },
       3: { name: 'Active Recovery & Mobility', exercises: [] },
       4: { name: 'HIIT Blast', exercises: ['burpee','jump_squat','mountain_climber','high_knees','jump_rope'] },
       5: { name: 'Long Run', exercises: ['treadmill_run'] },
@@ -2626,7 +2626,7 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Strength', exercises: ['split_squat','lateral_hip_thrust','deadlift','romanian_deadlift','pallof_press'] },
+      0: { name: 'Strength', exercises: ['split_squat','glute_bridge','deadlift','romanian_deadlift','pallof_press'] },
       1: { name: 'Lateral Power', exercises: ['lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
       2: { name: 'Rest / Mobility', exercises: [] },
       3: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','box_jump','jump_squat'] },
@@ -2652,9 +2652,9 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','face_pull','rear_delt_fly'] },
+      0: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','face_pull','cable_fly','tricep_pushdown'] },
       1: { name: 'Lateral Power', exercises: ['squat','split_squat','lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
-      2: { name: 'Pull Day', exercises: ['deadlift','pullup','lat_pulldown','row','cable_row','face_pull','hammer_curl'] },
+      2: { name: 'Pull Day', exercises: ['deadlift','pullup','lat_pulldown','row','cable_row','face_pull','bicep_curl','hammer_curl'] },
       3: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','box_jump','jump_squat'] },
       4: { name: 'Legs', exercises: ['squat','goblet_squat','leg_press','leg_curl','calf_raise'] },
       5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','romanian_deadlift','pallof_press','dead_bug'] },
@@ -2681,7 +2681,7 @@ const PLANS = [
       0: { name: 'Upper Push', exercises: ['pushup','pike_pushup','tricep_dip_chair','plank','dead_bug'] },
       1: { name: 'Lower Body', exercises: ['split_squat','lunge_bw','glute_bridge','single_leg_rdl_bw','calf_raise_bw'] },
       2: { name: 'Rest / Stretch', exercises: [] },
-      3: { name: 'Upper Pull + Core', exercises: ['inverted_row','pullup_bw','hammer_curl','plank_rotation','inverted_row'] },
+      3: { name: 'Upper Pull + Core', exercises: ['inverted_row','pullup_bw','hammer_curl','inverted_row','dead_bug'] },
       4: { name: 'Full Body Conditioning', exercises: ['burpee','jump_squat','high_knees','plank'] },
       5: { name: 'Active Recovery', exercises: [] },
       6: { name: 'Rest', exercises: [] },
@@ -2895,8 +2895,8 @@ const EXERCISES = {
   },
   nordic_curl: {
     name: 'Nordic Hamstring Curl', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
-    sets: 3, reps: 6, weight: 0,
-    cue: 'Most people cannot complete a full Nordic curl on their first attempt — this is normal. Start with the eccentric only: kneel with feet anchored, cross arms over chest, and slowly lower your body toward the floor over 5 seconds. Catch yourself with your hands at the bottom, push back up to the start, and repeat. Only progress to full reps once you can control the lowering phase completely. Do not attempt from bodyweight if you have a previous hamstring strain.'
+    sets: 3, reps: 5, weight: 0,
+    cue: 'Nordic Hamstring Curl — one of the most effective hamstring injury-prevention exercises in sports science. Three-phase progression: Phase 1 (Weeks 1–3): Eccentric only — kneel with feet anchored, cross arms over chest, slowly lower your body toward the floor over 5 seconds, catch with hands at bottom, assisted return to start. 5 reps per set. Phase 2 (Weeks 4–6): Partial reps — lower to 45° only, controlled return. 5 reps per set. Phase 3 (Weeks 7+): Full reps — lower completely, return under control. Progress to 8 reps when 5 feel controlled. Do not skip phases. Do not attempt if you have an active hamstring strain — substitute with lying leg curl until cleared.'
   },
   skating_hold: {
     name: 'Skating Position Isometric', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
@@ -2933,10 +2933,10 @@ const EXERCISES = {
   burpee: {
     name: 'Burpee', muscle: 'Cardio', icon: '🏃', muscleClass: 'muscle-cardio',
     sets: 4, reps: 10, weight: 0,
-    cue: 'From standing, drop hands to the floor and jump feet back to a plank. Do a push-up, jump feet to hands, then explode vertically with arms overhead. Move as fast as possible — this is a conditioning exercise.'
+    cue: 'HIIT Session Guide: rest 30 sec between exercises, 90 sec between full circuits. Complete all 5 exercises as one circuit, repeat 4 times. Target: 25–35 minutes. If you can hold a full conversation during work sets, increase your pace. | Burpee: from standing, drop hands to floor and jump feet back to plank. Do a push-up, jump feet to hands, then jump up with arms overhead. Land softly through bent knees. Scale by stepping instead of jumping. Progression: add push-up when 4x10 feels fully controlled.'
   },
   jump_squat: {
-    name: 'Jump Squat', muscle: 'Cardio', icon: '🏃', muscleClass: 'muscle-cardio',
+    name: 'Jump Squat', muscle: 'Legs', icon: '🏃', muscleClass: 'muscle-legs',
     sets: 4, reps: 12, weight: 0,
     cue: 'Descend into a squat, then explode upward as high as possible. Land softly by absorbing the impact through your ankles, knees, and hips — avoid stiff-legged landings. Immediately descend into the next rep.'
   },
@@ -2951,23 +2951,23 @@ const EXERCISES = {
     cue: 'Run in place, driving your knees up to hip height with each step. Pump your arms in opposition for rhythm. Keep your core tight and land on the balls of your feet to protect your joints and maximize speed.'
   },
   box_jump: {
-    name: 'Box Jump', muscle: 'Cardio', icon: '🏃', muscleClass: 'muscle-cardio',
+    name: 'Box Jump', muscle: 'Legs', icon: '🏃', muscleClass: 'muscle-legs',
     sets: 4, reps: 8, weight: 0,
     cue: 'Stand facing a sturdy box or platform. Swing arms back, then explode up, landing softly with both feet flat on the box. Stand tall to complete the rep, then step (not jump) back down to protect your Achilles.'
   },
   treadmill_run: {
     name: 'Treadmill / Outdoor Run', muscle: 'Cardio', icon: '🏃', muscleClass: 'muscle-cardio',
     sets: 1, reps: 20, weight: 0,
-    cue: 'Log minutes as your rep count — target 20 min to start, add 2–3 min each session. Maintain a conversational pace (Zone 2 cardio) for steady-state. For intervals, alternate 30–60 sec hard effort with equal recovery. Keep shoulders relaxed and gaze forward.'
+    cue: 'Cardio logging format: enter your total MINUTES in the Reps field, and pace (min/mile × 10) in the Weight field — e.g. 20 min at 9:00/mile → reps: 20, weight: 90. This lets the app track your progression over time. Target Zone 2 heart rate (conversational pace — full sentences possible). Progression: add 2–3 min per session until reaching 45 min. Then increase pace by 0.2mph and reset to 20 min. If treadmill occupied: substitute with rowing machine (same duration), elliptical, or stair climber (reduce duration by 30%).'
   },
   bike: {
     name: 'Stationary Bike', muscle: 'Cardio', icon: '🚴', muscleClass: 'muscle-cardio',
     sets: 1, reps: 20, weight: 0,
-    cue: 'Log minutes as your rep count — target 20 min to start, add 2–3 min each session. Adjust the seat so your knee has a slight bend at the bottom of the pedal stroke. For steady-state, maintain 70–90 RPM at low resistance. For HIIT, sprint for 20 seconds then recover.'
+    cue: 'Cardio logging format: enter total MINUTES in the Reps field, resistance level in the Weight field (e.g. level 8 → weight: 8). Target Zone 2 heart rate — you should be able to speak in full sentences. Progression: add 2–3 min per session to 45 min, then increase resistance by 1 level and reset to 20 min. If bike occupied: substitute with rowing machine (same duration), elliptical, or treadmill.'
   },
   jump_rope: {
     name: 'Jump Rope', muscle: 'Cardio', icon: '🏃', muscleClass: 'muscle-cardio',
-    sets: 5, reps: 30, weight: 0,
+    sets: 4, reps: 30, weight: 0,
     cue: 'Log seconds per round as your rep count — start with 30s per set, target 60s. Land on the balls of your feet, keep jumps small and elbows close. Rotate with your wrists. Add 5 seconds per session once you can complete all rounds at target duration.'
   },
 
@@ -5710,7 +5710,7 @@ const EXERCISE_SWAPS = {
   hip_hinge:        [{ id:'romanian_deadlift', reason:'Loaded hinge' }, { id:'glute_bridge', reason:'Bodyweight hinge' }, { id:'single_leg_rdl_bw', reason:'Unilateral option' }],
 
   // ── Shoulders ────────────────────────────────────────────────────────────
-  ohp:              [{ id:'dumbbell', reason:'Dumbbell press' }, { id:'lateral_raise', reason:'Isolation option' }, { id:'pike_pushup', reason:'Bodyweight overhead' }],
+  ohp:              [{ id:'incline_dumbbell', reason:'Dumbbell shoulder press' }, { id:'lateral_raise', reason:'Shoulder isolation' }, { id:'pike_pushup', reason:'Bodyweight overhead' }],
   lateral_raise:    [{ id:'face_pull', reason:'Cable alternative' }, { id:'rear_delt_fly', reason:'Rear delt focus' }, { id:'ohp', reason:'Compound press' }],
   rear_delt_fly:    [{ id:'face_pull', reason:'Cable version' }, { id:'cable_row', reason:'Row alternative' }, { id:'lateral_raise', reason:'Side delt focus' }],
   shrug:            [{ id:'face_pull', reason:'Upper trap alternative' }, { id:'upright_row', reason:'Similar pattern' }],
@@ -5735,7 +5735,7 @@ const EXERCISE_SWAPS = {
   hip_thrust:       [{ id:'glute_bridge', reason:'Easier version' }, { id:'romanian_deadlift', reason:'Hip hinge' }, { id:'lateral_hip_thrust', reason:'Unilateral version' }],
   lateral_hip_thrust:[{ id:'hip_thrust', reason:'Bilateral version' }, { id:'glute_bridge', reason:'Bodyweight option' }, { id:'glute_med_raise', reason:'Abduction focus' }],
   glute_med_raise:  [{ id:'lateral_hip_thrust', reason:'Loaded version' }, { id:'glute_bridge', reason:'Glute activation' }],
-  nordic_curl:      [{ id:'leg_curl', reason:'Machine version' }, { id:'romanian_deadlift', reason:'Hip hinge hamstring' }, { id:'glute_bridge', reason:'Posterior chain' }],
+  nordic_curl:      [{ id:'leg_curl', reason:'Knee-flexion machine equivalent' }, { id:'romanian_deadlift', reason:'Eccentric hamstring loading' }, { id:'single_leg_rdl', reason:'Unilateral hamstring option' }],
 
   // ── Core ─────────────────────────────────────────────────────────────────
   plank:            [{ id:'dead_bug', reason:'Anti-extension core' }, { id:'plank_rotation', reason:'Rotational core' }, { id:'ab_wheel', reason:'Harder variation' }],
@@ -5750,6 +5750,9 @@ const EXERCISE_SWAPS = {
   broad_jump:       [{ id:'jump_squat', reason:'Vertical option' }, { id:'box_jump', reason:'Box target' }, { id:'lunge', reason:'No-jump option' }],
   box_jump:         [{ id:'jump_squat', reason:'No box needed' }, { id:'broad_jump', reason:'Horizontal power' }, { id:'squat_bw', reason:'No-jump option' }],
   jump_squat:       [{ id:'goblet_squat', reason:'No-jump version' }, { id:'squat_bw', reason:'Bodyweight squat' }, { id:'lunge_bw', reason:'Unilateral option' }],
+  treadmill_run:    [{ id:'bike', reason:'Low-impact alternative' }, { id:'jump_rope', reason:'Cardio without treadmill' }, { id:'high_knees', reason:'No equipment cardio' }],
+  bike:             [{ id:'treadmill_run', reason:'Running alternative' }, { id:'jump_rope', reason:'Higher intensity option' }, { id:'high_knees', reason:'No equipment cardio' }],
+  jump_rope:        [{ id:'high_knees', reason:'No equipment equivalent' }, { id:'mountain_climber', reason:'Floor cardio option' }, { id:'burpee', reason:'Full body substitute' }],
   lateral_bound:    [{ id:'lateral_hurdle_hop', reason:'Two-foot option' }, { id:'skater_squat', reason:'Unilateral strength' }, { id:'lunge_bw', reason:'No-jump option' }],
   skater_squat:     [{ id:'split_squat', reason:'Easier single-leg' }, { id:'lunge', reason:'Moving lunge' }, { id:'goblet_squat', reason:'Bilateral option' }],
   skating_hold:     [{ id:'glute_bridge', reason:'Posterior chain' }, { id:'plank', reason:'Isometric hold' }, { id:'dead_bug', reason:'Core stability' }],
@@ -5758,6 +5761,15 @@ const EXERCISE_SWAPS = {
   burpee:           [{ id:'jump_squat', reason:'Lower intensity' }, { id:'mountain_climber', reason:'No jump option' }, { id:'high_knees', reason:'Cardio without impact' }],
   mountain_climber: [{ id:'high_knees', reason:'Standing version' }, { id:'plank', reason:'Static core' }, { id:'burpee', reason:'Full body option' }],
   high_knees:       [{ id:'mountain_climber', reason:'Floor version' }, { id:'jump_rope', reason:'Cardio alternative' }, { id:'treadmill_run', reason:'Running option' }],
+  // ── Bodyweight / Home ─────────────────────────────────────────────────────
+  lunge_bw:          [{ id:'squat_bw', reason:'Bilateral bodyweight squat' }, { id:'glute_bridge', reason:'Posterior chain option' }, { id:'split_squat', reason:'Loaded alternative' }],
+  glute_bridge:      [{ id:'hip_thrust', reason:'Loaded version' }, { id:'single_leg_rdl_bw', reason:'Unilateral option' }, { id:'romanian_deadlift', reason:'Loaded hinge' }],
+  single_leg_rdl_bw: [{ id:'romanian_deadlift', reason:'Bilateral loaded version' }, { id:'glute_bridge', reason:'Simpler hinge' }, { id:'lunge_bw', reason:'Unilateral alternative' }],
+  calf_raise_bw:     [{ id:'squat_bw', reason:'Lower body compound' }, { id:'lunge_bw', reason:'Unilateral option' }, { id:'glute_bridge', reason:'Posterior chain' }],
+  squat_bw:          [{ id:'goblet_squat', reason:'Loaded version' }, { id:'lunge_bw', reason:'Unilateral option' }, { id:'split_squat', reason:'Advanced bodyweight' }],
+  pullup_bw:         [{ id:'inverted_row', reason:'Horizontal row alternative' }, { id:'lat_pulldown', reason:'Machine version' }, { id:'row', reason:'Dumbbell row' }],
+  ab_wheel_bw:       [{ id:'dead_bug', reason:'Safer core alternative' }, { id:'plank', reason:'Static core option' }, { id:'pallof_press', reason:'Anti-rotation core' }],
+  upright_row:       [{ id:'lateral_raise', reason:'Safer shoulder isolation' }, { id:'face_pull', reason:'Rear delt alternative' }, { id:'ohp', reason:'Compound press' }],
 };
 
 const EXERCISE_VARIANTS = {
