@@ -1044,9 +1044,9 @@
     width: 100%; padding: 13px;
     border-radius: 12px;
     font-size: 14px; font-weight: 600;
-    background: rgba(123,47,255,0.15);
-    border: 1px solid rgba(123,47,255,0.4);
-    color: #b070ff;
+    background: rgba(123,47,255,0.18);
+    border: 1px solid rgba(123,47,255,0.55);
+    color: #c490ff;
     transition: all .2s;
     letter-spacing: 0.3px;
   }
@@ -1134,8 +1134,8 @@
     font-family: var(--font-mono); font-size: 11px;
     padding: 5px 12px; border-radius: 20px;
     white-space: nowrap;
-    background: rgba(30,58,138,0.4); border: 1px solid rgba(59,130,246,0.3);
-    color: var(--text-inv); cursor: pointer;
+    background: rgba(30,58,138,0.5); border: 1px solid rgba(59,130,246,0.4);
+    color: #E5E7EB; cursor: pointer;
     transition: all .15s;
     flex-shrink: 0;
   }
@@ -1153,8 +1153,8 @@
     display: flex; align-items: center; gap: 12px;
     padding: 12px 14px;
     border-radius: var(--r);
-    background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    background: #F8FAFC;
+    border: 1px solid rgba(0,150,200,0.2);
     cursor: pointer;
     transition: border-color .15s, background .15s;
     position: relative;
@@ -1170,10 +1170,10 @@
     font-size: 18px; flex-shrink: 0;
   }
   .picker-item-info { flex: 1; min-width: 0; }
-  .picker-item-name { font-size: 14px; font-weight: 600; color: var(--text);  color: var(--text-inv); }
+  .picker-item-name { font-size: 14px; font-weight: 600; color: var(--text); }
   .picker-item-muscle {
     font-family: var(--font-mono); font-size: 10px;
-    color: rgba(229,231,235,0.5); text-transform: uppercase; letter-spacing: 0.5px;
+    color: rgba(17,24,39,0.5); text-transform: uppercase; letter-spacing: 0.5px;
     margin-top: 2px;
   }
   .picker-item-check {
@@ -1189,6 +1189,34 @@
     border-color: var(--accent2);
     color: #b070ff;
   }
+
+  /* picker modal — light background overrides for text visibility */
+  #picker-modal .modal-title { color: var(--text); }
+  #picker-modal .modal-close {
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(0,0,0,0.12);
+    color: var(--text);
+  }
+  #picker-modal .picker-search {
+    background: #FFFFFF;
+    color: var(--text);
+  }
+  .picker-done-btn {
+    margin: 10px 14px 14px;
+    padding: 14px;
+    border-radius: var(--r);
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0A0F1C;
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    width: calc(100% - 28px);
+    flex-shrink: 0;
+  }
+  .picker-done-btn:active { opacity: 0.85; }
 
   /* recommendations section inside picker */
   .reco-section {
@@ -1210,14 +1238,15 @@
   .reco-pills::-webkit-scrollbar { display: none; }
   .reco-pill {
     display: flex; align-items: center; gap: 6px;
-    background: rgba(0,229,255,0.06);
-    border: 1px solid rgba(0,229,255,0.18);
+    background: rgba(0,150,200,0.1);
+    border: 1px solid rgba(0,150,200,0.3);
     border-radius: 20px;
     padding: 6px 12px 6px 8px;
     font-size: 12px; white-space: nowrap;
     cursor: pointer;
     transition: all .15s;
     flex-shrink: 0;
+    color: #0369a1;
   }
   .reco-pill:active { background: rgba(0,229,255,0.14); transform: scale(0.97); }
   .reco-pill.already-added {
@@ -1595,18 +1624,24 @@
 
     <!-- Manual rest day override — shown when a workout is active -->
     <div id="rest-override-btn-wrap" style="display:none; padding: 4px 20px 16px;">
-      <div style="display:flex;gap:8px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button onclick="toggleRestOverride()"
-          style="flex:1;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
+          style="flex:1;min-width:120px;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
             background:transparent;border:1px solid var(--border);color:var(--muted);
             letter-spacing:0.3px;transition:all .2s;">
           😴 Rest Today
         </button>
         <button onclick="pushForwardRest()"
-          style="flex:1;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
+          style="flex:1;min-width:120px;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
             background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);
             color:#818cf8;letter-spacing:0.3px;transition:all .2s;">
           📅 Push to Tomorrow
+        </button>
+        <button onclick="openRescheduleModal()"
+          style="flex:1;min-width:120px;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
+            background:rgba(0,194,255,0.07);border:1px solid rgba(0,194,255,0.25);
+            color:var(--accent);letter-spacing:0.3px;transition:all .2s;">
+          📆 Move Rest Day
         </button>
       </div>
     </div>
@@ -2638,10 +2673,10 @@ const PLANS = [
   {
     id: 'ppl_athletic', watchType: 'Traditional Strength Training', watchTypeAlt: 'Functional Strength Training (Tue/Sat) · High Intensity Interval Training (Thu Plyometric)',
     name: 'PPL + Drive Phase',
-    desc: 'PPL hypertrophy + Drive Phase athletic development. Pull Monday (cables/pullups — lower crowd friction than bench). Push Wednesday (best rack availability of the week — crowd score drops from 8.4 to 6.7). Push tip: if rack occupied, start Cable Fly or Tricep Pushdown. Deadlift: use deadlift platform not squat rack — almost always free even Monday. Legs Friday: squat 3x8 is the primary progression marker — add 5lbs every completed session.',
+    desc: 'Specialist athletic hypertrophy programme combining PPL structure with speed-skating inspired lower body power development. Designed for experienced lifters (2+ years) targeting explosive lower body strength, lateral power, and posterior chain dominance. 6 days/week, 5-6 hours total. Pull Monday (less rack competition), Push Wednesday (best rack availability). Mesocycle: Weeks 1-3 accumulation (current volume), Weeks 4-6 intensification (reduce hypertrophy sets 30%, increase deadlift to 5x3 and squat to 5x5), Week 7 deload (50% sets, 60% weight). Missed session: push forward, never double up, never do Plyometric after Legs. Monday deadlift swap: if swapping to RDL and you already have RDL on Saturday, use Cable Row instead. OHP: 3 sets not 4. Squat and Hip Thrust +5lbs every completed session.',
     badge: '⚡',
     color: '#00C2FF',
-    tags: ['6x/week', 'Hypertrophy+Power', 'Intermediate'],
+    tags: ['6x/week', 'Hypertrophy+Power', 'Advanced'],
     schedule: [
       { day: 'MON', label: 'Pull (Back/Biceps)', rest: false },
       { day: 'TUE', label: 'Lateral Power', rest: false },
@@ -2652,12 +2687,12 @@ const PLANS = [
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Pull Day', exercises: ['deadlift','pullup','lat_pulldown','row','cable_row','face_pull','bicep_curl','hammer_curl'] },
-      1: { name: 'Lateral Power', exercises: ['squat','split_squat','lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
-      2: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','face_pull','cable_fly','tricep_pushdown'] },
+      0: { name: 'Pull Day', exercises: ['deadlift','pullup','row','lat_pulldown','cable_row','face_pull','bicep_curl','hammer_curl'] },
+      1: { name: 'Lateral Power', exercises: ['lateral_band_walk','split_squat','lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
+      2: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','cable_fly','face_pull','lateral_raise','tricep_pushdown'] },
       3: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','box_jump','jump_squat'] },
-      4: { name: 'Legs', exercises: ['squat','leg_press','leg_curl','calf_raise'] },
-      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','romanian_deadlift','pallof_press','dead_bug'] },
+      4: { name: 'Legs', exercises: ['squat','leg_press','romanian_deadlift','leg_curl','hip_abductor_machine','hip_adductor_machine','calf_raise'] },
+      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','romanian_deadlift','cable_pull_through','pallof_press','dead_bug'] },
       6: { name: 'Rest', exercises: [] },
     }
   },
@@ -2955,6 +2990,11 @@ const EXERCISES = {
     sets: 4, reps: 8, weight: 0,
     cue: 'Stand facing a sturdy box or platform. Swing arms back, then explode up, landing softly with both feet flat on the box. Stand tall to complete the rep, then step (not jump) back down to protect your Achilles.'
   },
+  box_step_up: {
+    name: 'Box Step-Up', muscle: 'Legs', icon: '📦', muscleClass: 'muscle-legs',
+    sets: 4, reps: 8, weight: 0,
+    cue: 'Stand facing a sturdy box or step (12-18 inches). Step one foot onto the box and drive through that heel to stand fully upright on top — do not push off the trailing foot on the ground. Step down with control, return to start, complete all reps on the same leg before switching. Zero impact landing — trains the same quad and glute development as a box jump without ground reaction forces. This makes it the preferred option at higher body weights, during fatigue, or when plyometric landing mechanics are not yet established. Add dumbbells in each hand to progressively load. Use as a warm-up primer before plyometric sessions to activate hip extensors without CNS fatigue.'
+  },
   treadmill_run: {
     name: 'Treadmill / Outdoor Run', muscle: 'Cardio', icon: '🏃', muscleClass: 'muscle-cardio',
     sets: 1, reps: 20, weight: 0,
@@ -3022,6 +3062,41 @@ const EXERCISES = {
     sets: 3, reps: 8, weight: 0,
     cue: 'No ab wheel? Do a plank walkout instead: from standing, hinge forward and walk hands out to a full plank, then walk hands back and stand. This trains the same anti-extension core pattern. With an ab wheel: kneel and roll forward slowly, keeping hips in line. Pull back using your abs, not your lower back.'
   },
+  hip_abductor_machine: {
+    name: 'Hip Abductor Machine', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 3, reps: 15, weight: 50,
+    cue: 'Seat the machine so the pads rest on the outside of your knees, feet flat on the footrests. Sit tall with your lower back against the pad. Drive your knees apart against the resistance through a full range of motion — go as wide as your flexibility allows. Hold 2 seconds at peak contraction, return slowly over 3 seconds. Do not use momentum or lean forward. This trains the gluteus medius and minimus — the primary hip stabilisers for single-leg and lateral movements. Use moderate weight: the goal is full range and controlled tempo, not maximum load.'
+  },
+  hip_adductor_machine: {
+    name: 'Hip Adductor Machine', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
+    sets: 3, reps: 15, weight: 50,
+    cue: 'Set the machine with pads on the inside of your knees, feet on footrests. Sit tall, back against the pad, core engaged. Squeeze your knees together against the resistance through a controlled range. Hold 2 seconds at peak contraction (knees together), return slowly over 3 seconds — the eccentric phase is where the adductor magnus gets its greatest strengthening stimulus. Do not allow the knees to snap back. Adductor strength and eccentric control directly reduce groin strain risk during lateral plyometric work. Moderate load, full range, controlled tempo throughout.'
+  },
+  cable_pull_through: {
+    name: 'Cable Pull-Through', muscle: 'Legs', icon: '🔗', muscleClass: 'muscle-legs',
+    sets: 3, reps: 12, weight: 40,
+    cue: 'Attach a rope handle to the low pulley. Stand facing away from the cable stack, straddle the cable, and hinge at the hips — push your hips back as far as possible, letting the rope pass between your legs. Keep a neutral spine throughout. Drive your hips forward explosively to stand tall, squeezing your glutes hard at the top. The cable provides constant tension through the entire hip extension range — superior to Romanian Deadlift for posterior chain activation at the bottom position. This exercise bridges the hip thrust and RDL: it is hip dominant like a thrust but hinge-patterned like an RDL. Increase weight when 3x12 feels easy.'
+  },
+  lateral_band_walk: {
+    name: 'Lateral Band Walk', muscle: 'Legs', icon: '🟡', muscleClass: 'muscle-legs',
+    sets: 2, reps: 15, weight: 0,
+    cue: 'Place a resistance band around your ankles or just above the knees (above knees = more glute med, below knees = more hip rotator). Stand with feet hip-width apart, slight bend in the knees, hips back in an athletic position. Step sideways — lead foot steps wide, trail foot follows to hip width. Maintain tension in the band throughout — never let feet come together. Complete all reps in one direction then reverse. Keep your torso upright and avoid shifting your weight excessively to the side. This is a glute medius activation exercise — use it as a warm-up before lateral power sessions and plyometrics to prime hip stability for single-leg and lateral loading.'
+  },
+  cable_lateral_raise: {
+    name: 'Cable Lateral Raise', muscle: 'Shoulders', icon: '📡', muscleClass: 'muscle-shoulders',
+    sets: 3, reps: 15, weight: 15,
+    cue: 'Set the cable pulley to the lowest position. Stand sideways to the cable, hold the handle with the hand furthest from the machine. Raise your arm out to the side to shoulder height — no higher. The cable provides constant tension at the bottom of the movement where the dumbbell version loses all resistance. This is the primary advantage over dumbbell lateral raise: the muscle is loaded throughout the full range of motion, not just at the top. Keep a slight bend in the elbow, lead with your elbow not your hand. Slow controlled return. Use lighter weight than you would with dumbbells — the constant tension makes it significantly harder throughout.'
+  },
+  cable_curl: {
+    name: 'Cable Curl', muscle: 'Arms', icon: '💪', muscleClass: 'muscle-arms',
+    sets: 3, reps: 12, weight: 30,
+    cue: 'Attach a straight bar or EZ bar to the low pulley. Stand facing the cable, elbows pinned to your sides. Curl the bar up through the full range of motion — the cable maintains constant tension at the bottom of the curl where a barbell completely loses resistance. This makes cable curl superior to barbell curl for complete bicep stimulation across the full range. Squeeze hard at the top, control the return over 2-3 seconds. Keep elbows stationary throughout — no swinging. Can also be performed with a rope attachment for a neutral grip (similar to hammer curl stimulus).'
+  },
+  rope_pushdown: {
+    name: 'Rope Pushdown', muscle: 'Arms', icon: '🪢', muscleClass: 'muscle-arms',
+    sets: 3, reps: 12, weight: 40,
+    cue: 'Attach a rope to the high pulley. Grip the rope with a neutral grip (palms facing each other), elbows pinned to your sides. Push the rope down and flare your wrists outward at the bottom — this outward rotation at the end position maximally contracts the lateral head of the tricep. Return slowly, keeping tension throughout. The rope attachment targets the lateral tricep head differently from a straight bar pushdown (which emphasises the long head). Use as a 4th swap option for tricep pushdown or as a variation in the same session.'
+  },
 };
 
 
@@ -3056,6 +3131,7 @@ let state = {
   generatedPlanData: null, // generated plan object from plan generator
   lastExported: null,      // ISO date string of last backup export
   restDayOverride: null,   // date string — user chose to rest instead of train today
+  rescheduleRestDay: null, // { date, restDow } — move rest to a different day this week (today-only, no offset change)
   planPushOffset: 0,       // days to shift plan forward (push-forward rest feature)
   equipmentVariants: {},   // exId → variant key ('barbell','dumbbell','machine', etc.)
   travelMode: null,        // null | { returnDate: 'YYYY-MM-DD' | null }
@@ -3462,10 +3538,16 @@ function renderToday() {
 
   // ── Manual rest day override ───────────────────────────────────────────
   const isRestOverride = state.restDayOverride === dateKey;
-  if (isRestOverride) {
+
+  // ── Reschedule rest day — user moved rest to a different day this week ───
+  const isRescheduled = isRescheduledRestDay && isRescheduledRestDay();
+
+  if (isRestOverride || isRescheduled) {
     DOM.heroDay.textContent = `${DAYS[dow]} · ${MONTHS[d.getMonth()]} ${d.getDate()}`;
     DOM.heroTitle.textContent = 'Rest Day';
-    DOM.heroMeta.innerHTML = '<div class="hero-chip">😴 Recovery Mode</div>';
+    DOM.heroMeta.innerHTML = isRescheduled
+      ? '<div class="hero-chip">📆 Rescheduled Rest · <span onclick="state.rescheduleRestDay=null;commitState()" style="cursor:pointer;text-decoration:underline;">Reset</span></div>'
+      : '<div class="hero-chip">😴 Recovery Mode</div>';
     DOM.noPlanMsg.style.display = 'none';
     DOM.progressWrap.style.display = 'none';
     DOM.exerciseList.innerHTML = buildRestDayHTML(true);
@@ -5710,29 +5792,29 @@ const EXERCISE_SWAPS = {
   hip_hinge:        [{ id:'romanian_deadlift', reason:'Loaded hinge' }, { id:'glute_bridge', reason:'Bodyweight hinge' }, { id:'single_leg_rdl_bw', reason:'Unilateral option' }],
 
   // ── Shoulders ────────────────────────────────────────────────────────────
-  ohp:              [{ id:'incline_dumbbell', reason:'Dumbbell shoulder press' }, { id:'lateral_raise', reason:'Shoulder isolation' }, { id:'pike_pushup', reason:'Bodyweight overhead' }],
-  lateral_raise:    [{ id:'face_pull', reason:'Cable alternative' }, { id:'rear_delt_fly', reason:'Rear delt focus' }, { id:'ohp', reason:'Compound press' }],
+  ohp:              [{ id:'incline_dumbbell', reason:'Dumbbell shoulder press' }, { id:'lateral_raise', reason:'Shoulder isolation' }, { id:'pike_pushup', reason:'Bodyweight overhead' }, { id:'cable_lateral_raise', reason:'Cable shoulder — joint-friendly constant tension' }],
+  lateral_raise:    [{ id:'face_pull', reason:'Cable alternative' }, { id:'rear_delt_fly', reason:'Rear delt focus' }, { id:'ohp', reason:'Compound press' }, { id:'cable_lateral_raise', reason:'Constant tension throughout full range' }],
   rear_delt_fly:    [{ id:'face_pull', reason:'Cable version' }, { id:'cable_row', reason:'Row alternative' }, { id:'lateral_raise', reason:'Side delt focus' }],
   shrug:            [{ id:'face_pull', reason:'Upper trap alternative' }, { id:'upright_row', reason:'Similar pattern' }],
 
   // ── Arms ─────────────────────────────────────────────────────────────────
-  bicep_curl:       [{ id:'hammer_curl', reason:'Neutral grip option' }, { id:'cable_row', reason:'Compound pulling' }, { id:'pullup', reason:'Compound bicep' }],
-  hammer_curl:      [{ id:'bicep_curl', reason:'Supinated grip' }, { id:'cable_row', reason:'Compound option' }],
-  tricep_pushdown:  [{ id:'skull_crusher', reason:'Free weight option' }, { id:'dips', reason:'Bodyweight compound' }, { id:'tricep_dip_chair', reason:'Chair dip option' }],
+  bicep_curl:       [{ id:'hammer_curl', reason:'Neutral grip option' }, { id:'cable_row', reason:'Compound pulling' }, { id:'pullup', reason:'Compound bicep' }, { id:'cable_curl', reason:'Constant tension — superior hypertrophy' }],
+  hammer_curl:      [{ id:'bicep_curl', reason:'Supinated grip' }, { id:'cable_row', reason:'Compound option' }, { id:'inverted_row', reason:'Bodyweight pull' }, { id:'cable_curl', reason:'Constant tension curl' }],
+  tricep_pushdown:  [{ id:'skull_crusher', reason:'Free weight option' }, { id:'dips', reason:'Bodyweight compound' }, { id:'tricep_dip_chair', reason:'Chair dip option' }, { id:'rope_pushdown', reason:'Rope grip — hits lateral tricep head' }],
   skull_crusher:    [{ id:'tricep_pushdown', reason:'Cable version' }, { id:'dips', reason:'Bodyweight compound' }, { id:'tricep_dip_chair', reason:'Bodyweight option' }],
   tricep_dip_chair: [{ id:'tricep_pushdown', reason:'Cable isolation' }, { id:'dips', reason:'Weighted dips' }],
 
   // ── Legs ─────────────────────────────────────────────────────────────────
   squat:            [{ id:'goblet_squat', reason:'Easier technique' }, { id:'leg_press', reason:'Machine option' }, { id:'split_squat', reason:'Unilateral version' }, { id:'squat_bw', reason:'Bodyweight' }],
   goblet_squat:     [{ id:'squat', reason:'Barbell version' }, { id:'leg_press', reason:'Machine option' }, { id:'squat_bw', reason:'Bodyweight' }],
-  romanian_deadlift:[{ id:'leg_curl', reason:'Machine hamstring' }, { id:'glute_bridge', reason:'Bodyweight hip hinge' }, { id:'single_leg_rdl', reason:'Unilateral version' }],
+  romanian_deadlift:[{ id:'leg_curl', reason:'Machine hamstring' }, { id:'glute_bridge', reason:'Bodyweight hip hinge' }, { id:'single_leg_rdl', reason:'Unilateral version' }, { id:'cable_pull_through', reason:'Cable constant tension — same hip hinge pattern' }],
   leg_press:        [{ id:'squat', reason:'Barbell squat' }, { id:'goblet_squat', reason:'Dumbbell squat' }, { id:'split_squat', reason:'Unilateral option' }],
-  leg_curl:         [{ id:'romanian_deadlift', reason:'Hinge alternative' }, { id:'nordic_curl', reason:'Harder hamstring' }, { id:'glute_bridge', reason:'Posterior chain' }],
-  calf_raise:       [{ id:'calf_raise_bw', reason:'Bodyweight version' }],
+  leg_curl:         [{ id:'romanian_deadlift', reason:'Hinge alternative' }, { id:'nordic_curl', reason:'Harder hamstring' }, { id:'glute_bridge', reason:'Posterior chain' }, { id:'cable_pull_through', reason:'Cable hip extension — constant tension' }],
+  calf_raise:       [{ id:'calf_raise_bw', reason:'Bodyweight version' }, { id:'leg_press', reason:'Toe press on leg press' }, { id:'squat', reason:'Compound lower body' }, { id:'split_squat', reason:'Unilateral option' }],
   split_squat:      [{ id:'lunge', reason:'Moving lunge' }, { id:'goblet_squat', reason:'Bilateral squat' }, { id:'leg_press', reason:'Machine option' }],
   lunge:            [{ id:'split_squat', reason:'Static version' }, { id:'goblet_squat', reason:'Squat alternative' }, { id:'lunge_bw', reason:'Bodyweight lunge' }],
   single_leg_rdl:   [{ id:'romanian_deadlift', reason:'Bilateral version' }, { id:'glute_bridge', reason:'Bodyweight option' }, { id:'leg_curl', reason:'Machine hamstring' }],
-  hip_thrust:       [{ id:'glute_bridge', reason:'Easier version' }, { id:'romanian_deadlift', reason:'Hip hinge' }, { id:'lateral_hip_thrust', reason:'Unilateral version' }],
+  hip_thrust:       [{ id:'glute_bridge', reason:'Easier version' }, { id:'romanian_deadlift', reason:'Hip hinge' }, { id:'lateral_hip_thrust', reason:'Unilateral version' }, { id:'cable_pull_through', reason:'Cable constant tension hip extension' }],
   lateral_hip_thrust:[{ id:'hip_thrust', reason:'Bilateral version' }, { id:'glute_bridge', reason:'Bodyweight option' }, { id:'glute_med_raise', reason:'Abduction focus' }],
   glute_med_raise:  [{ id:'lateral_hip_thrust', reason:'Loaded version' }, { id:'glute_bridge', reason:'Glute activation' }],
   nordic_curl:      [{ id:'leg_curl', reason:'Knee-flexion machine equivalent' }, { id:'romanian_deadlift', reason:'Eccentric hamstring loading' }, { id:'single_leg_rdl', reason:'Unilateral hamstring option' }],
@@ -5745,10 +5827,11 @@ const EXERCISE_SWAPS = {
   plank_rotation:   [{ id:'dead_bug', reason:'Anti-extension core' }, { id:'pallof_press', reason:'Anti-rotation' }, { id:'plank', reason:'Isometric hold' }],
 
   // ── Drive Phase / Plyometric — always swap DOWN in intensity ─────────────
-  depth_jump:       [{ id:'box_jump', reason:'Lower impact landing' }, { id:'broad_jump', reason:'Horizontal power' }, { id:'jump_squat', reason:'Lowest impact option' }],
-  lateral_hurdle_hop:[{ id:'lateral_bound', reason:'Single-leg lateral' }, { id:'jump_squat', reason:'Vertical option' }, { id:'box_jump', reason:'Vertical jump' }],
+  depth_jump:       [{ id:'box_jump', reason:'Lower impact landing' }, { id:'box_step_up', reason:'Zero impact — step version' }, { id:'broad_jump', reason:'Horizontal power' }, { id:'jump_squat', reason:'Lowest impact option' }],
+  box_step_up:      [{ id:'box_jump', reason:'Add explosive element' }, { id:'jump_squat', reason:'No box needed' }, { id:'split_squat', reason:'Unilateral strength' }, { id:'lunge', reason:'Loaded step alternative' }],
+  lateral_hurdle_hop:[{ id:'lateral_bound', reason:'Single-leg lateral' }, { id:'jump_squat', reason:'Vertical option' }, { id:'box_jump', reason:'Vertical jump' }, { id:'box_step_up', reason:'Zero impact step alternative' }],
   broad_jump:       [{ id:'jump_squat', reason:'Vertical option' }, { id:'box_jump', reason:'Box target' }, { id:'lunge', reason:'No-jump option' }],
-  box_jump:         [{ id:'jump_squat', reason:'No box needed' }, { id:'broad_jump', reason:'Horizontal power' }, { id:'squat_bw', reason:'No-jump option' }],
+  box_jump:         [{ id:'jump_squat', reason:'No box needed' }, { id:'broad_jump', reason:'Horizontal power' }, { id:'squat_bw', reason:'No-jump option' }, { id:'box_step_up', reason:'Zero impact — same muscles, no landing force' }],
   jump_squat:       [{ id:'goblet_squat', reason:'No-jump version' }, { id:'squat_bw', reason:'Bodyweight squat' }, { id:'lunge_bw', reason:'Unilateral option' }],
   treadmill_run:    [{ id:'bike', reason:'Low-impact alternative' }, { id:'jump_rope', reason:'Cardio without treadmill' }, { id:'high_knees', reason:'No equipment cardio' }],
   bike:             [{ id:'treadmill_run', reason:'Running alternative' }, { id:'jump_rope', reason:'Higher intensity option' }, { id:'high_knees', reason:'No equipment cardio' }],
@@ -5761,6 +5844,14 @@ const EXERCISE_SWAPS = {
   burpee:           [{ id:'jump_squat', reason:'Lower intensity' }, { id:'mountain_climber', reason:'No jump option' }, { id:'high_knees', reason:'Cardio without impact' }],
   mountain_climber: [{ id:'high_knees', reason:'Standing version' }, { id:'plank', reason:'Static core' }, { id:'burpee', reason:'Full body option' }],
   high_knees:       [{ id:'mountain_climber', reason:'Floor version' }, { id:'jump_rope', reason:'Cardio alternative' }, { id:'treadmill_run', reason:'Running option' }],
+  // ── Cable / Machine Isolation ───────────────────────────────────────────────
+  hip_abductor_machine: [{ id:'lateral_hip_thrust', reason:'Unilateral glute med' }, { id:'lateral_band_walk', reason:'Band activation option' }, { id:'skater_squat', reason:'Unilateral lateral' }, { id:'cable_lateral_raise', reason:'Cable abduction variation' }],
+  hip_adductor_machine: [{ id:'sumo_squat', reason:'Adductor-heavy squat' }, { id:'lateral_band_walk', reason:'Hip stability' }, { id:'split_squat', reason:'Unilateral adductor load' }, { id:'cable_pull_through', reason:'Cable hip option' }],
+  cable_pull_through:   [{ id:'hip_thrust', reason:'Loaded hip extension' }, { id:'romanian_deadlift', reason:'Hinge pattern' }, { id:'glute_bridge', reason:'Bodyweight version' }, { id:'deadlift', reason:'Full chain compound' }],
+  lateral_band_walk:    [{ id:'hip_abductor_machine', reason:'Machine version' }, { id:'lateral_hip_thrust', reason:'Loaded lateral glute' }, { id:'skater_squat', reason:'Unilateral lateral' }, { id:'lateral_bound', reason:'Power version' }],
+  cable_lateral_raise:  [{ id:'lateral_raise', reason:'Dumbbell version' }, { id:'face_pull', reason:'Rear delt option' }, { id:'rear_delt_fly', reason:'Posterior shoulder' }, { id:'ohp', reason:'Compound press' }],
+  cable_curl:           [{ id:'bicep_curl', reason:'Barbell version' }, { id:'hammer_curl', reason:'Neutral grip' }, { id:'pullup', reason:'Compound pull' }, { id:'inverted_row', reason:'Bodyweight option' }],
+  rope_pushdown:        [{ id:'tricep_pushdown', reason:'Bar version' }, { id:'skull_crusher', reason:'Free weight' }, { id:'dips', reason:'Bodyweight option' }, { id:'cable_fly', reason:'Cable chest option' }],
   // ── Bodyweight / Home ─────────────────────────────────────────────────────
   lunge_bw:          [{ id:'squat_bw', reason:'Bilateral bodyweight squat' }, { id:'glute_bridge', reason:'Posterior chain option' }, { id:'split_squat', reason:'Loaded alternative' }],
   glute_bridge:      [{ id:'hip_thrust', reason:'Loaded version' }, { id:'single_leg_rdl_bw', reason:'Unilateral option' }, { id:'romanian_deadlift', reason:'Loaded hinge' }],
@@ -6610,6 +6701,7 @@ function initDOMCache() {
     travelModal:      document.getElementById('travel-modal'),
     backupModal:      document.getElementById('backup-modal'),
     pickerOverlay:    document.getElementById('picker-modal-overlay'),
+    rescheduleOverlay:document.getElementById('reschedule-modal-overlay'),
   };
 }
 
@@ -6646,6 +6738,131 @@ document.getElementById('swap-modal').addEventListener('click', function(e) {
 document.getElementById('rpe-modal').addEventListener('click', function(e) {
   if (e.target === this) closeRpeGuide();
 });
+
+// ── RESCHEDULE REST DAY ────────────────────────────────────────────────────
+// Lets the user nominate a different calendar day as their rest day this week.
+// Does NOT change planPushOffset or restDayOverride — purely a week-scoped
+// "rest on this day instead" mechanism. Self-clears when the week changes.
+
+const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+function openRescheduleModal() {
+  const overlay = document.getElementById('reschedule-modal-overlay');
+  const list    = document.getElementById('reschedule-day-list');
+  if (!overlay || !list) return;
+
+  const plan = state.primaryPlan ? getPlan(state.primaryPlan) : null;
+  if (!plan) { showToast('No plan active'); return; }
+
+  clearRescheduleIfStale();
+  const todayDow = (new Date().getDay() + 6) % 7;
+  list.innerHTML = '';
+
+  for (let dow = 0; dow < 7; dow++) {
+    const dayData = plan.days && plan.days[dow];
+    const isPlanRest  = !dayData || !dayData.exercises || dayData.exercises.length === 0;
+    const isMovedRest = state.rescheduleRestDay && state.rescheduleRestDay.restDow === dow;
+    const isAnyRest   = isPlanRest || isMovedRest;
+    const isToday     = dow === todayDow;
+    const sessionName = (dayData && dayData.name) ? dayData.name : 'Rest';
+
+    const btn = document.createElement('button');
+    btn.style.cssText = [
+      'display:flex;align-items:center;gap:12px;width:100%;',
+      'padding:12px 14px;border-radius:12px;text-align:left;',
+      'background:' + (isAnyRest ? 'rgba(107,114,128,0.08)' : 'rgba(0,194,255,0.05)') + ';',
+      'border:1px solid ' + (isToday ? 'rgba(0,194,255,0.4)' : isAnyRest ? 'rgba(107,114,128,0.2)' : 'rgba(0,194,255,0.15)') + ';',
+      'cursor:' + (isToday ? 'not-allowed' : 'pointer') + ';',
+      'opacity:' + (isToday ? '0.4' : '1') + ';',
+      'transition:all .15s;',
+    ].join('');
+
+    btn.innerHTML =
+      '<span style="font-size:18px;">' + (isAnyRest ? '😴' : '🏋️') + '</span>' +
+      '<div style="flex:1;">' +
+        '<div style="font-size:13px;font-weight:600;color:var(--text);">' + DAYS_FULL[dow] + (isToday ? ' (Today)' : '') + '</div>' +
+        '<div style="font-size:11px;color:var(--muted);">' + sessionName + (isMovedRest ? ' — moved rest' : '') + '</div>' +
+      '</div>' +
+      (isAnyRest ? '<span style="font-size:10px;font-family:var(--font-mono);color:var(--muted);background:rgba(107,114,128,0.15);padding:2px 7px;border-radius:6px;">REST</span>' : '');
+
+    if (!isToday) {
+      btn.onclick = () => confirmReschedule(dow);
+      btn.onmouseenter = () => { if (!isAnyRest) btn.style.background = 'rgba(0,194,255,0.1)'; };
+      btn.onmouseleave = () => { if (!isAnyRest) btn.style.background = 'rgba(0,194,255,0.05)'; };
+    }
+    list.appendChild(btn);
+  }
+
+  overlay.classList.add('open');
+}
+
+function closeRescheduleModal() {
+  const overlay = document.getElementById('reschedule-modal-overlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+function confirmReschedule(targetDow) {
+  // Key by this week's Monday so the override auto-clears next week
+  const d = new Date();
+  const monday = new Date(d);
+  monday.setDate(d.getDate() - (d.getDay() + 6) % 7);
+  const weekKey = monday.toISOString().slice(0, 10);
+  state.rescheduleRestDay = { weekKey, restDow: targetDow };
+  closeRescheduleModal();
+  commitState('📆 Rest moved to ' + DAYS_FULL[targetDow]);
+}
+
+function clearRescheduleIfStale() {
+  if (!state.rescheduleRestDay) return;
+  const d = new Date();
+  const monday = new Date(d);
+  monday.setDate(d.getDate() - (d.getDay() + 6) % 7);
+  const thisWeek = monday.toISOString().slice(0, 10);
+  if (state.rescheduleRestDay.weekKey !== thisWeek) {
+    state.rescheduleRestDay = null;
+    saveState();
+  }
+}
+
+function isRescheduledRestDay() {
+  clearRescheduleIfStale();
+  if (!state.rescheduleRestDay) return false;
+  const todayDow = (new Date().getDay() + 6) % 7;
+  return state.rescheduleRestDay.restDow === todayDow;
+}
+
+window.openRescheduleModal   = openRescheduleModal;
+window.closeRescheduleModal  = closeRescheduleModal;
+window.confirmReschedule     = confirmReschedule;
+window.isRescheduledRestDay  = isRescheduledRestDay;
 </script>
+
+  <!-- Reschedule Rest Day Modal -->
+  <div class="modal-overlay" id="reschedule-modal-overlay" onclick="closeRescheduleModal()">
+    <div class="picker-modal" id="reschedule-modal" onclick="event.stopPropagation()" style="max-height:70dvh;">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <div class="modal-title" style="font-size:20px;">📆 Move Rest Day</div>
+        <button class="modal-close" onclick="closeRescheduleModal()">✕</button>
+      </div>
+      <div style="padding:8px 20px 10px;">
+        <p style="font-size:13px;color:var(--text);margin:0 0 4px;">
+          Pick a different day to rest this week. Today's session loads normally — your rest day shifts instead.
+        </p>
+        <p style="font-size:11px;color:var(--muted);margin:0 0 14px;">
+          This doesn't change your plan schedule or push tomorrow's session. It simply marks a different day as rest.
+        </p>
+        <div id="reschedule-day-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <div style="padding:10px 20px 20px;">
+        <button onclick="closeRescheduleModal()"
+          style="width:100%;padding:13px;border-radius:12px;font-size:14px;font-weight:600;
+            background:var(--bg3);border:1px solid var(--border);color:var(--text-inv);">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
