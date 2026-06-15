@@ -3321,8 +3321,8 @@ function calculateReadiness() {
 function promptReadinessCheckIn() {
   const existing = state.readinessLog.find(log => log.date === today());
   if (existing) return; // Already logged today
-  
-  showModal('Today's Readiness Check', `
+
+  showModal("Today's Readiness Check", `
     <p>How are you feeling today?</p>
     <label><strong>Sleep last night:</strong></label>
     <select id="sleep" style="width:100%; padding:8px; margin-bottom:12px;">
