@@ -3129,14 +3129,14 @@ const PLAN_EQUIPMENT = {
   'home_workout': []
 };
 
-// Injury Types for Screening
+// Injury Types for Screening (None first for better UX)
 const INJURY_TYPES = [
+  'None / No injuries',
   'Lower back pain or history',
   'Knee pain or history',
   'Shoulder pain or history',
   'Elbow pain or history',
-  'Hamstring or groin strain',
-  'None / No injuries'
+  'Hamstring or groin strain'
 ];
 
 // Deload Triggers (auto-suggest at these week marks)
@@ -3204,40 +3204,53 @@ function checkInjuryHistory() {
   if (!state.injuryScreeningCompleted) {
     showModal('Injury & Health Screening', `
       <p>Before starting a plan, let's check your injury history to recommend the safest options.</p>
-      <label><strong>Any current or past injuries?</strong></label>
+      <label><strong>Any current or past injuries? (select all that apply)</strong></label>
       ${INJURY_TYPES.map((type, i) => `
         <div style="margin: 8px 0;">
-          <input type="radio" name="injury" value="${type}" id="inj${i}">
+          <input type="checkbox" name="injury" value="${type}" id="inj${i}">
           <label for="inj${i}" style="display:inline; font-weight:normal;">${type}</label>
         </div>
       `).join('')}
       <div style="margin-top: 16px; display:flex; gap:8px;">
-        <button onclick="saveInjuryHistory()">Continue</button>
-        <button onclick="closeModal()" style="background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
+        <button onclick="saveInjuryHistory()" style="flex:1;">Continue</button>
+        <button onclick="skipInjuryScreening()" style="flex:1; background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
       </div>
     `);
   }
 }
 
 function saveInjuryHistory() {
-  const selected = document.querySelector('input[name="injury"]:checked');
-  if (selected) {
-    state.injuryHistory = { type: selected.value, date: today(), resolved: false };
-    state.injuryScreeningCompleted = true;
-    saveState();
-    closeModal();
-    console.log('Injury history saved:', state.injuryHistory);
+  const selected = Array.from(document.querySelectorAll('input[name="injury"]:checked'))
+    .map(el => el.value);
+
+  if (selected.length === 0) {
+    showToast('⚠️ Please select at least one option');
+    return;
   }
+
+  state.injuryHistory = { types: selected, date: today() };
+  state.injuryScreeningCompleted = true;
+  saveState();
+  closeModal();
+  console.log('Injury history saved:', state.injuryHistory);
+}
+
+function skipInjuryScreening() {
+  state.injuryHistory = { types: [], date: today() };
+  state.injuryScreeningCompleted = true;
+  saveState();
+  closeModal();
 }
 
 function checkPlanPrerequisites(planId) {
   const prereq = PLAN_PREREQUISITES[planId] || { minExpYears: 0, minLifts: {} };
   const warnings = [];
-  
-  // Check injury conflicts
-  if (state.injuryHistory && state.injuryHistory.type !== 'None / No injuries') {
-    if (planId === 'drive_phase' || planId === 'ppl_athletic') {
-      warnings.push('⚠️ This plan includes plyometrics and power work. High impact. Consider if your injury allows.');
+
+  // Check injury conflicts (warn if ANY injury selected and plan is high-impact)
+  if (state.injuryHistory && state.injuryHistory.types && state.injuryHistory.types.length > 0) {
+    const hasInjury = state.injuryHistory.types.some(t => t !== 'None / No injuries');
+    if (hasInjury && (planId === 'drive_phase' || planId === 'ppl_athletic')) {
+      warnings.push('⚠️ This plan includes plyometrics and power work. High impact. Your reported injuries: ' + state.injuryHistory.types.filter(t => t !== 'None / No injuries').join(', '));
     }
   }
   
@@ -3288,6 +3301,7 @@ function loadPlanForReal(planId) {
   if (plan) {
     state.primaryPlan = plan.id;
     saveState();
+    showToast('✓ ' + plan.name + ' loaded as primary plan');
     navTo('today', document.querySelector('[data-page=today]'));
   }
 }
@@ -3321,6 +3335,9 @@ function calculateReadiness() {
 }
 
 function promptReadinessCheckIn() {
+  // Only show if user has an active plan (not for new users)
+  if (!state.primaryPlan) return;
+
   const existing = state.readinessLog.find(log => log.date === today());
   if (existing) return; // Already logged today
 
