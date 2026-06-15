@@ -3099,6 +3099,55 @@ const EXERCISES = {
   },
 };
 
+// ═══════════════════════════════════════════════════════════════════════════
+//  DATA: PHASE 2 — Safety Gates, Prerequisites, Equipment, Deload Tracking
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Plan Prerequisites: Experience level & strength benchmarks
+const PLAN_PREREQUISITES = {
+  'beginner_fullbody': { minExpYears: 0, minLifts: {} },
+  'intermediate_ppl': { minExpYears: 1, minLifts: { bench: 135, squat: 185, deadlift: 225 } },
+  'advanced_split': { minExpYears: 3, minLifts: { bench: 225, squat: 315, deadlift: 405 } },
+  'weight_loss_cardio': { minExpYears: 0, minLifts: {} },
+  'cardio_only': { minExpYears: 0, minLifts: {} },
+  'drive_phase': { minExpYears: 2, minLifts: { squat: 225, deadlift: 315 } },
+  'ppl_athletic': { minExpYears: 3, minLifts: { bench: 225, squat: 315, deadlift: 405, pullups: 5 } },
+  'home_workout': { minExpYears: 0, minLifts: {} }
+};
+
+// Equipment Requirements per Plan
+const PLAN_EQUIPMENT = {
+  'beginner_fullbody': ['Dumbbells', 'Bench (optional)'],
+  'intermediate_ppl': ['Full gym', 'Squat rack', 'Barbells', 'Cable machine'],
+  'advanced_split': ['Full gym', 'Squat rack', 'Barbells', 'Leg press', 'Cable machine'],
+  'weight_loss_cardio': ['Dumbbells', 'Treadmill or bike (optional)'],
+  'cardio_only': ['Treadmill', 'Bike', 'Jump rope (optional)'],
+  'drive_phase': ['Squat rack', 'Boxes (12-36")', 'Hurdles', 'Bands', 'Cables'],
+  'ppl_athletic': ['Full gym', 'Squat rack', 'Boxes', 'Hurdles', 'Bands', 'Cables'],
+  'home_workout': []
+};
+
+// Injury Types for Screening
+const INJURY_TYPES = [
+  'Lower back pain or history',
+  'Knee pain or history',
+  'Shoulder pain or history',
+  'Elbow pain or history',
+  'Hamstring or groin strain',
+  'None / No injuries'
+];
+
+// Deload Triggers (auto-suggest at these week marks)
+const DELOAD_WEEK_TRIGGERS = [4, 8, 12];
+
+// Readiness Scoring Scale
+const READINESS_SCALE = {
+  sleep: { poor: 1, fair: 2, good: 3, excellent: 4 },
+  soreness: { severe: 1, moderate: 2, mild: 3, none: 4 },
+  mood: { low: 1, okay: 2, good: 3, excellent: 4 }
+};
+
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  CONSTANTS — single source of truth for all magic numbers
@@ -3136,7 +3185,227 @@ let state = {
   equipmentVariants: {},   // exId → variant key ('barbell','dumbbell','machine', etc.)
   travelMode: null,        // null | { returnDate: 'YYYY-MM-DD' | null }
   todaySwaps: {},          // dateKey → { exId: swapExId } — today-only exercise swaps
+,
+  injuryHistory: null,          // { type, date, resolved }
+  equipmentAvailable: {},      // planId → yes/no/partial
+  deloadTracking: {},          // planId → { weekNumber, lastDeloadDate }
+  readinessLog: [],            // [{ date, sleep, soreness, mood, score }]
+  planProgressionPath: null,   // { current, next, canAdvance }
+  injuryScreeningCompleted: false,
 };
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  PHASE 2 HELPERS — Injury screening, prerequisites, readiness, deload
+// ═══════════════════════════════════════════════════════════════════════════
+
+function checkInjuryHistory() {
+  if (!state.injuryScreeningCompleted) {
+    showModal('Injury & Health Screening', `
+      <p>Before starting a plan, let's check your injury history to recommend the safest options.</p>
+      <label><strong>Any current or past injuries?</strong></label>
+      ${INJURY_TYPES.map((type, i) => `
+        <div style="margin: 8px 0;">
+          <input type="radio" name="injury" value="${type}" id="inj${i}">
+          <label for="inj${i}" style="display:inline; font-weight:normal;">${type}</label>
+        </div>
+      `).join('')}
+      <div style="margin-top: 16px; display:flex; gap:8px;">
+        <button onclick="saveInjuryHistory()">Continue</button>
+        <button onclick="closeModal()" style="background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
+      </div>
+    `);
+  }
+}
+
+function saveInjuryHistory() {
+  const selected = document.querySelector('input[name="injury"]:checked');
+  if (selected) {
+    state.injuryHistory = { type: selected.value, date: today(), resolved: false };
+    state.injuryScreeningCompleted = true;
+    saveState();
+    closeModal();
+    console.log('Injury history saved:', state.injuryHistory);
+  }
+}
+
+function checkPlanPrerequisites(planId) {
+  const prereq = PLAN_PREREQUISITES[planId] || { minExpYears: 0, minLifts: {} };
+  const warnings = [];
+  
+  // Check injury conflicts
+  if (state.injuryHistory && state.injuryHistory.type !== 'None / No injuries') {
+    if (planId === 'drive_phase' || planId === 'ppl_athletic') {
+      warnings.push('⚠️ This plan includes plyometrics and power work. High impact. Consider if your injury allows.');
+    }
+  }
+  
+  if (warnings.length > 0) {
+    showModal('Plan Safety Check', `
+      <p>Before you load this plan:</p>
+      ${warnings.map(w => '<p>' + w + '</p>').join('')}
+      <div style="margin-top: 16px; display:flex; gap:8px;">
+        <button onclick="closeModal(); loadPlanForReal('${planId}')">I understand, proceed</button>
+        <button onclick="closeModal()" style="background:transparent; border:1px solid var(--border); color:var(--text);">Cancel</button>
+      </div>
+    `);
+    return false; // Block plan load until confirmed
+  }
+  return true; // Safe to load
+}
+
+function checkEquipmentAvailable(planId) {
+  const equipment = PLAN_EQUIPMENT[planId] || [];
+  if (equipment.length === 0) return true; // No equipment needed
+  
+  const checked = state.equipmentAvailable[planId];
+  if (checked === 'yes' || checked === 'partial') return true;
+  
+  // First time: ask user
+  showModal('Equipment Check', `
+    <p><strong>${PLANS.find(p => p.id === planId)?.name}</strong> requires:</p>
+    <ul>${equipment.map(e => '<li>' + e + '</li>').join('')}</ul>
+    <p>Do you have access to all of this?</p>
+    <div style="margin-top: 16px; display:flex; gap:8px;">
+      <button onclick="recordEquipment('${planId}', 'yes'); loadPlanForReal('${planId}')">Yes, I have all</button>
+      <button onclick="recordEquipment('${planId}', 'partial'); loadPlanForReal('${planId}')" style="background:var(--yellow); color:var(--text);">Partial access</button>
+      <button onclick="closeModal()" style="background:transparent; border:1px solid var(--border); color:var(--text);">Cancel</button>
+    </div>
+  `);
+  return false;
+}
+
+function recordEquipment(planId, status) {
+  state.equipmentAvailable[planId] = status;
+  saveState();
+  closeModal();
+}
+
+function loadPlanForReal(planId) {
+  // Actually load the plan (this would be the original selectPlan logic)
+  const plan = PLANS.find(p => p.id === planId);
+  if (plan) {
+    state.primaryPlan = plan.id;
+    saveState();
+    navTo('today', document.querySelector('[data-page=today]'));
+  }
+}
+
+function checkDeloadWeek() {
+  if (!state.primaryPlan) return;
+  const plan = PLANS.find(p => p.id === state.primaryPlan);
+  if (!plan) return;
+  
+  const deload = state.deloadTracking[state.primaryPlan] || { weekNumber: 1 };
+  
+  if (DELOAD_WEEK_TRIGGERS.includes(deload.weekNumber)) {
+    showToast('💪 Week ' + deload.weekNumber + ' detected. Consider a deload week: 80% intensity, 3 sets per exercise.');
+  }
+}
+
+function calculateReadiness() {
+  const today_log = state.readinessLog.find(log => log.date === today());
+  if (!today_log) return null;
+  
+  const scale = READINESS_SCALE;
+  const sleep_score = scale.sleep[today_log.sleep] || 2;
+  const soreness_score = scale.soreness[today_log.soreness] || 2;
+  const mood_score = scale.mood[today_log.mood] || 2;
+  
+  const avg = (sleep_score + soreness_score + mood_score) / 3;
+  return {
+    score: Math.round(avg * 10) / 10,
+    level: avg >= 3.5 ? 'Excellent' : avg >= 2.5 ? 'Good' : 'Low'
+  };
+}
+
+function promptReadinessCheckIn() {
+  const existing = state.readinessLog.find(log => log.date === today());
+  if (existing) return; // Already logged today
+  
+  showModal('Today's Readiness Check', `
+    <p>How are you feeling today?</p>
+    <label><strong>Sleep last night:</strong></label>
+    <select id="sleep" style="width:100%; padding:8px; margin-bottom:12px;">
+      <option value="">Select...</option>
+      <option value="poor">Poor (0-4 hrs)</option>
+      <option value="fair">Fair (5-6 hrs)</option>
+      <option value="good">Good (7-8 hrs)</option>
+      <option value="excellent">Excellent (9+ hrs)</option>
+    </select>
+    
+    <label><strong>Current soreness:</strong></label>
+    <select id="soreness" style="width:100%; padding:8px; margin-bottom:12px;">
+      <option value="">Select...</option>
+      <option value="severe">Severe (DOMS, can't move)</option>
+      <option value="moderate">Moderate (noticeable, can train)</option>
+      <option value="mild">Mild (light soreness)</option>
+      <option value="none">None (fresh)</option>
+    </select>
+    
+    <label><strong>Mood & Energy:</strong></label>
+    <select id="mood" style="width:100%; padding:8px; margin-bottom:12px;">
+      <option value="">Select...</option>
+      <option value="low">Low (unmotivated)</option>
+      <option value="okay">Okay (neutral)</option>
+      <option value="good">Good (ready)</option>
+      <option value="excellent">Excellent (fired up)</option>
+    </select>
+    
+    <div style="margin-top: 16px; display:flex; gap:8px;">
+      <button onclick="saveReadiness()">Log Check-In</button>
+      <button onclick="closeModal()" style="background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
+    </div>
+  `);
+}
+
+function saveReadiness() {
+  const sleep = document.getElementById('sleep').value;
+  const soreness = document.getElementById('soreness').value;
+  const mood = document.getElementById('mood').value;
+  
+  if (!sleep || !soreness || !mood) {
+    showToast('⚠️ Please answer all questions');
+    return;
+  }
+  
+  const readiness = { date: today(), sleep, soreness, mood, score: 0 };
+  const scale = READINESS_SCALE;
+  const avg = ((scale.sleep[sleep] || 2) + (scale.soreness[soreness] || 2) + (scale.mood[mood] || 2)) / 3;
+  readiness.score = Math.round(avg * 10) / 10;
+  
+  state.readinessLog.push(readiness);
+  saveState();
+  closeModal();
+  
+  console.log('Readiness logged:', readiness);
+  if (readiness.score < 2) {
+    showToast('⚠️ Low readiness detected. Consider lighter training or mobility work today.');
+  }
+}
+
+function showPlanRecommendations() {
+  const current = PLANS.find(p => p.id === state.primaryPlan);
+  if (!current) return;
+  
+  const currentIndex = PLANS.findIndex(p => p.id === state.primaryPlan);
+  const progression = [
+    { level: 'Beginner', plans: ['beginner_fullbody'] },
+    { level: 'Intermediate', plans: ['intermediate_ppl', 'weight_loss_cardio', 'pure_cardio', 'drive_phase', 'home_workout'] },
+    { level: 'Advanced', plans: ['advanced_split', 'ppl_athletic'] }
+  ];
+  
+  // Find current level
+  let currentLevel = 0;
+  progression.forEach((p, i) => {
+    if (p.plans.includes(state.primaryPlan)) currentLevel = i;
+  });
+  
+  if (currentLevel < progression.length - 1) {
+    const nextLevel = progression[currentLevel + 1];
+    console.log('Progression recommendation: Ready to try ' + nextLevel.level + ' plans');
+  }
+}
 
 function loadState() {
   try {
@@ -3153,7 +3422,16 @@ function loadState() {
       state.activePlan = null;
     }
   } catch(e) {}
-}
+
+    // Phase 2 migration: ensure new fields exist
+    if (!state.injuryScreeningCompleted) state.injuryScreeningCompleted = false;
+    if (!state.injuryHistory) state.injuryHistory = null;
+    if (!state.equipmentAvailable) state.equipmentAvailable = {};
+    if (!state.deloadTracking) state.deloadTracking = {};
+    if (!state.readinessLog) state.readinessLog = [];
+    if (!state.planProgressionPath) state.planProgressionPath = null;
+
+  }
 
 function saveState() {
   try {
@@ -3177,6 +3455,17 @@ function saveState() {
 // ═══════════════════════════════════════════════════════════════════════════
 const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+
+function selectPlanWithGates(planId) {
+  // Check prerequisites first
+  if (!checkPlanPrerequisites(planId)) return;
+  // Then check equipment
+  if (!checkEquipmentAvailable(planId)) return;
+  // If both pass, load the plan
+  loadPlanForReal(planId);
+}
+
 
 function today() {
   const d = new Date();
@@ -3470,6 +3759,9 @@ function clearPushOffset() {
 //  TODAY PAGE
 // ═══════════════════════════════════════════════════════════════════════════
 function renderToday() {
+  promptReadinessCheckIn();
+  checkDeloadWeek();
+
   try {
   const dateKey = today();
   const d = new Date();
