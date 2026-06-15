@@ -2517,7 +2517,7 @@ const PLANS = [
   {
     id: 'beginner_fullbody', watchType: 'Traditional Strength Training', watchTypeAlt: 'Functional Strength Training (Wed — Full Body B)',
     name: 'Beginner Full Body',
-    desc: '3-day full body — Mon/Wed/Fri with full rest between sessions. Low equipment dependency — mostly dumbbells and bodyweight, works on any gym day. Progression: when all sets feel easy for 2 consecutive sessions, add 2.5-5lbs. Friday alternates Full Body A/B each week for balanced development.',
+    desc: '3-day full body for beginners. Dumbbells and bodyweight. Balanced upper/lower work.',
     badge: '🌱',
     color: '#00e5ff',
     tags: ['3x/week', 'Strength', 'Beginner'],
@@ -2543,7 +2543,7 @@ const PLANS = [
   {
     id: 'intermediate_ppl', watchType: 'Traditional Strength Training', watchTypeAlt: 'Functional Strength Training (Sat — Leg Day B)',
     name: 'Intermediate PPL',
-    desc: 'PPL split with A/B leg days. Bench on Wednesday — best rack availability. Deadlift anchors Monday Pull. Progression: Squat +5lbs every completed session. Hip Thrust +5lbs every completed session. Push Day: if rack occupied on arrival, start Skull Crusher or Incline Dumbbell while waiting.',
+    desc: 'Push/Pull/Legs split for muscle growth. Full gym required. 6 days/week.',
     badge: '🔥',
     color: '#7b2fff',
     tags: ['6x/week', 'Hypertrophy', 'Intermediate'],
@@ -2569,7 +2569,7 @@ const PLANS = [
   {
     id: 'advanced_split', watchType: 'Traditional Strength Training',
     name: 'Advanced 5-Day Split',
-    desc: '5-day bro split optimised for gym scheduling. Back Mon (racks free while everyone benches). Arms Tue (zero equipment competition — dumbbells and cables only). Legs Wed. Shoulders Thu (quietest gym day — best for focused pressing). Chest Fri (gym clears — bench available). Legs: start squat/RDL first while rack is free, then move to machines.',
+    desc: '5-day body-part split for experienced lifters. Full gym access. Strength and muscle focus.',
     badge: '⚡',
     color: '#ffcc00',
     tags: ['5x/week', 'Strength+Size', 'Advanced'],
@@ -2595,7 +2595,7 @@ const PLANS = [
   {
     id: 'weight_loss_cardio', watchType: 'Traditional Strength Training', watchTypeAlt: 'High Intensity Interval Training (Tue/Fri) · Indoor Run (treadmill) or Indoor Cycling (bike) (Sat)',
     name: 'Weight Loss Cardio Mix',
-    desc: 'Combines HIIT, metabolic circuits, and steady-state cardio for maximum calorie burn.',
+    desc: 'Cardio + strength mix for fat loss. Minimal equipment. 5 days/week.',
     badge: '🏃',
     color: '#ff3b5c',
     tags: ['5x/week', 'Fat Loss', 'All Levels'],
@@ -2621,7 +2621,7 @@ const PLANS = [
   {
     id: 'cardio_only', watchType: 'High Intensity Interval Training', watchTypeAlt: 'Indoor Run (treadmill) or Outdoor Run (outside) (Mon/Sat) · Indoor Cycling (Wed)',
     name: 'Pure Cardio',
-    desc: 'Daily cardio cycling through HIIT, steady-state, and interval sessions. Zero weights — pure cardiovascular development. 5 days/week. Progression: Steady-state — add 2 min/week to 45 min then increase pace by 0.2mph. HIIT — start 3 circuits, add 1/week to 5, then reduce rest periods. Jump Rope — add 10 sec/round per week (30s→60s→90s).',
+    desc: 'Daily cardio-only training. HIIT, steady-state, intervals. Zero weights needed.',
     badge: '❤️',
     color: '#ff00c8',
     tags: ['6x/week', 'Cardio', 'Intermediate'],
@@ -2647,7 +2647,7 @@ const PLANS = [
   {
     id: 'drive_phase', watchType: 'Functional Strength Training', watchTypeAlt: 'High Intensity Interval Training (Thu Plyometric only) · Functional Strength Training (Tue Lateral Power)',
     name: 'Drive Phase',
-    desc: 'Athletic development — lower body power, speed, posterior chain. Mon Strength is rack-free (split squat, glute bridge, RDL, pallof). Thu opens with Deadlift as a PAP (Post-Activation Potentiation) primer before plyometrics — scientifically validated strength-power sequencing. Wed mobility rest is mandatory CNS recovery.',
+    desc: 'Athletic power development. Lower body focus. Strength + plyometrics. 4 days/week.',
     badge: '🚀',
     color: '#00C2FF',
     tags: ['4x/week', 'Power', 'Intermediate'],
@@ -2673,7 +2673,7 @@ const PLANS = [
   {
     id: 'ppl_athletic', watchType: 'Traditional Strength Training', watchTypeAlt: 'Functional Strength Training (Tue/Sat) · High Intensity Interval Training (Thu Plyometric)',
     name: 'PPL + Drive Phase',
-    desc: 'Specialist athletic hypertrophy programme combining PPL structure with speed-skating inspired lower body power development. Designed for experienced lifters (2+ years) targeting explosive lower body strength, lateral power, and posterior chain dominance. 6 days/week, 5-6 hours total. Pull Monday (less rack competition), Push Wednesday (best rack availability). Mesocycle: Weeks 1-3 accumulation (current volume), Weeks 4-6 intensification (reduce hypertrophy sets 30%, increase deadlift to 5x3 and squat to 5x5), Week 7 deload (50% sets, 60% weight). Missed session: push forward, never double up, never do Plyometric after Legs. Monday deadlift swap: if swapping to RDL and you already have RDL on Saturday, use Cable Row instead. OHP: 3 sets not 4. Squat and Hip Thrust +5lbs every completed session.',
+    desc: 'Hybrid strength + power. For experienced lifters only. 6 days/week, high volume.',
     badge: '⚡',
     color: '#00C2FF',
     tags: ['6x/week', 'Hypertrophy+Power', 'Advanced'],
@@ -2699,7 +2699,7 @@ const PLANS = [
   {
     id: 'home_workout', watchType: 'Functional Strength Training', watchTypeAlt: 'High Intensity Interval Training (Fri — Full Body Conditioning)',
     name: 'Home Workout',
-    desc: 'Full body strength and conditioning using bodyweight only. Zero equipment needed — do it anywhere.',
+    desc: 'Bodyweight-only full body. No equipment. Anywhere, anytime.',
     badge: '🏠',
     color: '#10b981',
     tags: ['4x/week', 'Bodyweight', 'All Levels'],
@@ -3185,7 +3185,6 @@ let state = {
   equipmentVariants: {},   // exId → variant key ('barbell','dumbbell','machine', etc.)
   travelMode: null,        // null | { returnDate: 'YYYY-MM-DD' | null }
   todaySwaps: {},          // dateKey → { exId: swapExId } — today-only exercise swaps
-,
   injuryHistory: null,          // { type, date, resolved }
   equipmentAvailable: {},      // planId → yes/no/partial
   deloadTracking: {},          // planId → { weekNumber, lastDeloadDate }
