@@ -3549,6 +3549,37 @@ function checkPlanCompatibility(primaryId, suppId) {
   return warnings.length ? warnings : null;
 }
 
+function showModal(title, content) {
+  let modal = document.getElementById('phase2-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'phase2-modal';
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="picker-modal">
+        <div class="modal-handle"></div>
+        <div class="modal-header">
+          <div class="modal-title" id="phase2-modal-title"></div>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div id="phase2-modal-content" style="padding:16px 20px;"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  }
+  document.getElementById('phase2-modal-title').textContent = title;
+  document.getElementById('phase2-modal-content').innerHTML = content;
+  modal.classList.add('open');
+}
+
+function closeModal() {
+  const modal = document.getElementById('phase2-modal');
+  if (modal) modal.classList.remove('open');
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -4670,6 +4701,7 @@ function activateGeneratedPlan() {
 let expandedPlan = null;
 
 function renderPlans() {
+  checkInjuryHistory();
   const container = document.getElementById('plan-cards');
   container.innerHTML = '';
   const dow = getDayOfWeek();
