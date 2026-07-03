@@ -1,5 +1,5 @@
 // GrindFlow Service Worker — v1
-const CACHE_NAME = 'volume-v1';
+const CACHE_NAME = 'volume-v2';
 const ASSETS = [
   './index.html',
   './manifest.json',
