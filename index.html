@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="GrindFlow">
-<meta name="theme-color" content="#0A0F1C">
-<meta name="application-name" content="GrindFlow">
-<title>GrindFlow — Personal Workout App</title>
+<meta name="apple-mobile-web-app-title" content="Volume">
+<meta name="theme-color" content="#121010">
+<meta name="application-name" content="Volume">
+<title>Volume — Personal Workout App</title>
 <link rel="manifest" href="./manifest.json">
 
 <!-- Favicon — browser tabs -->
@@ -60,19 +60,19 @@
   /* ─── RESET & TOKENS ───────────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:        #0A0F1C;
-    --bg2:       #0d1428;
-    --bg3:       #1E3A8A;
-    --card:      #EAECF0;
-    --border:    #C4C9D4;
-    --accent:    #00C2FF;
-    --accent2:   #3B82F6;
-    --green:     #16a34a;
-    --red:       #dc2626;
-    --yellow:    #d97706;
-    --text:      #111827;
-    --text-inv:  #E5E7EB;
-    --muted:     #6b7280;
+    --bg:        #121010;
+    --bg2:       #171412;
+    --bg3:       #3D2410;
+    --card:      #1A1715;
+    --border:    #2A2420;
+    --accent:    #FF5C00;
+    --accent2:   #FF8A3D;
+    --green:     #3ECF7A;
+    --red:       #FF6157;
+    --yellow:    #FFB020;
+    --text:      #F2EFE8;
+    --text-inv:  #F2EFE8;
+    --muted:     #9A9289;
     --r:         12px;
     --r2:        20px;
     --safe-b:    env(safe-area-inset-bottom, 0px);
@@ -105,18 +105,58 @@
     position: sticky; top: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 16px 20px;
-    background: rgba(10,15,28,0.92);
+    background: rgba(18,16,16,0.92);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(59,130,246,0.2);
+    border-bottom: 1px solid rgba(255,138,61,0.2);
   }
   .logo {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .logo-mark {
     font-family: var(--font-head);
     font-size: 26px;
     letter-spacing: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text);
+    display: flex;
+    align-items: baseline;
+    line-height: 1;
+  }
+  .logo-meter {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 0.72em;
+    margin: 0 2px;
+  }
+  .logo-meter i {
+    display: block;
+    width: 4px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .logo-meter i:nth-child(1) { height: 35%; }
+  .logo-meter i:nth-child(2) { height: 62%; }
+  .logo-meter i:nth-child(3) { height: 100%; }
+  .logo-base {
+    display: block;
+    height: 3px;
+    background: #2B2622;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo-base i {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-base i { transition: none; }
   }
   .topbar-actions { display: flex; gap: 8px; align-items: center; }
   .icon-btn {
@@ -174,9 +214,9 @@
   .bottomnav {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center;
-    background: rgba(10,15,28,0.95);
+    background: rgba(18,16,16,0.95);
     backdrop-filter: blur(24px);
-    border-top: 1px solid rgba(59,130,246,0.2);
+    border-top: 1px solid rgba(255,138,61,0.2);
     padding-bottom: var(--safe-b);
   }
   .nav-item {
@@ -216,15 +256,15 @@
     margin: 16px 20px 0;
     border-radius: var(--r2);
     padding: 24px;
-    background: linear-gradient(135deg, rgba(0,194,255,0.15) 0%, rgba(59,130,246,0.2) 100%);
-    border: 1px solid rgba(0,194,255,0.25);
+    background: linear-gradient(135deg, rgba(255,92,0,0.15) 0%, rgba(255,138,61,0.2) 100%);
+    border: 1px solid rgba(255,92,0,0.25);
     position: relative; overflow: hidden;
   }
   .hero::after {
     content: '';
     position: absolute; top: -40px; right: -40px;
     width: 150px; height: 150px;
-    background: radial-gradient(circle, rgba(0,194,255,0.18) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,92,0,0.18) 0%, transparent 70%);
     border-radius: 50%;
   }
   .hero-day { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
@@ -244,7 +284,7 @@
     margin: 16px 20px;
     padding: 16px 20px;
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r2);
   }
   .ring-svg { flex-shrink: 0; }
@@ -265,7 +305,7 @@
   .exercises-list { display: flex; flex-direction: column; gap: 14px; padding: 0 20px; }
   .ex-card {
     background: #EDF1F7;
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r2);
     overflow: hidden;
     transition: border-color .2s;
@@ -283,8 +323,8 @@
     font-size: 20px;
     flex-shrink: 0;
   }
-  .ex-icon.muscle-chest    { background: rgba(0,194,255,0.15); }
-  .ex-icon.muscle-back     { background: rgba(59,130,246,0.15); }
+  .ex-icon.muscle-chest    { background: rgba(255,92,0,0.15); }
+  .ex-icon.muscle-back     { background: rgba(255,138,61,0.15); }
   .ex-icon.muscle-legs     { background: rgba(217,119,6,0.15); }
   .ex-icon.muscle-shoulders{ background: rgba(22,163,74,0.15); }
   .ex-icon.muscle-arms     { background: rgba(220,38,38,0.15); }
@@ -311,8 +351,8 @@
     font-family: var(--font-mono); font-size: 11px;
     padding: 5px 10px;
     border-radius: 8px;
-    background: rgba(59,130,246,0.1);
-    border: 1px solid rgba(59,130,246,0.25);
+    background: rgba(255,138,61,0.1);
+    border: 1px solid rgba(255,138,61,0.25);
     color: var(--accent2);
   }
   .swap-btn {
@@ -334,7 +374,7 @@
   .swap-option {
     display: flex; align-items: center; gap: 12px;
     padding: 12px 14px; border-radius: 12px;
-    background: var(--card); border: 1px solid rgba(0,194,255,0.2);
+    background: var(--card); border: 1px solid rgba(255,92,0,0.2);
     cursor: pointer; transition: all .15s;
     margin-bottom: 8px;
   }
@@ -367,7 +407,7 @@
     color: #6b7280; transition: all .15s; flex-shrink: 0;
   }
   .variant-chip.active {
-    background: rgba(0,194,255,0.1);
+    background: rgba(255,92,0,0.1);
     border-color: var(--accent);
     color: var(--accent);
     font-weight: 600;
@@ -453,8 +493,8 @@
     padding: 12px;
     border-radius: 10px;
     font-size: 14px; font-weight: 600;
-    background: rgba(59,130,246,0.1);
-    border: 1px solid rgba(59,130,246,0.3);
+    background: rgba(255,138,61,0.1);
+    border: 1px solid rgba(255,138,61,0.3);
     color: var(--accent2);
     transition: all .2s;
     letter-spacing: 0.5px;
@@ -477,7 +517,7 @@
   .plan-card {
     grid-column: span 1;
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r2);
     overflow: hidden;
     transition: border-color .2s, transform .1s;
@@ -487,7 +527,7 @@
   .plan-card:active { transform: scale(0.97); }
   .plan-card.selected { border-color: var(--accent2); }
   .plan-card.selected .plan-card-face { background: #DBEAFE; }
-  .plan-card.expanded { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+  .plan-card.expanded { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(255,138,61,0.15); }
   .plan-card-face {
     padding: 14px 12px 12px;
     display: flex; flex-direction: column; gap: 7px;
@@ -521,8 +561,8 @@
   .plan-tag {
     font-family: var(--font-mono); font-size: 9px;
     padding: 2px 6px; border-radius: 5px;
-    background: rgba(59,130,246,0.08);
-    border: 1px solid rgba(59,130,246,0.2);
+    background: rgba(255,138,61,0.08);
+    border: 1px solid rgba(255,138,61,0.2);
     color: var(--accent2);
   }
   .plan-today-row {
@@ -576,8 +616,8 @@
   .sched-ex-chip {
     font-size: 10px; font-family: var(--font-mono);
     padding: 2px 7px; border-radius: 5px;
-    background: rgba(59,130,246,0.07);
-    border: 1px solid rgba(59,130,246,0.18);
+    background: rgba(255,138,61,0.07);
+    border: 1px solid rgba(255,138,61,0.18);
     color: #4b5563;
   }
   .sched-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); flex-shrink: 0; }
@@ -636,7 +676,7 @@
     font-size: 12px; font-weight: 600; color: var(--text);
   }
   .cardio-type-btn span { font-size: 20px; }
-  .cardio-type-btn.active { background: rgba(59,130,246,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .cardio-type-btn.active { background: rgba(255,138,61,0.12); border-color: var(--accent2); color: var(--accent2); }
   .cardio-type-btn:active { transform: scale(0.96); }
   .cardio-duration-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .cardio-dur-label { font-size: 11px; color: #9ca3af; font-family: var(--font-mono); flex-shrink: 0; }
@@ -647,12 +687,12 @@
     background: #EDF1F7; border: 1px solid #C4C9D4;
     color: #374151; cursor: pointer; transition: all .15s;
   }
-  .cardio-dur-btn.active { background: rgba(59,130,246,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .cardio-dur-btn.active { background: rgba(255,138,61,0.12); border-color: var(--accent2); color: var(--accent2); }
   .cardio-launch-btn {
     width: 100%; padding: 12px; border-radius: 10px;
     font-size: 14px; font-weight: 700;
     background: linear-gradient(135deg, var(--accent2), var(--accent));
-    color: #fff; letter-spacing: 0.3px;
+    color: #000; letter-spacing: 0.3px;
     transition: opacity .2s, transform .15s;
   }
   .cardio-launch-btn:active { transform: scale(0.98); opacity: 0.9; }
@@ -661,7 +701,7 @@
   .history-list { display: flex; flex-direction: column; gap: 12px; padding: 0 20px 100px; }
   .hist-card {
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r);
     overflow: hidden;
   }
@@ -698,7 +738,7 @@
     padding: 11px 14px;
     border-radius: 10px;
     background: var(--bg3);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     cursor: pointer;
     transition: border-color .15s, background .15s;
     text-align: left;
@@ -757,7 +797,7 @@
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .modal {
     width: 100%; max-height: 90dvh;
-    background: #0d1428;
+    background: #171412;
     border-radius: 24px 24px 0 0;
     border-top: 1px solid var(--border);
     overflow-y: auto;
@@ -785,7 +825,7 @@
     width: 32px; height: 32px;
     border-radius: 8px;
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
   }
@@ -794,7 +834,7 @@
   /* ─── iOS GUIDE ──────────────────────────────────────────────────────── */
   .ios-step {
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r);
     margin-bottom: 14px;
     overflow: hidden;
@@ -827,7 +867,7 @@
   .ios-p { font-size: 13px; line-height: 1.7; color: rgba(229,231,235,0.75); }
   .code-block {
     background: #060B18;
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: 10px;
     padding: 14px;
     overflow-x: auto;
@@ -872,7 +912,7 @@
     position: fixed; bottom: calc(80px + var(--safe-b)); left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: 24px;
     padding: 10px 20px;
     font-size: 13px; font-weight: 500;
@@ -894,7 +934,7 @@
   }
   .stat-card {
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r);
     padding: 14px 12px;
     text-align: center;
@@ -965,7 +1005,7 @@
     border-radius: 12px;
     font-size: 15px; font-weight: 700;
     background: linear-gradient(135deg, var(--accent2), #1d4ed8);
-    color: #fff;
+    color: #000;
     letter-spacing: 0.5px;
     transition: opacity .2s, transform .15s;
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -979,7 +1019,7 @@
     grid-column: 1 / -1;
     margin: 0;
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r2);
     overflow: hidden;
     display: none;
@@ -1012,7 +1052,7 @@
     border-radius: 10px;
     font-size: 13px; font-weight: 600;
     background: var(--bg3);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     color: var(--muted);
     transition: all .15s;
   }
@@ -1022,7 +1062,7 @@
     border-radius: 10px;
     font-size: 13px; font-weight: 700;
     background: linear-gradient(135deg, var(--accent2), #1d4ed8);
-    color: #fff;
+    color: #000;
     transition: all .15s;
   }
   .rng-activate-btn:active { transform: scale(0.98); opacity: 0.9; }
@@ -1082,7 +1122,7 @@
     border-radius: 12px;
     font-size: 14px; font-weight: 600;
     background: linear-gradient(135deg, var(--accent2), #1d4ed8);
-    color: #fff;
+    color: #000;
     letter-spacing: 0.5px;
     transition: opacity .2s, transform .15s;
     margin-top: 4px;
@@ -1109,7 +1149,7 @@
   .picker-search {
     width: 100%;
     background: var(--bg3);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: 10px;
     padding: 10px 14px 10px 38px;
     font-size: 14px;
@@ -1136,7 +1176,7 @@
     font-family: var(--font-mono); font-size: 11px;
     padding: 5px 12px; border-radius: 20px;
     white-space: nowrap;
-    background: rgba(30,58,138,0.5); border: 1px solid rgba(59,130,246,0.4);
+    background: rgba(30,58,138,0.5); border: 1px solid rgba(255,138,61,0.4);
     color: #E5E7EB; cursor: pointer;
     transition: all .15s;
     flex-shrink: 0;
@@ -1208,7 +1248,7 @@
     padding: 14px;
     border-radius: var(--r);
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0A0F1C;
+    color: #121010;
     font-family: var(--font-head);
     font-size: 16px;
     font-weight: 700;
@@ -1284,7 +1324,7 @@
     gap: 0;
     background: var(--bg3);
     border-top: 3px solid var(--accent2);
-    box-shadow: 0 -4px 24px rgba(59,130,246,0.25);
+    box-shadow: 0 -4px 24px rgba(255,138,61,0.25);
     animation: slideUp .3s cubic-bezier(.32,.72,0,1);
   }
   .rest-timer-bar.visible { display: flex; }
@@ -1353,8 +1393,8 @@
   }
   .rest-timer-btn:active { transform: scale(0.93); background: rgba(255,255,255,0.2); }
   .rest-timer-btn.skip-btn {
-    background: rgba(0,194,255,0.15);
-    border-color: rgba(0,194,255,0.4);
+    background: rgba(255,92,0,0.15);
+    border-color: rgba(255,92,0,0.4);
     color: var(--accent);
     font-weight: 600;
     padding: 7px 14px;
@@ -1366,7 +1406,7 @@
     border-radius: 10px;
     padding: 11px 13px;
     display: flex; flex-direction: column; gap: 6px;
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     background: var(--bg3);
   }
   .prog-panel.signal-ready    { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.05); }
@@ -1431,14 +1471,14 @@
   .spark-line { fill: none; stroke: var(--accent2); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .spark-dot { fill: var(--accent); }
   .spark-dot-latest { fill: var(--green); r: 3; }
-  .spark-area { fill: rgba(59,130,246,0.08); }
+  .spark-area { fill: rgba(255,138,61,0.08); }
 
   /* ─── MOBILE / PLATFORM MODAL TABS ──────────────────────────────────── */
   .platform-tabs {
     display: flex; gap: 0;
     margin: 0 0 18px;
     background: var(--bg3);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: 12px;
     padding: 4px;
   }
@@ -1453,7 +1493,7 @@
   }
   .platform-tab.active {
     background: var(--card);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     color: var(--text);
   }
   .platform-content { display: none; }
@@ -1466,7 +1506,7 @@
   }
   .backup-card {
     background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r);
     padding: 16px;
     display: flex; align-items: center; gap: 14px;
@@ -1474,23 +1514,23 @@
     transition: border-color .15s;
   }
   .backup-card:active { transform: scale(0.98); }
-  .backup-card.export-card { border-color: rgba(0,194,255,0.3); }
+  .backup-card.export-card { border-color: rgba(255,92,0,0.3); }
   .backup-card.export-card:hover { border-color: var(--accent); color: var(--text-inv); }
-  .backup-card.import-card { border-color: rgba(59,130,246,0.3); }
+  .backup-card.import-card { border-color: rgba(255,138,61,0.3); }
   .backup-card.import-card:hover { border-color: var(--accent2); }
   .backup-icon {
     width: 44px; height: 44px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
     font-size: 20px; flex-shrink: 0;
   }
-  .export-card .backup-icon { background: rgba(0,194,255,0.15); }
-  .import-card .backup-icon { background: rgba(59,130,246,0.15); }
+  .export-card .backup-icon { background: rgba(255,92,0,0.15); }
+  .import-card .backup-icon { background: rgba(255,138,61,0.15); }
   .backup-info { flex: 1; }
   .backup-title { font-size: 15px; font-weight: 600; margin-bottom: 3px; color: var(--text-inv); }
   .backup-sub { font-size: 12px; color: rgba(229,231,235,0.6); line-height: 1.4; }
   .backup-stats {
     background: rgba(30,58,138,0.4);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r);
     padding: 14px;
     display: grid; grid-template-columns: 1fr 1fr 1fr;
@@ -1521,7 +1561,7 @@
     display: flex; align-items: center; gap: 10px;
     padding: 12px 16px;
     background: var(--bg3);
-    border: 1px solid rgba(0,194,255,0.3);
+    border: 1px solid rgba(255,92,0,0.3);
     border-radius: var(--r);
   }
   .apb-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); flex-shrink: 0; }
@@ -1536,7 +1576,10 @@
 
   <!-- TOP BAR -->
   <header class="topbar">
-    <div class="logo">GrindFlow</div>
+    <div class="logo" role="img" aria-label="Volume">
+      <span class="logo-mark" aria-hidden="true">VO<span class="logo-meter"><i></i><i></i><i></i></span>UME</span>
+      <span class="logo-base" aria-hidden="true"><i id="logo-base-fill"></i></span>
+    </div>
     <div class="topbar-actions">
 
       <!-- Spotify — always visible -->
@@ -1641,7 +1684,7 @@
         </button>
         <button onclick="openRescheduleModal()"
           style="flex:1;min-width:120px;padding:10px 8px;border-radius:10px;font-size:12px;font-weight:500;
-            background:rgba(0,194,255,0.07);border:1px solid rgba(0,194,255,0.25);
+            background:rgba(255,92,0,0.07);border:1px solid rgba(255,92,0,0.25);
             color:var(--accent);letter-spacing:0.3px;transition:all .2s;">
           📆 Move Rest Day
         </button>
@@ -1651,7 +1694,7 @@
     <!-- Deload nudge banner — shown after 6 consecutive weeks -->
     <div id="deload-nudge" style="display:none;margin:0 20px 4px;">
       <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;
-        background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.25);
+        background:rgba(255,138,61,0.07);border:1px solid rgba(255,138,61,0.25);
         border-radius:12px;animation:fadeUp .3s ease;">
         <span style="font-size:18px;flex-shrink:0;">🔄</span>
         <div style="flex:1;min-width:0;">
@@ -1660,8 +1703,8 @@
         </div>
         <button onclick="dismissDeload()"
           style="font-family:var(--font-mono);font-size:10px;padding:5px 10px;
-            border-radius:7px;background:rgba(59,130,246,0.12);
-            border:1px solid rgba(59,130,246,0.25);color:var(--accent2);font-weight:600;flex-shrink:0;">
+            border-radius:7px;background:rgba(255,138,61,0.12);
+            border:1px solid rgba(255,138,61,0.25);color:var(--accent2);font-weight:600;flex-shrink:0;">
           Got It
         </button>
       </div>
@@ -2222,7 +2265,7 @@
       <!-- ══ iOS CONTENT ══════════════════════════════════════════════════ -->
       <div class="platform-content active" id="platform-ios">
         <p style="font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.6;">
-          Four battle-tested methods to ship GrindFlow on iPhone — from zero-code PWA to full App Store distribution.
+          Four battle-tested methods to ship Volume on iPhone — from zero-code PWA to full App Store distribution.
         </p>
 
         <div class="ios-step">
@@ -2236,8 +2279,8 @@
             <p class="ios-p"><strong>Step 1:</strong> Create a <code style="color:var(--accent);font-family:var(--font-mono)">manifest.json</code> file next to your HTML:</p>
             <div class="code-block"><pre><span class="cmt">// manifest.json</span>
 {
-  <span class="str">"name"</span>: <span class="str">"GrindFlow"</span>,
-  <span class="str">"short_name"</span>: <span class="str">"GrindFlow"</span>,
+  <span class="str">"name"</span>: <span class="str">"Volume"</span>,
+  <span class="str">"short_name"</span>: <span class="str">"Volume"</span>,
   <span class="str">"start_url"</span>: <span class="str">"./index.html"</span>,
   <span class="str">"display"</span>: <span class="str">"standalone"</span>,
   <span class="str">"background_color"</span>: <span class="str">"#0a0a0f"</span>,
@@ -2253,10 +2296,10 @@
 <span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-capable"</span> content=<span class="str">"yes"</span><span class="kw">&gt;</span>
 <span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-status-bar-style"</span>
       content=<span class="str">"black-translucent"</span><span class="kw">&gt;</span>
-<span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-title"</span> content=<span class="str">"GrindFlow"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;meta</span> name=<span class="str">"apple-mobile-web-app-title"</span> content=<span class="str">"Volume"</span><span class="kw">&gt;</span>
 <span class="kw">&lt;link</span> rel=<span class="str">"apple-touch-icon"</span> href=<span class="str">"icon-192.png"</span><span class="kw">&gt;</span></pre></div>
             <p class="ios-p"><strong>Step 3:</strong> Create <code style="color:var(--accent);font-family:var(--font-mono)">sw.js</code> for offline support:</p>
-            <div class="code-block"><pre><span class="kw">const</span> CACHE = <span class="str">'grindflow-v1'</span>;
+            <div class="code-block"><pre><span class="kw">const</span> CACHE = <span class="str">'volume-v1'</span>;
 <span class="kw">const</span> FILES = [<span class="str">'./index.html'</span>];
 self.addEventListener(<span class="str">'install'</span>, e =&gt;
   e.waitUntil(caches.open(CACHE).then(c =&gt; c.addAll(FILES)))
@@ -2312,7 +2355,7 @@ self.addEventListener(<span class="str">'fetch'</span>, e =&gt;
           <div class="ios-step-body">
             <p class="ios-p">Capacitor bridges native iOS APIs (haptics, push notifications, HealthKit) to your web app. Also supports Android in one codebase.</p>
             <div class="code-block"><pre>npm install @capacitor/core @capacitor/cli
-npx cap init <span class="str">"GrindFlow"</span> <span class="str">"com.yourname.grindflow"</span> --web-dir ./www
+npx cap init <span class="str">"Volume"</span> <span class="str">"com.activecatalyst.volume"</span> --web-dir ./www
 <span class="cmt"># Copy index.html → www/index.html</span>
 npm install @capacitor/ios
 npx cap add ios && npx cap copy ios
@@ -2329,12 +2372,12 @@ npx cap open ios</pre></div>
           </div>
           <div class="ios-step-body">
             <div class="code-block"><pre>npm install -g cordova
-cordova create grindflow-app com.yourname.grindflow GrindFlow
-cd grindflow-app
+cordova create volume-app com.activecatalyst.volume Volume
+cd volume-app
 cp /path/to/index.html www/index.html
 cordova platform add ios
 cordova build ios
-open platforms/ios/GrindFlow.xcworkspace</pre></div>
+open platforms/ios/Volume.xcworkspace</pre></div>
             <div class="ios-tip"><span class="ios-tip-icon">📝</span><span class="ios-tip-text">Requires <strong>ios-deploy</strong> npm package and Xcode CLI tools (<code>xcode-select --install</code>).</span></div>
           </div>
         </div>
@@ -2356,7 +2399,7 @@ open platforms/ios/GrindFlow.xcworkspace</pre></div>
           <div class="ios-step-body">
             <p class="ios-p">Android Chrome has first-class PWA support — far better than iOS Safari. The install prompt appears automatically once the app meets PWA criteria, no "Add to Home Screen" hunting required.</p>
             <p class="ios-p"><strong>Step 1:</strong> Add the same <code style="color:var(--accent);font-family:var(--font-mono)">manifest.json</code> and service worker as the iOS PWA method (same files work on both platforms).</p>
-            <p class="ios-p"><strong>Step 2:</strong> Host on any HTTPS server. Open in Chrome on Android — Chrome will show an <em>"Add GrindFlow to Home Screen"</em> banner automatically, or it appears under the Chrome menu.</p>
+            <p class="ios-p"><strong>Step 2:</strong> Host on any HTTPS server. Open in Chrome on Android — Chrome will show an <em>"Add Volume to Home Screen"</em> banner automatically, or it appears under the Chrome menu.</p>
             <p class="ios-p"><strong>Step 3:</strong> Once installed, the app launches full-screen with no browser UI, appears in the app drawer, and works offline via the service worker.</p>
             <div class="ios-tip"><span class="ios-tip-icon">🟢</span><span class="ios-tip-text">Android PWAs support <strong>push notifications, background sync, and the Web Share API</strong> — features that iOS PWAs still lag on. This is the best quick-ship option for Android.</span></div>
           </div>
@@ -2373,7 +2416,7 @@ open platforms/ios/GrindFlow.xcworkspace</pre></div>
             <p class="ios-p"><strong>Requirements:</strong> Node.js, Android Studio, Java 17+, Android SDK.</p>
             <div class="code-block"><pre><span class="cmt"># Install Capacitor</span>
 npm install @capacitor/core @capacitor/cli
-npx cap init <span class="str">"GrindFlow"</span> <span class="str">"com.yourname.grindflow"</span> --web-dir ./www
+npx cap init <span class="str">"Volume"</span> <span class="str">"com.activecatalyst.volume"</span> --web-dir ./www
 
 <span class="cmt"># Copy your HTML file</span>
 mkdir www
@@ -2464,7 +2507,7 @@ npx cap build android
             <div class="code-block"><pre><span class="cmt"># In build.gradle (app level):</span>
 android {
   defaultConfig {
-    applicationId <span class="str">"com.yourname.grindflow"</span>
+    applicationId <span class="str">"com.activecatalyst.volume"</span>
     minSdk 24          <span class="cmt">// Android 7.0+</span>
     targetSdk 34       <span class="cmt">// latest stable</span>
     versionCode 1
@@ -2535,7 +2578,7 @@ const PLANS = [
     days: {
       0: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','romanian_deadlift','dead_bug'] },
       1: { name: 'Rest', exercises: [] },
-      2: { name: 'Full Body B', exercises: ['romanian_deadlift','pushup','lat_pulldown','lunge','lateral_raise'] },
+      2: { name: 'Full Body B', exercises: ['romanian_deadlift','pike_pushup','lat_pulldown','lunge','lateral_raise'] },
       3: { name: 'Rest', exercises: [] },
       4: { name: 'Full Body A', exercises: ['goblet_squat','pushup','row','romanian_deadlift','dead_bug'] },
       5: { name: 'Active Recovery', exercises: [] },
@@ -2550,20 +2593,20 @@ const PLANS = [
     color: '#7b2fff',
     tags: ['6x/week', 'Hypertrophy', 'Intermediate'],
     schedule: [
-      { day: 'MON', label: 'Pull (Back/Biceps)', rest: false },
-      { day: 'TUE', label: 'Legs', rest: false },
-      { day: 'WED', label: 'Push (Chest/Shoulders/Tris)', rest: false },
-      { day: 'THU', label: 'Rest', rest: true },
-      { day: 'FRI', label: 'Pull (Back/Biceps)', rest: false },
+      { day: 'MON', label: 'Push (Chest/Shoulders/Tris)', rest: false },
+      { day: 'TUE', label: 'Pull (Back/Biceps)', rest: false },
+      { day: 'WED', label: 'Legs', rest: false },
+      { day: 'THU', label: 'Push B (OHP focus)', rest: false },
+      { day: 'FRI', label: 'Pull B (Deadlift)', rest: false },
       { day: 'SAT', label: 'Legs B', rest: false },
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Pull Day', exercises: ['deadlift','pullup','row','cable_row','face_pull','hammer_curl'] },
-      1: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
-      2: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','lateral_raise','cable_fly','skull_crusher'] },
-      3: { name: 'Rest', exercises: [] },
-      4: { name: 'Pull Day B', exercises: ['pullup','lat_pulldown','cable_row','rear_delt_fly','bicep_curl','ab_wheel'] },
+      0: { name: 'Push Day', exercises: ['bench_press','incline_dumbbell','lateral_raise','cable_fly','skull_crusher'] },
+      1: { name: 'Pull Day', exercises: ['pullup','row','cable_row','face_pull','hammer_curl'] },
+      2: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','calf_raise'] },
+      3: { name: 'Push Day B', exercises: ['ohp','dips','incline_dumbbell','cable_lateral_raise','tricep_pushdown'] },
+      4: { name: 'Pull Day B', exercises: ['deadlift','lat_pulldown','cable_row','rear_delt_fly','bicep_curl'] },
       5: { name: 'Leg Day B', exercises: ['goblet_squat','split_squat','leg_curl','leg_press','hip_thrust'] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2577,19 +2620,19 @@ const PLANS = [
     tags: ['5x/week', 'Strength+Size', 'Advanced'],
     schedule: [
       { day: 'MON', label: 'Back', rest: false },
-      { day: 'TUE', label: 'Arms', rest: false },
+      { day: 'TUE', label: 'Chest', rest: false },
       { day: 'WED', label: 'Legs', rest: false },
       { day: 'THU', label: 'Shoulders', rest: false },
-      { day: 'FRI', label: 'Chest', rest: false },
+      { day: 'FRI', label: 'Arms', rest: false },
       { day: 'SAT', label: 'Rest', rest: true },
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
       0: { name: 'Back Day', exercises: ['deadlift','pullup','lat_pulldown','cable_row','row','rear_delt_fly'] },
-      1: { name: 'Arms Day', exercises: ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','face_pull'] },
+      1: { name: 'Chest Day', exercises: ['bench_press','incline_dumbbell','cable_fly','dips','face_pull'] },
       2: { name: 'Leg Day', exercises: ['squat','romanian_deadlift','leg_press','leg_curl','hip_thrust','pallof_press'] },
-      3: { name: 'Shoulder Day', exercises: ['ohp','lateral_raise','rear_delt_fly','face_pull','cable_row'] },
-      4: { name: 'Chest Day', exercises: ['bench_press','incline_dumbbell','cable_fly','dips','face_pull'] },
+      3: { name: 'Shoulder Day', exercises: ['ohp','lateral_raise','rear_delt_fly','face_pull','shrug'] },
+      4: { name: 'Arms Day', exercises: ['bicep_curl','hammer_curl','tricep_pushdown','skull_crusher','face_pull'] },
       5: { name: 'Rest', exercises: [] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2606,7 +2649,7 @@ const PLANS = [
       { day: 'TUE', label: 'HIIT Circuit', rest: false },
       { day: 'WED', label: 'Rest / Walk', rest: true },
       { day: 'THU', label: 'Resistance B', rest: false },
-      { day: 'FRI', label: 'HIIT Circuit', rest: false },
+      { day: 'FRI', label: 'Low-Impact Circuit', rest: false },
       { day: 'SAT', label: 'Steady-State Cardio', rest: false },
       { day: 'SUN', label: 'Rest', rest: true },
     ],
@@ -2615,7 +2658,7 @@ const PLANS = [
       1: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','high_knees','jump_rope','mountain_climber'] },
       2: { name: 'Rest / Walk', exercises: [] },
       3: { name: 'Resistance B', exercises: ['romanian_deadlift','ohp','lat_pulldown','cable_row','plank_rotation'] },
-      4: { name: 'HIIT Circuit', exercises: ['burpee','jump_squat','high_knees','jump_rope','mountain_climber'] },
+      4: { name: 'Low-Impact Circuit', exercises: ['box_step_up','squat_bw','mountain_climber','plank_rotation','bike'] },
       5: { name: 'Steady-State', exercises: ['treadmill_run','bike'] },
       6: { name: 'Rest', exercises: [] },
     }
@@ -2651,7 +2694,7 @@ const PLANS = [
     name: 'Drive Phase',
     desc: 'Athletic power development. Lower body focus. Strength + plyometrics. 4 days/week.',
     badge: '🚀',
-    color: '#00C2FF',
+    color: '#2DD4BF',
     tags: ['4x/week', 'Power', 'Intermediate'],
     schedule: [
       { day: 'MON', label: 'Strength', rest: false },
@@ -2677,31 +2720,31 @@ const PLANS = [
     name: 'PPL + Drive Phase',
     desc: 'Hybrid strength + power. For experienced lifters only. 6 days/week, high volume.',
     badge: '⚡',
-    color: '#00C2FF',
+    color: '#2DD4BF',
     tags: ['6x/week', 'Hypertrophy+Power', 'Advanced'],
     schedule: [
-      { day: 'MON', label: 'Pull (Back/Biceps)', rest: false },
-      { day: 'TUE', label: 'Lateral Power', rest: false },
-      { day: 'WED', label: 'Push (Chest/Shoulders/Tris)', rest: false },
-      { day: 'THU', label: 'Plyometric', rest: false },
-      { day: 'FRI', label: 'Legs', rest: false },
+      { day: 'MON', label: 'Legs (Heavy)', rest: false },
+      { day: 'TUE', label: 'Push (Chest/Shoulders/Tris)', rest: false },
+      { day: 'WED', label: 'Plyometric', rest: false },
+      { day: 'THU', label: 'Pull (Deadlift)', rest: false },
+      { day: 'FRI', label: 'Lateral Power', rest: false },
       { day: 'SAT', label: 'Posterior Chain + Drive', rest: false },
       { day: 'SUN', label: 'Rest', rest: true },
     ],
     days: {
-      0: { name: 'Pull Day', exercises: ['deadlift','pullup','row','lat_pulldown','cable_row','face_pull','bicep_curl','hammer_curl'] },
-      1: { name: 'Lateral Power', exercises: ['lateral_band_walk','split_squat','lateral_bound','skater_squat','single_leg_rdl','lateral_hip_thrust','skating_hold'] },
-      2: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','cable_fly','face_pull','lateral_raise','tricep_pushdown'] },
-      3: { name: 'Plyometric', exercises: ['depth_jump','lateral_hurdle_hop','box_jump','jump_squat'] },
-      4: { name: 'Legs', exercises: ['squat','leg_press','romanian_deadlift','leg_curl','hip_abductor_machine','hip_adductor_machine','calf_raise'] },
-      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','romanian_deadlift','cable_pull_through','pallof_press','dead_bug'] },
+      0: { name: 'Legs (Heavy)', exercises: ['squat','leg_press','romanian_deadlift','leg_curl','calf_raise'] },
+      1: { name: 'Push Day', exercises: ['bench_press','ohp','incline_dumbbell','cable_fly','lateral_raise','tricep_pushdown'] },
+      2: { name: 'Plyometric', exercises: ['box_jump','depth_jump','lateral_hurdle_hop','jump_squat'] },
+      3: { name: 'Pull Day', exercises: ['deadlift','pullup','row','lat_pulldown','face_pull','bicep_curl'] },
+      4: { name: 'Lateral Power', exercises: ['lateral_band_walk','split_squat','lateral_bound','skater_squat','lateral_hip_thrust','skating_hold'] },
+      5: { name: 'Posterior Chain + Drive', exercises: ['nordic_curl','hip_thrust','cable_pull_through','pallof_press','dead_bug'] },
       6: { name: 'Rest', exercises: [] },
     }
   },
   {
     id: 'home_workout', watchType: 'Functional Strength Training', watchTypeAlt: 'High Intensity Interval Training (Fri — Full Body Conditioning)',
     name: 'Home Workout',
-    desc: 'Bodyweight-only full body. No equipment. Anywhere, anytime.',
+    desc: 'Bodyweight full body. Minimal equipment — a sturdy table or doorframe bar for pulls.',
     badge: '🏠',
     color: '#10b981',
     tags: ['4x/week', 'Bodyweight', 'All Levels'],
@@ -2718,7 +2761,7 @@ const PLANS = [
       0: { name: 'Upper Push', exercises: ['pushup','pike_pushup','tricep_dip_chair','plank','dead_bug'] },
       1: { name: 'Lower Body', exercises: ['split_squat','lunge_bw','glute_bridge','single_leg_rdl_bw','calf_raise_bw'] },
       2: { name: 'Rest / Stretch', exercises: [] },
-      3: { name: 'Upper Pull + Core', exercises: ['inverted_row','pullup_bw','hammer_curl','inverted_row','dead_bug'] },
+      3: { name: 'Upper Pull + Core', exercises: ['inverted_row','pullup_bw','plank_rotation','dead_bug'] },
       4: { name: 'Full Body Conditioning', exercises: ['burpee','jump_squat','high_knees','plank'] },
       5: { name: 'Active Recovery', exercises: [] },
       6: { name: 'Rest', exercises: [] },
@@ -2943,7 +2986,7 @@ const EXERCISES = {
   depth_jump: {
     name: 'Depth Jump', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
     sets: 4, reps: 5, weight: 0,
-    cue: 'Stand on a box 12–24 inches high. Step off — do not jump off — and land on both feet simultaneously. Immediately upon landing, explode straight up as high as possible. The goal is minimum ground contact time — think of the floor as a hot surface. The eccentric loading from the drop pre-stretches the muscle-tendon complex, allowing a more powerful concentric contraction. This is the highest-intensity plyometric in existence — never do it fatigued, always do it first in a session, and cap at 20 reps total per session.'
+    cue: 'Cap total session foot contacts at 60–80 (all jumps combined). Prerequisite: work toward a ~1.5× bodyweight squat before depth jumps — until then, swap for box jumps. Stand on a box 12–24 inches high. Step off — do not jump off — and land on both feet simultaneously. Immediately upon landing, explode straight up as high as possible. The goal is minimum ground contact time — think of the floor as a hot surface. The eccentric loading from the drop pre-stretches the muscle-tendon complex, allowing a more powerful concentric contraction. This is the highest-intensity plyometric in existence — never do it fatigued, always do it first in a session, and cap at 20 reps total per session.'
   },
   lateral_hurdle_hop: {
     name: 'Lateral Hurdle Hop', muscle: 'Legs', icon: '🦵', muscleClass: 'muscle-legs',
@@ -3140,7 +3183,11 @@ const INJURY_TYPES = [
 ];
 
 // Deload Triggers (auto-suggest at these week marks)
-const DELOAD_WEEK_TRIGGERS = [4, 8, 12];
+const DELOAD_EVERY_N_WEEKS = 4;      // time-based trigger
+const DELOAD_READINESS_FLOOR = 2.5;  // avg readiness (last 5 check-ins) below this -> suggest
+const DELOAD_STALL_COUNT = 2;        // this many lifts regressing at once -> suggest
+const DELOAD_INTENSITY = 0.8;        // deload = 80% of working weight
+const DELOAD_SET_CAP = 3;            // and no more than 3 sets
 
 // Readiness Scoring Scale
 const READINESS_SCALE = {
@@ -3193,6 +3240,9 @@ let state = {
   readinessLog: [],            // [{ date, sleep, soreness, mood, score }]
   planProgressionPath: null,   // { current, next, canAdvance }
   injuryScreeningCompleted: false,
+  planOverrides: {},           // planId -> { exId: newExId } permanent swaps
+  swapHistory: {},             // 'exId>swapId' -> count of times swapped
+  swapNudgeDismissed: {},      // 'exId>swapId' -> true (user said no)
 };
 
 
@@ -3306,16 +3356,93 @@ function loadPlanForReal(planId) {
   }
 }
 
+function weeksSinceDeloadAnchor() {
+  // Anchor = last deload, else first time we ever checked (stored once)
+  if (!state.deloadTracking) state.deloadTracking = {};
+  let t = state.deloadTracking[state.primaryPlan];
+  if (!t) { t = {}; state.deloadTracking[state.primaryPlan] = t; }
+  const anchor = t.lastDeloadDate || t.anchorDate;
+  if (!anchor) { t.anchorDate = today(); saveState(); return 0; }
+  const ms = new Date(today()) - new Date(anchor);
+  return Math.floor(ms / (7 * 24 * 60 * 60 * 1000));
+}
+
+function getDeloadSignals() {
+  if (!state.primaryPlan) return [];
+  const signals = [];
+
+  // 1. Time: every N weeks of continuous training since last deload
+  const weeks = weeksSinceDeloadAnchor();
+  if (weeks >= DELOAD_EVERY_N_WEEKS) {
+    signals.push('Week ' + (weeks + 1) + ' since your last deload');
+  }
+
+  // 2. Readiness trend: recent check-ins averaging low
+  const recent = (state.readinessLog || []).slice(-5);
+  if (recent.length >= 3) {
+    const avg = recent.reduce(function(s, l) { return s + (l.score || 0); }, 0) / recent.length;
+    if (avg > 0 && avg < DELOAD_READINESS_FLOOR) {
+      signals.push('Readiness averaging ' + avg.toFixed(1) + '/4');
+    }
+  }
+
+  // 3. Stalls: multiple lifts regressing at once
+  const plan = PLANS.find(function(pl) { return pl.id === state.primaryPlan; });
+  if (plan) {
+    const allEx = Object.values(plan.days).reduce(function(a, d) { return a.concat(d.exercises); }, []);
+    const unique = allEx.filter(function(id, i) { return allEx.indexOf(id) === i; });
+    const dropped = unique.filter(function(id) {
+      const st = getProgressionStatus(id);
+      return st && st.signal === 'dropped';
+    });
+    if (dropped.length >= DELOAD_STALL_COUNT) {
+      signals.push(dropped.length + ' lifts losing reps');
+    }
+  }
+  return signals;
+}
+
+function isDeloadActive() {
+  if (!state.deloadMode) return false;
+  if (today() > state.deloadMode.until) {
+    state.deloadMode = null;
+    saveState();
+    showToast('\u2705 Deload week complete \u2014 back to full intensity');
+    return false;
+  }
+  return true;
+}
+
+function startDeloadWeek() {
+  const until = new Date();
+  until.setDate(until.getDate() + 7);
+  state.deloadMode = { planId: state.primaryPlan, until: until.toISOString().slice(0, 10) };
+  if (!state.deloadTracking[state.primaryPlan]) state.deloadTracking[state.primaryPlan] = {};
+  state.deloadTracking[state.primaryPlan].lastDeloadDate = today();
+  state.deloadTracking[state.primaryPlan].deloadPromptDismissed = null;
+  saveState();
+  showToast('🔋 Deload active through ' + state.deloadMode.until + ' \u2014 weights auto-reduced');
+  renderToday();
+}
+
 function checkDeloadWeek() {
   if (!state.primaryPlan) return;
-  const plan = PLANS.find(p => p.id === state.primaryPlan);
-  if (!plan) return;
-  
-  const deload = state.deloadTracking[state.primaryPlan] || { weekNumber: 1 };
-  
-  if (DELOAD_WEEK_TRIGGERS.includes(deload.weekNumber)) {
-    showToast('💪 Week ' + deload.weekNumber + ' detected. Consider a deload week: 80% intensity, 3 sets per exercise.');
-  }
+  if (isDeloadActive()) return;
+  const t = state.deloadTracking[state.primaryPlan] || {};
+  if (t.deloadPromptDismissed === today()) return; // don't re-ask same day
+  const signals = getDeloadSignals();
+  if (!signals.length) return;
+  showConfirmDialog(
+    '🔋 Deload suggested',
+    signals.join(' \u00b7 ') + '. Run a deload week? Weights drop to ' + (DELOAD_INTENSITY * 100) + '%, cap ' + DELOAD_SET_CAP + ' sets, for 7 days.',
+    'Start Deload', 'Not Yet',
+    startDeloadWeek,
+    function() {
+      if (!state.deloadTracking[state.primaryPlan]) state.deloadTracking[state.primaryPlan] = {};
+      state.deloadTracking[state.primaryPlan].deloadPromptDismissed = today();
+      saveState();
+    }
+  );
 }
 
 function calculateReadiness() {
@@ -3736,7 +3863,7 @@ function buildRestDayHTML(showResumeBtn) {
       ${showResumeBtn ? `
         <button onclick="cancelRestOverride()"
           style="padding:9px 20px;border-radius:10px;font-size:12px;font-weight:600;
-            background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);
+            background:rgba(255,138,61,0.1);border:1px solid rgba(255,138,61,0.3);
             color:var(--accent2);margin-bottom:20px;">
           ↩ Resume Today's Workout
         </button>` : ''}
@@ -3810,6 +3937,24 @@ function clearPushOffset() {
 function renderToday() {
   promptReadinessCheckIn();
   checkDeloadWeek();
+
+  // Deload banner — shown while a deload week is active
+  (function() {
+    const page = document.getElementById('page-today');
+    const existing = document.getElementById('deload-banner');
+    if (isDeloadActive()) {
+      if (!existing && page) {
+        const b = document.createElement('div');
+        b.id = 'deload-banner';
+        b.style.cssText = 'margin:0 0 12px;padding:11px 14px;border-radius:12px;border:1px solid var(--accent,#FF5C00);background:rgba(255,92,0,0.08);font-size:12.5px;line-height:1.5;';
+        page.insertBefore(b, page.firstChild);
+      }
+      const el = document.getElementById('deload-banner');
+      if (el) el.innerHTML = '🔋 <b>Deload week</b> · weights at ' + (DELOAD_INTENSITY * 100) + '% · stop at ' + DELOAD_SET_CAP + ' sets · ends ' + state.deloadMode.until;
+    } else if (existing) {
+      existing.remove();
+    }
+  })();
 
   try {
   const dateKey = today();
@@ -4124,13 +4269,13 @@ function renderToday() {
       if (!ex) return;
       const card = buildExCard(exId, ex, log[exId]);
       // Tint card slightly to distinguish from primary
-      card.style.borderColor = 'rgba(59,130,246,0.3)';
+      card.style.borderColor = 'rgba(255,138,61,0.3)';
       list.appendChild(card);
     });
   } else if (suppPlan && suppExercises.length === 0) {
     // Supplemental has a rest day here — note it
     const restNote = document.createElement('div');
-    restNote.style.cssText = 'margin:12px 20px 0;padding:8px 14px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.15);border-radius:10px;font-family:var(--font-mono);font-size:10px;color:var(--muted);';
+    restNote.style.cssText = 'margin:12px 20px 0;padding:8px 14px;background:rgba(255,138,61,0.05);border:1px solid rgba(255,138,61,0.15);border-radius:10px;font-family:var(--font-mono);font-size:10px;color:var(--muted);';
     restNote.textContent = `${suppPlan.name}: rest day`;
     list.appendChild(restNote);
   }
@@ -4146,7 +4291,7 @@ function renderToday() {
   updateTravelUI();
 
   } catch(e) {
-    console.error('GrindFlow: renderToday() failed:', e);
+    console.error('Volume: renderToday() failed:', e);
     if (DOM.exerciseList) DOM.exerciseList.innerHTML =
       '<div style="padding:32px 20px;text-align:center;color:var(--muted);font-size:13px;">⚠️ Could not load today\'s workout. Try refreshing.</div>';
   }
@@ -4169,8 +4314,11 @@ function buildExCard(exId, ex, logEntry, volumeOverride, isSwapped) {
   // Pre-fill weight: use suggested weight from progression if available
   // and the log entry hasn't been touched yet (all weights null or at default)
   const defaultW = effectiveEx.weight;
-  const suggestedW = (progStatus && progStatus.suggestedWeight > 0)
+  let suggestedW = (progStatus && progStatus.suggestedWeight > 0)
     ? progStatus.suggestedWeight : defaultW;
+  if (isDeloadActive() && suggestedW > 0) {
+    suggestedW = Math.max(5, Math.round((suggestedW * DELOAD_INTENSITY) / 5) * 5);
+  }
   const allAtDefault = logEntry.sets.every(s => s.weight == null || s.weight === defaultW || s.weight === 0);
   if (allAtDefault && suggestedW !== defaultW) {
     logEntry.sets.forEach(s => { s.weight = suggestedW; });
@@ -4408,6 +4556,9 @@ function updateRing(done, total, primaryDone, primaryTotal, suppDone, suppTotal,
   const offset = circumference - (circumference * pct / 100);
   document.getElementById('ring-fill').style.strokeDashoffset = offset;
   document.getElementById('ring-pct').textContent = pct + '%';
+  // Brand baseline in the header mirrors today's completion
+  const logoBase = document.getElementById('logo-base-fill');
+  if (logoBase) logoBase.style.width = pct + '%';
 
   if (total === 0) {
     document.getElementById('ring-title').textContent = 'Rest Day';
@@ -4588,7 +4739,7 @@ function getSessionExercises(sessionLabel, focusMuscles, level, goal) {
 function generatePlanName(goal, days, level) {
   const adjectives = {
     strength:    ['IRON','POWER','FORCE','RAW','BRUTE'],
-    hypertrophy: ['MASS','GrindFlow','BUILD','SCULPT','PRIME'],
+    hypertrophy: ['MASS','VOLUME','BUILD','SCULPT','PRIME'],
     fatloss:     ['BURN','SHRED','CUT','TORCH','LEAN'],
   };
   const suffixes = {
@@ -4733,7 +4884,7 @@ function renderPlans() {
     card.id = 'plancard-' + id;
     let statusBadge = '';
     if (isPrimary)      statusBadge = '<div class="plan-selected-badge">✓ Primary</div>';
-    else if (isSupplemental) statusBadge = '<div class="plan-selected-badge" style="background:rgba(59,130,246,0.12);border-color:var(--accent2);color:var(--accent2);">+ Supplemental</div>';
+    else if (isSupplemental) statusBadge = '<div class="plan-selected-badge" style="background:rgba(255,138,61,0.12);border-color:var(--accent2);color:var(--accent2);">+ Supplemental</div>';
     else                statusBadge = '<div></div>';
     card.innerHTML = `
       <div class="plan-card-face" onclick="togglePlan('${id}')">
@@ -4810,7 +4961,7 @@ function renderPlans() {
       actions = `
         <button class="select-plan-btn" onclick="setPrimaryPlan('${id}')" style="flex:1;">⚡ Set as Primary</button>
         <button class="select-plan-btn" onclick="setSupplementalPlan('${id}')"
-          style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:var(--accent2);flex:1;">+ Add as Supplemental</button>`;
+          style="background:rgba(255,138,61,0.1);border:1px solid rgba(255,138,61,0.3);color:var(--accent2);flex:1;">+ Add as Supplemental</button>`;
     }
 
     dropdown.innerHTML = `
@@ -5617,7 +5768,7 @@ function fireRestCompleteNotification(seconds) {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   setTimeout(() => {
     try {
-      new Notification('GrindFlow \u2014 Rest Complete \u2705', {
+      new Notification('Volume \u2014 Rest Complete \u2705', {
         body: "Time for your next set. Let\'s go! \ud83d\udcaa",
         icon: './icons/icon-192.png',
         badge: './icons/icon-72.png',
@@ -5626,7 +5777,7 @@ function fireRestCompleteNotification(seconds) {
         silent: false,
       });
     } catch(e) {
-      console.error('GrindFlow: Failed to parse saved state, using defaults.', e);
+      console.error('Volume: Failed to parse saved state, using defaults.', e);
     }
   }, seconds * 1000);
 }
@@ -6311,6 +6462,7 @@ function writeExerciseLog(completedExercises, dateKey) {
     if (!alreadyLogged) {
       state.exerciseLog[id].unshift({
         date: dateKey,
+        deload: (typeof isDeloadActive === 'function' && isDeloadActive()) || undefined,
         sets: sets.map(s => ({ w: s.w, r: s.r, rpe: s.rpe || null, note: s.note || null }))
       });
       // Keep only last 10 sessions per exercise
@@ -6406,7 +6558,8 @@ function getEffectiveDefaultWeight(exId) {
 }
 
 function getProgressionStatus(exId) {
-  const log = state.exerciseLog && state.exerciseLog[exId];
+  const rawLog = state.exerciseLog && state.exerciseLog[exId];
+  const log = rawLog ? rawLog.filter(e => !e.deload) : rawLog;
   const ex = EXERCISES[exId];
   if (!ex) return null;
 
@@ -6689,7 +6842,7 @@ function exportBackup() {
   const a = document.createElement('a');
   const dateStr = today().replace(/-/g, '');
   a.href = url;
-  a.download = `grindflow-backup-${dateStr}.json`;
+  a.download = `volume-backup-${dateStr}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -6814,6 +6967,7 @@ function confirmSwap(originalId, swapId) {
   closeSwapModal();
   const swapEx = EXERCISES[swapId];
   commitState(`↔ Swapped to ${swapEx ? swapEx.name : swapId}`);
+  checkSwapPattern(originalId, swapId);
 }
 
 function resetSwap(originalId) {
@@ -6821,14 +6975,86 @@ function resetSwap(originalId) {
   if (state.todaySwaps[dateKey]) {
     delete state.todaySwaps[dateKey][originalId];
   }
+  // Also clear any permanent override + its counter so the nudge can't loop
+  if (state.planOverrides && state.primaryPlan && state.planOverrides[state.primaryPlan] &&
+      state.planOverrides[state.primaryPlan][originalId]) {
+    const removed = state.planOverrides[state.primaryPlan][originalId];
+    delete state.planOverrides[state.primaryPlan][originalId];
+    if (state.swapHistory) delete state.swapHistory[originalId + '>' + removed];
+  }
   closeSwapModal();
   commitState('↩ Original exercise restored');
 }
 
 function getSwappedExId(originalId) {
+  // Permanent plan override resolves first, then today-only swap on top
+  const perm = state.planOverrides && state.primaryPlan &&
+    state.planOverrides[state.primaryPlan] && state.planOverrides[state.primaryPlan][originalId];
+  const baseId = perm || originalId;
   const dateKey = today();
   const swapped = state.todaySwaps[dateKey] && state.todaySwaps[dateKey][originalId];
-  return (swapped && swapped !== originalId) ? swapped : originalId;
+  if (swapped && swapped !== baseId) return swapped;
+  return baseId;
+}
+
+// ── Swap-pattern nudge: same swap 3+ times -> offer to make it permanent ──
+const SWAP_NUDGE_THRESHOLD = 3;
+
+function checkSwapPattern(exId, swapId) {
+  if (!state.primaryPlan) return;
+  if (!state.swapHistory) state.swapHistory = {};
+  if (!state.swapNudgeDismissed) state.swapNudgeDismissed = {};
+  const key = exId + '>' + swapId;
+  state.swapHistory[key] = (state.swapHistory[key] || 0) + 1;
+  saveState();
+  if (state.swapNudgeDismissed[key]) return;
+  const overrides = (state.planOverrides && state.planOverrides[state.primaryPlan]) || {};
+  if (overrides[exId] === swapId) return; // already permanent
+  if (state.swapHistory[key] >= SWAP_NUDGE_THRESHOLD) {
+    const from = EXERCISES[exId] ? EXERCISES[exId].name : exId;
+    const to = EXERCISES[swapId] ? EXERCISES[swapId].name : swapId;
+    showConfirmDialog(
+      'Make it permanent?',
+      'You\u2019ve swapped ' + from + ' \u2192 ' + to + ' ' + state.swapHistory[key] + ' times. Update your plan so ' + to + ' is the default?',
+      'Update Plan', 'Keep Asking Later',
+      function() { makeSwapPermanent(exId, swapId); },
+      function() { state.swapNudgeDismissed[key] = true; saveState(); }
+    );
+  }
+}
+
+function makeSwapPermanent(exId, swapId) {
+  if (!state.planOverrides) state.planOverrides = {};
+  if (!state.planOverrides[state.primaryPlan]) state.planOverrides[state.primaryPlan] = {};
+  state.planOverrides[state.primaryPlan][exId] = swapId;
+  // Clear today's redundant swap entry so the override is the single source
+  const dateKey = today();
+  if (state.todaySwaps[dateKey]) delete state.todaySwaps[dateKey][exId];
+  saveState();
+  const name = EXERCISES[swapId] ? EXERCISES[swapId].name : swapId;
+  showToast('\u2705 ' + name + ' is now part of your plan');
+  renderToday();
+}
+
+// ── Minimal generic confirm dialog (self-contained, uses app CSS vars) ──
+function showConfirmDialog(title, message, yesLabel, noLabel, onYes, onNo) {
+  let ov = document.getElementById('confirm-overlay');
+  if (ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'confirm-overlay';
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;';
+  ov.innerHTML =
+    '<div style="background:var(--card,#16161c);border:1px solid var(--border,#2a2a32);border-radius:16px;padding:22px;max-width:340px;width:100%;">' +
+      '<div style="font-weight:700;font-size:16px;margin-bottom:8px;">' + title + '</div>' +
+      '<div style="font-size:13.5px;line-height:1.55;opacity:0.85;margin-bottom:18px;">' + message + '</div>' +
+      '<div style="display:flex;gap:10px;">' +
+        '<button id="confirm-no" style="flex:1;padding:11px;border-radius:10px;border:1px solid var(--border,#2a2a32);background:transparent;color:inherit;font:inherit;font-size:13px;">' + noLabel + '</button>' +
+        '<button id="confirm-yes" style="flex:1;padding:11px;border-radius:10px;border:none;background:var(--accent,#FF5C00);color:#000;font:inherit;font-size:13px;font-weight:700;">' + yesLabel + '</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(ov);
+  document.getElementById('confirm-yes').onclick = function() { ov.remove(); if (onYes) onYes(); };
+  document.getElementById('confirm-no').onclick = function() { ov.remove(); if (onNo) onNo(); };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -6862,7 +7088,7 @@ function openRpeGuide() {
       <strong style="color:var(--text-inv);">Rate of Perceived Exertion</strong> — how hard a set felt on a scale of 1–10. Log it after each set to track fatigue and guide progression.
     </p>
     <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:18px;">${rows}</div>
-    <div style="background:rgba(0,194,255,0.06);border:1px solid rgba(0,194,255,0.2);border-radius:12px;padding:12px 14px;">
+    <div style="background:rgba(255,92,0,0.06);border:1px solid rgba(255,92,0,0.2);border-radius:12px;padding:12px 14px;">
       <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Trainer tip</div>
       <div style="font-size:12px;color:rgba(229,231,235,0.65);line-height:1.6;">
         Target <strong style="color:var(--text-inv);">RPE 7–8</strong> for most working sets. If you hit RPE ≤6 across two sessions at the same weight, the progression signals will flag it as ready to increase. RPE 9–10 on multiple sets means the weight is too heavy — drop 5–10% and rebuild.
@@ -7112,8 +7338,8 @@ function openRescheduleModal() {
     btn.style.cssText = [
       'display:flex;align-items:center;gap:12px;width:100%;',
       'padding:12px 14px;border-radius:12px;text-align:left;',
-      'background:' + (isAnyRest ? 'rgba(107,114,128,0.08)' : 'rgba(0,194,255,0.05)') + ';',
-      'border:1px solid ' + (isToday ? 'rgba(0,194,255,0.4)' : isAnyRest ? 'rgba(107,114,128,0.2)' : 'rgba(0,194,255,0.15)') + ';',
+      'background:' + (isAnyRest ? 'rgba(107,114,128,0.08)' : 'rgba(255,92,0,0.05)') + ';',
+      'border:1px solid ' + (isToday ? 'rgba(255,92,0,0.4)' : isAnyRest ? 'rgba(107,114,128,0.2)' : 'rgba(255,92,0,0.15)') + ';',
       'cursor:' + (isToday ? 'not-allowed' : 'pointer') + ';',
       'opacity:' + (isToday ? '0.4' : '1') + ';',
       'transition:all .15s;',
@@ -7129,8 +7355,8 @@ function openRescheduleModal() {
 
     if (!isToday) {
       btn.onclick = () => confirmReschedule(dow);
-      btn.onmouseenter = () => { if (!isAnyRest) btn.style.background = 'rgba(0,194,255,0.1)'; };
-      btn.onmouseleave = () => { if (!isAnyRest) btn.style.background = 'rgba(0,194,255,0.05)'; };
+      btn.onmouseenter = () => { if (!isAnyRest) btn.style.background = 'rgba(255,92,0,0.1)'; };
+      btn.onmouseleave = () => { if (!isAnyRest) btn.style.background = 'rgba(255,92,0,0.05)'; };
     }
     list.appendChild(btn);
   }

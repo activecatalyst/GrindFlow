@@ -1,11 +1,11 @@
 {
-  "name": "GrindFlow",
-  "short_name": "GrindFlow",
+  "name": "Volume",
+  "short_name": "Volume",
   "description": "Personal workout tracker with progression logging, plan generator, and rest timer.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0A0F1C",
-  "theme_color": "#00C2FF",
+  "background_color": "#121010",
+  "theme_color": "#121010",
   "orientation": "portrait",
   "scope": "./",
   "icons": [

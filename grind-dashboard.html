@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrindFlow — Analytics</title>
+<title>Volume — Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root{--bg:#0A0F1C;--bg2:#0d1428;--card:#EAECF0;--border:rgba(0,194,255,0.18);--accent:#00C2FF;--accent2:#3B82F6;--green:#10b981;--yellow:#d97706;--red:#dc2626;--text:#111827;--inv:#E5E7EB;--muted:#6b7280;--mono:'JetBrains Mono',monospace;--head:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;}
+:root{--bg:#121010;--bg2:#171412;--card:#1A1715;--border:rgba(255,92,0,0.18);--accent:#FF5C00;--accent2:#FF8A3D;--green:#3ECF7A;--yellow:#FFB020;--red:#FF6157;--text:#F2EFE8;--inv:#E5E7EB;--muted:#9A9289;--mono:'JetBrains Mono',monospace;--head:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html{background:var(--bg);color:var(--inv);font-family:var(--body);font-size:15px;}
-body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,255,0.05) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(59,130,246,0.05) 0%,transparent 55%),var(--bg);}
+body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(255,92,0,0.05) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(255,138,61,0.05) 0%,transparent 55%),var(--bg);}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--border);background:rgba(10,15,28,0.92);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
 .logo{font-family:var(--head);font-size:26px;letter-spacing:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-r{display:flex;align-items:center;gap:12px;}
-.ubtn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:rgba(0,194,255,0.1);border:1px solid rgba(0,194,255,0.3);color:var(--accent);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s;}
-.ubtn:hover{background:rgba(0,194,255,0.18);}
+.ubtn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:rgba(255,92,0,0.1);border:1px solid rgba(255,92,0,0.3);color:var(--accent);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s;}
+.ubtn:hover{background:rgba(255,92,0,0.18);}
 #csv-input{display:none;}
 .dbadge{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;}
 .main{padding:22px 28px;max-width:1440px;margin:0 auto;}
@@ -36,7 +36,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 .csub{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:0.8px;margin-bottom:12px;}
 @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 /* COACH */
-.coach{background:linear-gradient(135deg,rgba(0,194,255,0.07),rgba(59,130,246,0.1));border:1px solid rgba(0,194,255,0.22);border-radius:18px;padding:18px 20px;margin-bottom:14px;}
+.coach{background:linear-gradient(135deg,rgba(255,92,0,0.07),rgba(255,138,61,0.1));border:1px solid rgba(255,92,0,0.22);border-radius:18px;padding:18px 20px;margin-bottom:14px;}
 .coach-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .coach-ico{font-size:20px;}
 .coach-ttl{font-family:var(--head);font-size:19px;letter-spacing:1px;color:var(--inv);}
@@ -61,11 +61,11 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 .s-ready{background:rgba(16,185,129,0.1);color:#059669;}
 .s-hold{background:rgba(217,119,6,0.1);color:#b45309;}
 .s-back{background:rgba(220,38,38,0.1);color:#b91c1c;}
-.s-new{background:rgba(59,130,246,0.1);color:#1d4ed8;}
+.s-new{background:rgba(255,138,61,0.1);color:#1d4ed8;}
 /* ORM */
 .orm-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.07);}
 .orm-row:last-child{border-bottom:none;}
-.orm-rank{font-family:var(--head);font-size:16px;color:rgba(0,194,255,0.25);width:22px;flex-shrink:0;}
+.orm-rank{font-family:var(--head);font-size:16px;color:rgba(255,92,0,0.25);width:22px;flex-shrink:0;}
 .orm-name{font-size:11px;font-weight:600;color:var(--text);flex:1;}
 .orm-bw{width:70px;height:4px;background:#e5e7eb;border-radius:2px;}
 .orm-bf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent2),var(--accent));}
@@ -84,26 +84,26 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 .ratio-push{background:linear-gradient(90deg,var(--red),#f97316);}
 .ratio-leg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;}
 /* NOTES */
-.note-c{padding:9px 11px;border-radius:9px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);margin-bottom:7px;}
+.note-c{padding:9px 11px;border-radius:9px;background:rgba(255,138,61,0.05);border:1px solid rgba(255,138,61,0.12);margin-bottom:7px;}
 .note-m{font-family:var(--mono);font-size:8px;color:var(--muted);margin-bottom:3px;}
 .note-t{font-size:11px;color:var(--text);line-height:1.5;}
 .nflag{display:inline-block;font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:4px;margin-left:5px;}
 .nf-form{background:rgba(220,38,38,0.1);color:#b91c1c;}
 .nf-weight{background:rgba(16,185,129,0.1);color:#059669;}
-.nf-general{background:rgba(59,130,246,0.1);color:#1d4ed8;}
+.nf-general{background:rgba(255,138,61,0.1);color:#1d4ed8;}
 /* TABLE */
 .fchips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
-.fchip{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.15);color:var(--muted);cursor:pointer;transition:all .12s;}
-.fchip.on{background:rgba(0,194,255,0.1);border-color:var(--accent);color:var(--accent);}
+.fchip{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(255,138,61,0.07);border:1px solid rgba(255,138,61,0.15);color:var(--muted);cursor:pointer;transition:all .12s;}
+.fchip.on{background:rgba(255,92,0,0.1);border-color:var(--accent);color:var(--accent);}
 .stbl{width:100%;border-collapse:collapse;}
 .stbl th{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;padding:6px 9px;text-align:left;border-bottom:1px solid rgba(0,0,0,0.1);}
 .stbl td{padding:7px 9px;font-size:11px;color:var(--text);border-bottom:1px solid rgba(0,0,0,0.05);}
-.stbl tr:hover td{background:rgba(59,130,246,0.03);}
+.stbl tr:hover td{background:rgba(255,138,61,0.03);}
 .rpill{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:600;}
 .ex-sel{background:#fff;border:1px solid #C4C9D4;border-radius:8px;padding:6px 10px;font-family:var(--mono);font-size:11px;color:var(--text);outline:none;width:100%;margin-bottom:10px;cursor:pointer;}
 .scroll{max-height:300px;overflow-y:auto;}
 .scroll::-webkit-scrollbar{width:3px;}
-.scroll::-webkit-scrollbar-thumb{background:rgba(0,194,255,0.25);border-radius:2px;}
+.scroll::-webkit-scrollbar-thumb{background:rgba(255,92,0,0.25);border-radius:2px;}
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px;text-align:center;gap:14px;}
 .empty-icon{font-size:52px;}.empty-ttl{font-family:var(--head);font-size:34px;letter-spacing:2px;}.empty-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:360px;}
 .empty-btn{display:flex;align-items:center;gap:8px;padding:13px 26px;border-radius:12px;background:linear-gradient(135deg,var(--accent2),#1d4ed8);color:#fff;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:var(--body);transition:opacity .2s,transform .15s;margin-top:6px;}
@@ -112,8 +112,8 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 
 /* ── NASM TRAINER REVIEW ─────────────────────────────────────────────────── */
 .trainer-panel {
-  background: linear-gradient(135deg, rgba(0,194,255,0.04) 0%, rgba(59,130,246,0.07) 100%);
-  border: 1px solid rgba(0,194,255,0.2);
+  background: linear-gradient(135deg, rgba(255,92,0,0.04) 0%, rgba(255,138,61,0.07) 100%);
+  border: 1px solid rgba(255,92,0,0.2);
   border-radius: 20px;
   padding: 22px 24px;
   margin-bottom: 14px;
@@ -141,8 +141,8 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
   gap: 12px;
 }
 .trainer-badge {
-  background: linear-gradient(135deg, rgba(0,194,255,0.15), rgba(59,130,246,0.15));
-  border: 1px solid rgba(0,194,255,0.3);
+  background: linear-gradient(135deg, rgba(255,92,0,0.15), rgba(255,138,61,0.15));
+  border: 1px solid rgba(255,92,0,0.3);
   border-radius: 10px;
   padding: 8px 12px;
   display: flex;
@@ -155,13 +155,13 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 .trainer-btn {
   display: flex; align-items: center; gap: 7px;
   padding: 10px 18px; border-radius: 10px;
-  background: linear-gradient(135deg, rgba(0,194,255,0.15), rgba(59,130,246,0.2));
-  border: 1px solid rgba(0,194,255,0.35);
+  background: linear-gradient(135deg, rgba(255,92,0,0.15), rgba(255,138,61,0.2));
+  border: 1px solid rgba(255,92,0,0.35);
   color: var(--accent); font-family: var(--mono); font-size: 11px;
   cursor: pointer; transition: all .2s; white-space: nowrap;
   letter-spacing: 0.5px;
 }
-.trainer-btn:hover { background: linear-gradient(135deg, rgba(0,194,255,0.25), rgba(59,130,246,0.3)); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,194,255,0.15); }
+.trainer-btn:hover { background: linear-gradient(135deg, rgba(255,92,0,0.25), rgba(255,138,61,0.3)); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,92,0,0.15); }
 .trainer-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .trainer-btn .btn-icon { font-size: 14px; }
 
@@ -205,7 +205,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 }
 .trainer-section-label::after {
   content: ''; flex: 1; height: 1px;
-  background: linear-gradient(90deg, rgba(0,194,255,0.2), transparent);
+  background: linear-gradient(90deg, rgba(255,92,0,0.2), transparent);
 }
 .trainer-section-body {
   font-size: 12px; color: rgba(229,231,235,0.82);
@@ -221,7 +221,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
   margin-bottom: 6px;
 }
 .grade-A { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.25); }
-.grade-B { background: rgba(59,130,246,0.12); color: #3B82F6; border: 1px solid rgba(59,130,246,0.25); }
+.grade-B { background: rgba(255,138,61,0.12); color: #3B82F6; border: 1px solid rgba(255,138,61,0.25); }
 .grade-C { background: rgba(217,119,6,0.12); color: #d97706; border: 1px solid rgba(217,119,6,0.25); }
 .grade-D { background: rgba(220,38,38,0.12); color: #dc2626; border: 1px solid rgba(220,38,38,0.25); }
 
@@ -235,7 +235,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 .pill-good { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
 .pill-warn { background: rgba(217,119,6,0.1); color: #d97706; border: 1px solid rgba(217,119,6,0.2); }
 .pill-alert { background: rgba(220,38,38,0.1); color: #dc2626; border: 1px solid rgba(220,38,38,0.2); }
-.pill-info { background: rgba(59,130,246,0.1); color: #3B82F6; border: 1px solid rgba(59,130,246,0.2); }
+.pill-info { background: rgba(255,138,61,0.1); color: #3B82F6; border: 1px solid rgba(255,138,61,0.2); }
 
 .trainer-timestamp {
   font-family: var(--mono); font-size: 8px;
@@ -253,7 +253,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
 </head>
 <body>
 <header class="topbar">
-  <div class="logo">GrindFlow — Analytics</div>
+  <div class="logo">Volume — Analytics</div>
   <div class="topbar-r">
     <div class="dbadge" id="date-range">No data</div>
     <label class="ubtn" for="csv-input">↑ Load CSV</label>
@@ -264,7 +264,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(0,194,2
   <div id="es" class="empty">
     <div class="empty-icon">📊</div>
     <div class="empty-ttl">Analytics Dashboard</div>
-    <div class="empty-sub">Upload your GrindFlow CSV export to get progression signals, readiness scores, 1RM estimates, RPE analysis, and AI coaching insights.</div>
+    <div class="empty-sub">Upload your Volume CSV export to get progression signals, readiness scores, 1RM estimates, RPE analysis, and AI coaching insights.</div>
     <label class="empty-btn" for="csv-input">↑ Load your CSV export</label>
   </div>
   <div id="dash" style="display:none;"></div>
@@ -444,7 +444,7 @@ function render(){
 
   // Volume chart
   const bvs=volBySession();const vl=Object.keys(bvs).sort();
-  C.vol=new Chart(document.getElementById('cvol').getContext('2d'),{type:'bar',data:{labels:vl.map(d=>d.slice(5)),datasets:[{data:vl.map(l=>bvs[l]),backgroundColor:'rgba(59,130,246,0.45)',borderColor:'#3B82F6',borderWidth:1,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6b7280'}},y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6b7280',callback:v=>fv(v)}}}}});
+  C.vol=new Chart(document.getElementById('cvol').getContext('2d'),{type:'bar',data:{labels:vl.map(d=>d.slice(5)),datasets:[{data:vl.map(l=>bvs[l]),backgroundColor:'rgba(255,138,61,0.45)',borderColor:'#3B82F6',borderWidth:1,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6b7280'}},y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6b7280',callback:v=>fv(v)}}}}});
 
   // Readiness
   const rd=readiness();
@@ -495,7 +495,7 @@ function updProg(){
   const mw=maxWPerSession(ex);const orm=ormPerSession(ex);
   const ls=Object.keys(mw).sort();
   if(C.prog)C.prog.destroy();
-  C.prog=new Chart(document.getElementById('cprog').getContext('2d'),{type:'line',data:{labels:ls.map(d=>d.slice(5)),datasets:[{label:'Max Weight',data:ls.map(l=>mw[l]),borderColor:'#00C2FF',backgroundColor:'rgba(0,194,255,0.07)',borderWidth:2,pointBackgroundColor:'#00C2FF',pointRadius:4,fill:true,tension:0.3,yAxisID:'y'},{label:'Est 1RM',data:ls.map(l=>orm[l]?Math.round(orm[l]):null),borderColor:'rgba(16,185,129,0.7)',backgroundColor:'transparent',borderWidth:1.5,borderDash:[4,4],pointRadius:3,fill:false,tension:0.3,yAxisID:'y'}]},options:{responsive:true,plugins:{legend:{labels:{font:{family:'JetBrains Mono',size:9},color:'#374151',boxWidth:9,padding:8}}},scales:{x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6b7280'}},y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6b7280',callback:v=>v+'lb'}}}}});
+  C.prog=new Chart(document.getElementById('cprog').getContext('2d'),{type:'line',data:{labels:ls.map(d=>d.slice(5)),datasets:[{label:'Max Weight',data:ls.map(l=>mw[l]),borderColor:'#00C2FF',backgroundColor:'rgba(255,92,0,0.07)',borderWidth:2,pointBackgroundColor:'#00C2FF',pointRadius:4,fill:true,tension:0.3,yAxisID:'y'},{label:'Est 1RM',data:ls.map(l=>orm[l]?Math.round(orm[l]):null),borderColor:'rgba(16,185,129,0.7)',backgroundColor:'transparent',borderWidth:1.5,borderDash:[4,4],pointRadius:3,fill:false,tension:0.3,yAxisID:'y'}]},options:{responsive:true,plugins:{legend:{labels:{font:{family:'JetBrains Mono',size:9},color:'#374151',boxWidth:9,padding:8}}},scales:{x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6b7280'}},y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6b7280',callback:v=>v+'lb'}}}}});
 }
 window.updProg=updProg;
 
@@ -635,7 +635,7 @@ function buildTrainerDataSummary() {
 }
 
 function buildTrainerPrompt(data) {
-  return `You are a NASM-certified personal trainer with 25 years of experience. You are reviewing a client's workout log data from the GrindFlow app and providing a professional training review.
+  return `You are a NASM-certified personal trainer with 25 years of experience. You are reviewing a client's workout log data from the Volume app and providing a professional training review.
 
 Here is the client's training data summary:
 
@@ -816,7 +816,7 @@ function renderTrainerReview(r) {
         <div class="trainer-section-body">${r.longTermFocus || ''}</div>
       </div>
 
-      <div class="trainer-section" style="background:rgba(0,194,255,0.04);border-color:rgba(0,194,255,0.15);">
+      <div class="trainer-section" style="background:rgba(255,92,0,0.04);border-color:rgba(255,92,0,0.15);">
         <div class="trainer-section-label">🏋️ Trainer's Note</div>
         <div class="trainer-section-body" style="font-style:italic;color:rgba(229,231,235,0.9);font-size:13px;line-height:1.8;">"${r.trainerNote || ''}"</div>
       </div>
