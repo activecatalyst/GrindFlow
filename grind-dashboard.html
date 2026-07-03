@@ -256,16 +256,16 @@ body{min-height:100vh;background:radial-gradient(ellipse at 15% 15%,rgba(255,92,
   <div class="logo">Volume — Analytics</div>
   <div class="topbar-r">
     <div class="dbadge" id="date-range">No data</div>
-    <label class="ubtn" for="csv-input">↑ Load CSV</label>
-    <input type="file" id="csv-input" accept=".csv">
+    <label class="ubtn" for="csv-input">↑ Load Data</label>
+    <input type="file" id="csv-input" accept=".csv,.json">
   </div>
 </header>
 <div class="main">
   <div id="es" class="empty">
     <div class="empty-icon">📊</div>
     <div class="empty-ttl">Analytics Dashboard</div>
-    <div class="empty-sub">Upload your Volume CSV export to get progression signals, readiness scores, 1RM estimates, RPE analysis, and AI coaching insights.</div>
-    <label class="empty-btn" for="csv-input">↑ Load your CSV export</label>
+    <div class="empty-sub">Upload your Volume backup (JSON) or CSV export to get progression signals, readiness scores, 1RM estimates, RPE analysis, and AI coaching insights.</div>
+    <label class="empty-btn" for="csv-input">↑ Load your backup or CSV export</label>
   </div>
   <div id="dash" style="display:none;"></div>
 </div>
@@ -285,6 +285,34 @@ function sessions(){return[...new Set(R.map(r=>r['Workout Date']+'|'+r['Workout 
 
 document.getElementById('csv-input').addEventListener('change',function(e){
   const f=e.target.files[0];if(!f)return;
+  if(/\.json$/i.test(f.name)){
+    const reader=new FileReader();
+    reader.onload=()=>{
+      try{
+        const data=JSON.parse(reader.result);
+        const history=(data.state&&data.state.history)||data.history||[];
+        const rows=[];
+        history.forEach(sess=>{
+          (sess.exercises||[]).forEach(ex=>{
+            (ex.sets||[]).forEach(st=>{
+              rows.push({
+                'Workout Date':sess.date||'',
+                'Exercise':ex.name||'',
+                'Weight':st.w!=null?String(st.w):'',
+                'Reps':st.r!=null?String(st.r):'',
+                'RPE':st.rpe!=null?String(st.rpe):'',
+                'Notes':st.note||''
+              });
+            });
+          });
+        });
+        if(!rows.length){alert('No workout sessions found in this backup file.');return;}
+        R=rows;render();
+      }catch(err){alert('Could not read this backup file — is it a valid Volume JSON export?');}
+    };
+    reader.readAsText(f);
+    return;
+  }
   Papa.parse(f,{header:true,skipEmptyLines:true,complete:({data})=>{R=data.filter(r=>r['Workout Date']);render();}});
 });
 
@@ -403,7 +431,7 @@ function render(){
       </button>
     </div>
     <div id="trainer-body">
-      <div class="trainer-empty">Load your CSV export to unlock personalised NASM trainer analysis</div>
+      <div class="trainer-empty">Load your data to unlock personalised NASM trainer analysis</div>
     </div>
   </div>
   <div class="g21">

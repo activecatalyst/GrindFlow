@@ -226,7 +226,7 @@
     padding: 12px 4px 10px;
     gap: 4px; font-size: 10px; font-weight: 600;
     letter-spacing: 0.5px; text-transform: uppercase;
-    color: rgba(229,231,235,0.45);
+    color: rgba(229,231,235,0.65);
     transition: color .2s;
   }
   .nav-item .nav-icon { font-size: 22px; transition: transform .2s; }
@@ -335,10 +335,10 @@
   .ex-icon.muscle-core     { background: rgba(234,88,12,0.15); }
   .ex-icon.muscle-cardio   { background: rgba(147,51,234,0.15); }
   .ex-card-info { flex: 1; min-width: 0; }
-  .ex-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ex-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; color: #1F2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ex-muscle {
     font-size: 11px; font-family: var(--font-mono);
-    color: var(--accent2); letter-spacing: 0.5px; text-transform: uppercase;
+    color: #C2410C; letter-spacing: 0.5px; text-transform: uppercase;
   }
   .ex-status { font-size: 22px; }
   .ex-body {
@@ -357,15 +357,15 @@
     border-radius: 8px;
     background: rgba(255,138,61,0.1);
     border: 1px solid rgba(255,138,61,0.25);
-    color: var(--accent2);
+    color: #9A3412;
   }
   .swap-btn {
     display: inline-flex; align-items: center; gap: 4px;
     font-family: var(--font-mono); font-size: 11px;
     padding: 5px 10px; border-radius: 8px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: var(--muted); cursor: pointer;
+    background: rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.15);
+    color: #57534E; cursor: pointer;
     transition: all .15s; flex-shrink: 0;
     letter-spacing: 0.3px;
   }
@@ -401,14 +401,14 @@
   }
   .variant-label {
     font-family: var(--font-mono); font-size: 10.5px;
-    color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px;
+    color: #57534E; text-transform: uppercase; letter-spacing: 0.8px;
     flex-shrink: 0;
   }
   .variant-chip {
     font-family: var(--font-mono); font-size: 10px;
     padding: 4px 9px; border-radius: 6px; cursor: pointer;
     background: #F3F4F6; border: 1px solid #e5e7eb;
-    color: #6b7280; transition: all .15s; flex-shrink: 0;
+    color: #4b5563; transition: all .15s; flex-shrink: 0;
   }
   .variant-chip.active {
     background: rgba(255,92,0,0.1);
@@ -428,7 +428,7 @@
     align-items: center; gap: 7px;
   }
   .set-num {
-    font-family: var(--font-mono); font-size: 12px; color: #9ca3af;
+    font-family: var(--font-mono); font-size: 12px; color: #6b7280;
     text-align: center;
   }
   .set-input {
@@ -437,14 +437,14 @@
     border-radius: 8px;
     padding: 8px 10px;
     font-size: 16px; font-family: var(--font-mono);
-    color: var(--text);
+    color: #1F2937;
     width: 100%;
     outline: none;
     transition: border-color .15s;
     font-variant-numeric: tabular-nums;
   }
   .set-input:focus { border-color: var(--accent2); }
-  .set-input::placeholder { color: #9ca3af; }
+  .set-input::placeholder { color: #6b7280; }
   .set-check {
     width: 28px; height: 28px;
     border-radius: 8px;
@@ -460,14 +460,14 @@
     display: grid; grid-template-columns: 26px 1fr 1fr auto;
     gap: 7px; margin-bottom: 2px;
   }
-  .set-label { font-size: 11px; color: #9ca3af; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; }
+  .set-label { font-size: 11px; color: #57534E; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; }
 
   /* RPE row */
   .set-rpe-row {
     display: grid; grid-template-columns: 26px 1fr auto;
     gap: 7px; align-items: center; margin-top: -4px;
   }
-  .rpe-label { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); text-align: center; text-transform: uppercase; }
+  .rpe-label { font-family: var(--font-mono); font-size: 10.5px; color: #57534E; text-align: center; text-transform: uppercase; }
   .rpe-pills { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .rpe-pills::-webkit-scrollbar { display: none; }
   .rpe-pill {
@@ -479,10 +479,10 @@
     flex-shrink: 0;
   }
   .rpe-pill.selected-rpe { border-color: currentColor; background: rgba(0,0,0,0.06); }
-  .rpe-1, .rpe-2, .rpe-3  { color: #16a34a; }
-  .rpe-4, .rpe-5, .rpe-6  { color: #d97706; }
-  .rpe-7, .rpe-8           { color: #ea580c; }
-  .rpe-9, .rpe-10          { color: #dc2626; }
+  .rpe-1, .rpe-2, .rpe-3  { color: #15803d; }
+  .rpe-4, .rpe-5, .rpe-6  { color: #b45309; }
+  .rpe-7, .rpe-8           { color: #c2410c; }
+  .rpe-9, .rpe-10          { color: #b91c1c; }
   .set-notes-input {
     background: transparent; border: none;
     font-size: 11px; font-family: var(--font-body);
@@ -491,7 +491,7 @@
     border-bottom: 1px solid transparent;
     transition: border-color .15s, color .15s;
   }
-  .set-notes-input:focus { border-color: #C4C9D4; color: var(--text); }
+  .set-notes-input:focus { border-color: #C4C9D4; color: #1F2937; }
   .set-notes-input::placeholder { color: #9ca3af; }
   .mark-btn {
     width: 100%;
@@ -500,7 +500,7 @@
     font-size: 14px; font-weight: 600;
     background: rgba(255,138,61,0.1);
     border: 1px solid rgba(255,138,61,0.3);
-    color: var(--accent2);
+    color: #9A3412;
     transition: all .2s;
     letter-spacing: 0.5px;
   }
@@ -532,6 +532,12 @@
   .plan-card:active { transform: scale(0.97); }
   .plan-card.selected { border-color: var(--accent2); }
   .plan-card.selected .plan-card-face { background: #DBEAFE; }
+  .plan-card.selected .plan-card-face .plan-name { color: #1F2937; }
+  .plan-card.selected .plan-card-face .plan-desc,
+  .plan-card.selected .plan-card-face .plan-today-label,
+  .plan-card.selected .plan-card-face .plan-watch-tip { color: #57534E; }
+  .plan-card.selected .plan-card-face .plan-watch-tip span { color: #374151; }
+  .plan-card.selected .plan-card-face .plan-tag { color: #9A3412; border-color: rgba(154,52,18,0.35); background: rgba(255,138,61,0.12); }
   .plan-card.expanded { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(255,138,61,0.15); }
   .plan-card-face {
     padding: 14px 12px 12px;
@@ -553,12 +559,12 @@
   }
   .plan-watch-tip {
     display: flex; align-items: center; gap: 5px;
-    font-size: 10px; color: #6b7280;
+    font-size: 10px; color: var(--muted);
     margin-top: 2px;
   }
-  .plan-watch-tip span { color: #374151; font-weight: 500; }
+  .plan-watch-tip span { color: #C7BFB4; font-weight: 500; }
   .plan-desc {
-    font-size: 10.5px; color: #6b7280;
+    font-size: 10.5px; color: var(--muted);
     line-height: 1.5;
     white-space: normal; word-break: break-word;
     overflow: visible;
@@ -578,7 +584,7 @@
     width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
   }
   .plan-today-label {
-    font-family: var(--font-mono); font-size: 10.5px; color: #6b7280;
+    font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
     /* wrap instead of truncate */
     white-space: normal; word-break: break-word;
     line-height: 1.3;
@@ -602,6 +608,7 @@
   .plan-dropdown {
     grid-column: 1 / -1;
     display: none;
+    color: #1F2937;
     background: #EFF6FF;
     border: 1px solid var(--accent2);
     border-radius: var(--r2);
@@ -614,7 +621,7 @@
   .plan-dropdown-inner { padding: 14px 16px; display: flex; flex-direction: column; gap: 7px; }
   .sched-row { display: flex; align-items: center; gap: 10px; }
   .sched-day { font-family: var(--font-mono); font-size: 10px; color: #6b7280; width: 26px; text-transform: uppercase; flex-shrink: 0; }
-  .sched-label { font-size: 12px; flex: 1; color: var(--text); }
+  .sched-label { font-size: 12px; flex: 1; color: #1F2937; }
   .sched-ex-list {
     display: flex; flex-wrap: wrap; gap: 4px;
     padding: 5px 0 6px 36px;
@@ -633,7 +640,7 @@
     flex: 1; padding: 11px;
     border-radius: 10px;
     font-size: 13px; font-weight: 600;
-    background: linear-gradient(135deg, var(--accent2), #1d4ed8);
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
     color: #000; letter-spacing: 0.3px;
     transition: opacity .2s, transform .15s;
   }
@@ -665,7 +672,7 @@
   .cardio-quick-info { flex: 1; }
   .cardio-quick-name { font-family: var(--font-body); font-size: 16px; letter-spacing: 0; margin-bottom: 2px;  color: var(--text);   font-weight: 600;
   }
-  .cardio-quick-sub { font-size: 11px; color: #6b7280; }
+  .cardio-quick-sub { font-size: 11px; color: var(--muted); }
   .cardio-quick-chevron { font-size: 10px; color: var(--muted); transition: transform .2s; }
   .cardio-quick-card.open .cardio-quick-chevron { transform: rotate(180deg); }
   .cardio-quick-body {
@@ -680,13 +687,13 @@
     background: #EDF1F7; border: 1px solid #C4C9D4;
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     cursor: pointer; transition: all .15s;
-    font-size: 12px; font-weight: 600; color: var(--text);
+    font-size: 12px; font-weight: 600; color: #374151;
   }
   .cardio-type-btn span { font-size: 20px; }
-  .cardio-type-btn.active { background: rgba(255,138,61,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .cardio-type-btn.active { background: rgba(255,92,0,0.14); border-color: var(--accent); color: #9A3412; }
   .cardio-type-btn:active { transform: scale(0.96); }
   .cardio-duration-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .cardio-dur-label { font-size: 11px; color: #9ca3af; font-family: var(--font-mono); flex-shrink: 0; }
+  .cardio-dur-label { font-size: 11px; color: #57534E; font-family: var(--font-mono); flex-shrink: 0; }
   .cardio-dur-btns { display: flex; gap: 6px; flex-wrap: wrap; }
   .cardio-dur-btn {
     font-family: var(--font-mono); font-size: 11px;
@@ -694,7 +701,7 @@
     background: #EDF1F7; border: 1px solid #C4C9D4;
     color: #374151; cursor: pointer; transition: all .15s;
   }
-  .cardio-dur-btn.active { background: rgba(255,138,61,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .cardio-dur-btn.active { background: rgba(255,92,0,0.14); border-color: var(--accent); color: #9A3412; }
   .cardio-launch-btn {
     width: 100%; padding: 12px; border-radius: 10px;
     font-size: 14px; font-weight: 700;
@@ -718,7 +725,7 @@
     cursor: pointer;
   }
   .hist-date { font-family: var(--font-head); font-size: 20px; letter-spacing: 1px; color: var(--text); }
-  .hist-meta { font-size: 12px; color: #6b7280; margin-top: 2px; }
+  .hist-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .hist-header-right { display: flex; align-items: center; gap: 8px; }
   .hist-badge {
     font-family: var(--font-mono); font-size: 11px;
@@ -761,7 +768,7 @@
   }
   .warmup-routine-info { flex: 1; min-width: 0; }
   .warmup-routine-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; color: var(--text); }
-  .warmup-routine-meta { font-family: var(--font-mono); font-size: 10px; color: #6b7280; }
+  .warmup-routine-meta { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
   .warmup-routine-check {
     width: 22px; height: 22px; border-radius: 50%;
     border: 1.5px solid var(--border);
@@ -769,10 +776,12 @@
     font-size: 11px; flex-shrink: 0; transition: all .15s;
   }
   .selected-routine .warmup-routine-check { background: #ff8c00; border-color: #ff8c00; color: #000; }
+  .selected-routine .warmup-routine-name { color: #1F2937; }
+  .selected-routine .warmup-routine-meta { color: #57534E; }
 
   .hist-body {
     display: none;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border);
     padding: 14px 16px;
     flex-direction: column; gap: 10px;
     animation: fadeUp .2s ease;
@@ -782,7 +791,7 @@
     display: flex; align-items: flex-start; gap: 10px;
   }
   .hist-ex-name { font-size: 13px; font-weight: 500; flex: 1; color: var(--text); }
-  .hist-sets { font-family: var(--font-mono); font-size: 11px; color: #6b7280; }
+  .hist-sets { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
   .empty-state {
     text-align: center; padding: 60px 20px;
     color: var(--muted);
@@ -854,7 +863,7 @@
   .ios-step-num {
     width: 32px; height: 32px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent2), #1d4ed8);
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
     color: #000;
     font-family: var(--font-body); font-size: 14px;
     display: flex; align-items: center; justify-content: center;
@@ -950,7 +959,7 @@
   .stat-val { font-family: var(--font-mono); font-size: 21px; letter-spacing: 1px; color: var(--accent2);   font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
-  .stat-label { font-size: 10px; color: #6b7280; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .stat-label { font-size: 10px; color: var(--muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
   /* ─── RANDOM PLAN GENERATOR ──────────────────────────────────────────── */
   .rng-section {
@@ -981,19 +990,19 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 10px;
   }
-  .rng-label { font-size: 12px; color: #6b7280; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+  .rng-label { font-size: 12px; color: #4b5563; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
   .rng-option-group { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
   .rng-opt {
     font-family: var(--font-mono); font-size: 11px;
     padding: 5px 10px; border-radius: 8px;
     background: #F3F4F6; border: 1px solid #e5e7eb;
-    color: #6b7280; cursor: pointer;
+    color: #4b5563; cursor: pointer;
     transition: all .15s;
   }
   .rng-opt.active {
-    background: rgba(255,204,0,0.1);
-    border-color: var(--yellow);
-    color: var(--yellow);
+    background: #FEF3C7;
+    border-color: #d97706;
+    color: #92400e;
   }
   .rng-muscle-grid {
     display: flex; flex-wrap: wrap; gap: 6px;
@@ -1002,7 +1011,7 @@
     font-family: var(--font-mono); font-size: 11px;
     padding: 5px 10px; border-radius: 8px;
     background: #F3F4F6; border: 1px solid #e5e7eb;
-    color: #6b7280; cursor: pointer;
+    color: #4b5563; cursor: pointer;
     transition: all .15s;
   }
   .rng-muscle-chip.active {
@@ -1041,7 +1050,7 @@
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; gap: 12px;
   }
-  .rng-preview-name { font-family: var(--font-head); font-size: 22px; letter-spacing: 1px; flex: 1; color: var(--text); }
+  .rng-preview-name { font-family: var(--font-head); font-size: 22px; letter-spacing: 1px; flex: 1; color: #1F2937; }
   .rng-preview-badge {
     font-family: var(--font-mono); font-size: 10px;
     padding: 4px 10px; border-radius: 20px;
@@ -1089,8 +1098,9 @@
     font-family: var(--font-head);
     font-size: 22px; letter-spacing: 1px;
     margin-bottom: 4px;
+    color: #1F2937;
   }
-  .custom-day-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+  .custom-day-sub { font-size: 12px; color: #57534E; margin-bottom: 14px; line-height: 1.5; }
   .custom-day-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%; padding: 13px;
@@ -1098,7 +1108,7 @@
     font-size: 14px; font-weight: 600;
     background: rgba(123,47,255,0.18);
     border: 1px solid rgba(123,47,255,0.55);
-    color: #c490ff;
+    color: #6D28D9;
     transition: all .2s;
     letter-spacing: 0.3px;
   }
@@ -1222,10 +1232,10 @@
     font-size: 18px; flex-shrink: 0;
   }
   .picker-item-info { flex: 1; min-width: 0; }
-  .picker-item-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .picker-item-name { font-size: 14px; font-weight: 600; color: #1F2937; }
   .picker-item-muscle {
     font-family: var(--font-mono); font-size: 10px;
-    color: rgba(17,24,39,0.5); text-transform: uppercase; letter-spacing: 0.5px;
+    color: rgba(17,24,39,0.65); text-transform: uppercase; letter-spacing: 0.5px;
     margin-top: 2px;
   }
   .picker-item-check {
@@ -1239,7 +1249,7 @@
   .picker-item.selected-item .picker-item-check {
     background: rgba(123,47,255,0.3);
     border-color: var(--accent2);
-    color: #b070ff;
+    color: #5B21B6;
   }
 
   /* picker modal — light background overrides for text visibility */
@@ -1251,7 +1261,7 @@
   }
   #picker-modal .picker-search {
     background: #FFFFFF;
-    color: var(--text);
+    color: #1F2937;
   }
   .picker-done-btn {
     margin: 10px 14px 14px;
@@ -1298,7 +1308,7 @@
     cursor: pointer;
     transition: all .15s;
     flex-shrink: 0;
-    color: #0369a1;
+    color: #7DD3FC;
   }
   .reco-pill:active { background: rgba(0,229,255,0.14); transform: scale(0.97); }
   .reco-pill.already-added {
@@ -1556,7 +1566,7 @@
   }
   .backup-stat-label {
     font-family: var(--font-mono); font-size: 10.5px;
-    color: rgba(229,231,235,0.5); text-transform: uppercase; letter-spacing: 0.5px;
+    color: rgba(229,231,235,0.7); text-transform: uppercase; letter-spacing: 0.5px;
     margin-top: 2px;
   }
   .backup-warn {
@@ -1824,7 +1834,7 @@
       <!-- Quick Cardio expanded panel -->
       <div class="plan-dropdown" id="cardio-panel" style="display:none;">
         <div class="plan-dropdown-inner" style="gap:12px;">
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);
+          <div style="font-family:var(--font-mono);font-size:10px;color:#57534E;
             text-transform:uppercase;letter-spacing:1px;">Type</div>
           <div class="cardio-type-grid" id="cardio-type-grid">
             <button class="cardio-type-btn active" data-type="hiit" onclick="setCardioType('hiit',this)"><span>⚡</span>HIIT</button>
@@ -1877,7 +1887,7 @@
             </div>
           </div>
           <div>
-            <div class="rng-label" style="margin-bottom:8px;">Focus muscles <span style="color:var(--muted);font-size:9px;">(optional)</span></div>
+            <div class="rng-label" style="margin-bottom:8px;">Focus muscles <span style="color:#57534E;font-size:9px;">(optional)</span></div>
             <div class="rng-muscle-grid" id="rng-muscles">
               <div class="rng-muscle-chip" data-val="Chest" onclick="toggleRngMuscle(this)">💪 Chest</div>
               <div class="rng-muscle-chip" data-val="Back" onclick="toggleRngMuscle(this)">🔙 Back</div>
@@ -1961,7 +1971,7 @@
       <!-- Warm-Up expanded panel -->
       <div class="plan-dropdown" id="warmup-panel" style="display:none;">
         <div class="plan-dropdown-inner" style="gap:10px;">
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);
+          <div style="font-family:var(--font-mono);font-size:10px;color:#57534E;
             text-transform:uppercase;letter-spacing:1px;">Choose a routine</div>
           <div id="warmup-routine-list" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
@@ -3276,8 +3286,8 @@ function checkInjuryHistory() {
         </div>
       `).join('')}
       <div style="margin-top: 16px; display:flex; gap:8px;">
-        <button onclick="saveInjuryHistory()" style="flex:1;">Continue</button>
-        <button onclick="skipInjuryScreening()" style="flex:1; background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
+        <button onclick="saveInjuryHistory()" style="flex:1; padding:12px; border-radius:10px; background:var(--accent); color:#000; font-weight:600;">Continue</button>
+        <button onclick="skipInjuryScreening()" style="flex:1; padding:12px; border-radius:10px; background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
       </div>
     `);
   }
@@ -3479,13 +3489,16 @@ function promptReadinessCheckIn() {
   // Only show if user has an active plan (not for new users)
   if (!state.primaryPlan) return;
 
+  // Don't re-prompt if the user skipped it this session
+  if (window._readinessSkippedDate === today()) return;
+
   const existing = state.readinessLog.find(log => log.date === today());
   if (existing) return; // Already logged today
 
   showModal("Today's Readiness Check", `
     <p>How are you feeling today?</p>
     <label><strong>Sleep last night:</strong></label>
-    <select id="sleep" style="width:100%; padding:8px; margin-bottom:12px;">
+    <select id="sleep" style="width:100%; padding:10px; margin-bottom:12px; background:var(--bg3); color:var(--text); border:1px solid var(--border); border-radius:8px;">
       <option value="">Select...</option>
       <option value="poor">Poor (0-4 hrs)</option>
       <option value="fair">Fair (5-6 hrs)</option>
@@ -3494,7 +3507,7 @@ function promptReadinessCheckIn() {
     </select>
     
     <label><strong>Current soreness:</strong></label>
-    <select id="soreness" style="width:100%; padding:8px; margin-bottom:12px;">
+    <select id="soreness" style="width:100%; padding:10px; margin-bottom:12px; background:var(--bg3); color:var(--text); border:1px solid var(--border); border-radius:8px;">
       <option value="">Select...</option>
       <option value="severe">Severe (DOMS, can't move)</option>
       <option value="moderate">Moderate (noticeable, can train)</option>
@@ -3503,7 +3516,7 @@ function promptReadinessCheckIn() {
     </select>
     
     <label><strong>Mood & Energy:</strong></label>
-    <select id="mood" style="width:100%; padding:8px; margin-bottom:12px;">
+    <select id="mood" style="width:100%; padding:10px; margin-bottom:12px; background:var(--bg3); color:var(--text); border:1px solid var(--border); border-radius:8px;">
       <option value="">Select...</option>
       <option value="low">Low (unmotivated)</option>
       <option value="okay">Okay (neutral)</option>
@@ -3512,8 +3525,8 @@ function promptReadinessCheckIn() {
     </select>
     
     <div style="margin-top: 16px; display:flex; gap:8px;">
-      <button onclick="saveReadiness()">Log Check-In</button>
-      <button onclick="closeModal()" style="background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
+      <button onclick="saveReadiness()" style="flex:1; padding:12px; border-radius:10px; background:var(--accent); color:#000; font-weight:600;">Log Check-In</button>
+      <button onclick="window._readinessSkippedDate = today(); closeModal();" style="flex:1; padding:12px; border-radius:10px; background:transparent; border:1px solid var(--border); color:var(--text);">Skip</button>
     </div>
   `);
 }
@@ -4212,7 +4225,7 @@ function renderToday() {
           <a href="https://www.google.com/search?q=${encodeURIComponent(wuEx.name + ' exercise how to')}"
             target="_blank" rel="noopener"
             style="display:inline-flex;align-items:center;gap:5px;
-              font-family:var(--font-mono);font-size:10px;color:var(--muted);
+              font-family:var(--font-mono);font-size:10px;color:#57534E;
               text-decoration:none;letter-spacing:0.3px;margin-top:-4px;"
             onclick="event.stopPropagation()">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -4364,7 +4377,7 @@ function buildExCard(exId, ex, logEntry, volumeOverride, isSwapped) {
       <a href="https://www.google.com/search?q=${encodeURIComponent(effectiveEx.name + ' exercise how to')}"
         target="_blank" rel="noopener"
         style="display:inline-flex;align-items:center;gap:5px;
-          font-family:var(--font-mono);font-size:10px;color:var(--muted);
+          font-family:var(--font-mono);font-size:10px;color:#57534E;
           text-decoration:none;letter-spacing:0.3px;margin-top:-4px;"
         onclick="event.stopPropagation()">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
